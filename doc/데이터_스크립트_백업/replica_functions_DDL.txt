@@ -1,0 +1,2121 @@
+-- DROP FUNCTION "replica".get_repli_account_num(varchar, varchar);
+
+CREATE OR REPLACE FUNCTION replica.get_repli_account_num(developename character varying, row_id character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	declare account_no varchar(30);
+	begin
+		select 
+			'BR-' || developename || '-' || SUBSTRING(regexp_replace(to_char(legacy_created, 'YYYY-MM-DD'), '-', '' , 'g'), 3, 8) || '-' || lpad(nextval('replica.seq_account_no'::regclass)::text, 8, '0'::text) into account_no
+		from process.account a 
+		where 
+			a.row_id = row_id;	
+		return account_no;
+	END;
+
+--	DECLARE new_id varchar(25);
+--	DECLARE table_cnt int := 0;
+--	begin
+--		select count(*) into table_cnt
+--		from process.proc_table_info
+--		where
+--			"name" = table_name;
+--		
+--		if table_cnt > 0 then		
+--			select 
+--				'B-' || upper(to_hex(pti.id)) || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id
+--			from process.proc_table_info pti 
+--			where 
+--				pti."name" = table_name;
+--		else
+--			select 
+--				'B-' || 'Z' || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id;
+--		end if;
+--
+--		return new_id;
+--	END;
+
+$function$
+;
+
+-- DROP FUNCTION "replica".get_repli_account_num(varchar);
+
+CREATE OR REPLACE FUNCTION replica.get_repli_account_num(developename character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	declare account_no varchar(30);
+	begin
+		select 
+			'BR-' || developename || '-' || to_char(legacy_created, 'YYMMDD') || '-' || lpad(nextval('replica.seq_account_no'::regclass)::text, 8, '0'::text) into account_no
+		from process.account a ;
+--		where 
+--			a.row_id = row_id;	
+		return account_no;
+	END;
+
+--	DECLARE new_id varchar(25);
+--	DECLARE table_cnt int := 0;
+--	begin
+--		select count(*) into table_cnt
+--		from process.proc_table_info
+--		where
+--			"name" = table_name;
+--		
+--		if table_cnt > 0 then		
+--			select 
+--				'B-' || upper(to_hex(pti.id)) || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id
+--			from process.proc_table_info pti 
+--			where 
+--				pti."name" = table_name;
+--		else
+--			select 
+--				'B-' || 'Z' || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id;
+--		end if;
+--
+--		return new_id;
+--	END;
+
+$function$
+;
+
+-- DROP FUNCTION "replica".hc_account_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_account_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_account_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_account_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_accountcontactrelation_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_accountcontactrelation_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_accountcontactrelation_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_accountcontactrelation_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_asset_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_asset_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_asset_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_asset_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_bluelink__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_bluelink__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_bluelink__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_bluelink__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_capture_insert_from_row(hstore, varchar, _text);
+
+CREATE OR REPLACE FUNCTION replica.hc_capture_insert_from_row(source_row hstore, table_name character varying, excluded_cols text[] DEFAULT ARRAY[]::text[])
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+        DECLARE
+            excluded_cols_standard text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+            retval int;
+
+        BEGIN
+            -- VERSION 1 --
+
+            IF (source_row -> 'id') IS NULL THEN
+                -- source_row is required to have an int id value
+                RETURN NULL;
+            END IF;
+
+            excluded_cols_standard := array_remove(
+                array_remove(excluded_cols, 'id'), 'sfid') || excluded_cols_standard;
+            INSERT INTO "replica"."_trigger_log" (
+                action, table_name, txid, created_at, state, record_id, values)
+            VALUES (
+                'INSERT', table_name, txid_current(), clock_timestamp(), 'NEW',
+                (source_row -> 'id')::int,
+                source_row - excluded_cols_standard
+            ) RETURNING id INTO retval;
+            RETURN retval;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_capture_update_from_row(hstore, varchar, _text);
+
+CREATE OR REPLACE FUNCTION replica.hc_capture_update_from_row(source_row hstore, table_name character varying, columns_to_include text[] DEFAULT ARRAY[]::text[])
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+        DECLARE
+            excluded_cols_standard text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+            excluded_cols text[];
+            retval int;
+
+        BEGIN
+            -- VERSION 1 --
+
+            IF (source_row -> 'id') IS NULL THEN
+                -- source_row is required to have an int id value
+                RETURN NULL;
+            END IF;
+
+            IF array_length(columns_to_include, 1) <> 0 THEN
+                excluded_cols := array(
+                    select skeys(source_row)
+                    except
+                    select unnest(columns_to_include)
+                );
+            END IF;
+            excluded_cols_standard := excluded_cols || excluded_cols_standard;
+            INSERT INTO "replica"."_trigger_log" (
+                action, table_name, txid, created_at, state, record_id, sfid, values, old)
+            VALUES (
+                'UPDATE', table_name, txid_current(), clock_timestamp(), 'NEW',
+                (source_row -> 'id')::int, source_row -> 'sfid',
+                source_row - excluded_cols_standard, NULL
+            ) RETURNING id INTO retval;
+            RETURN retval;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_case_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_case_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_case_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_case_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_colorinformation__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_colorinformation__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_colorinformation__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_colorinformation__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_contact_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_contact_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_contact_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_contact_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_customervehicle__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_customervehicle__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_customervehicle__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_customervehicle__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_cx_sr_mntsrvc_x__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_cx_sr_mntsrvc_x__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_cx_sr_mntsrvc_x__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_cx_sr_mntsrvc_x__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerappointmenthistory__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerappointmenthistory__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerappointmenthistory__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerappointmenthistory__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerholiday__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerholiday__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerholiday__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerholiday__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerservice__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerservice__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_dealerservice__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_dealerservice__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_invoiceinfo__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_invoiceinfo__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_invoiceinfo__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_invoiceinfo__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_lead_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_lead_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_lead_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_lead_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_loyaltyprogram__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_loyaltyprogram__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_loyaltyprogram__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_loyaltyprogram__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_opportunity_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_opportunity_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_opportunity_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_opportunity_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_product2_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_product2_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_product2_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_product2_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_quotehistory_if__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_quotehistory_if__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_quotehistory_if__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_quotehistory_if__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_recordtype_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_recordtype_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'READONLY';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_recordtype_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_recordtype_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_rental__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_rental__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_rental__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_rental__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_roadsideassistance__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_roadsideassistance__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_roadsideassistance__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_roadsideassistance__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_roadsideassistanceservice__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_roadsideassistanceservice__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_roadsideassistanceservice__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_roadsideassistanceservice__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_salesconsulthistory_if__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_salesconsulthistory_if__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_salesconsulthistory_if__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_salesconsulthistory_if__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_task_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_task_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_task_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_task_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".hc_testdrivehistory_if__c_logger();
+
+CREATE OR REPLACE FUNCTION replica.hc_testdrivehistory_if__c_logger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+
+        DECLARE
+            trigger_row "replica"."_trigger_log";
+            excluded_cols text[] = ARRAY['_hc_lastop', '_hc_err']::text[];
+
+        BEGIN
+            -- VERSION 4 --
+            trigger_row = ROW();
+            trigger_row.id = nextval('"replica"."_trigger_log_id_seq"');
+            trigger_row.action = TG_OP::text;
+            trigger_row.table_name = TG_TABLE_NAME::text;
+            trigger_row.txid = txid_current();
+            trigger_row.created_at = clock_timestamp();
+            trigger_row.state = 'NEW';
+
+            IF (TG_OP = 'DELETE') THEN
+                trigger_row.record_id = OLD.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                
+                ELSE
+                    trigger_row.state = 'IGNORE';
+                END IF;
+            ELSEIF (TG_OP = 'INSERT') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.values = hstore(NEW.*) - excluded_cols;
+            ELSEIF (TG_OP = 'UPDATE') THEN
+                trigger_row.record_id = NEW.id;
+                trigger_row.old = hstore(OLD.*) - excluded_cols;
+                trigger_row.values = (hstore(NEW.*) - hstore(trigger_row.old)) - excluded_cols;
+                
+                IF (trigger_row.values = '') THEN
+                    -- nothing changed, ignore
+                    trigger_row.state = 'IGNORE';
+                END IF;
+                IF (OLD.sfid IS NOT NULL) THEN
+                    trigger_row.sfid = OLD.sfid;
+                END IF;
+            END IF;
+
+            INSERT INTO "replica"."_trigger_log" VALUES (trigger_row.*);
+
+            RETURN NULL;
+        END;
+        $function$
+;
+
+-- DROP FUNCTION "replica".hc_testdrivehistory_if__c_status();
+
+CREATE OR REPLACE FUNCTION replica.hc_testdrivehistory_if__c_status()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+                    BEGIN
+                      IF (get_xmlbinary() = 'base64') THEN  -- user op
+                        NEW._hc_lastop = 'PENDING';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      ELSE  -- connect op
+                        IF (TG_OP = 'UPDATE' AND NEW._hc_lastop IS NOT NULL AND NEW._hc_lastop != OLD._hc_lastop) THEN
+                            RETURN NEW;
+                        END IF;
+
+                        NEW._hc_lastop = 'SYNCED';
+                        NEW._hc_err = NULL;
+                        RETURN NEW;
+                      END IF;
+                    END;
+                 $function$
+;
+
+-- DROP FUNCTION "replica".pg_schema_size(text);
+
+CREATE OR REPLACE FUNCTION replica.pg_schema_size(text)
+ RETURNS bigint
+ LANGUAGE sql
+AS $function$
+select sum(pg_total_relation_size(quote_ident(schemaname) || '.' || quote_ident(tablename)))::bigint from pg_tables where schemaname = $1
+$function$
+;
+
+-- DROP FUNCTION "replica".tlog_notify_trigger();
+
+CREATE OR REPLACE FUNCTION replica.tlog_notify_trigger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+            DECLARE
+             BEGIN
+               -- VERSION 1 --
+               PERFORM pg_notify('replica.hc_trigger_log', 'ping');
+               RETURN new;
+             END;
+            $function$
+;

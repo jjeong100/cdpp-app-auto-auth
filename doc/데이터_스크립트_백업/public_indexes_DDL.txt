@@ -1,0 +1,1 @@
+-- CREATE UNIQUE INDEX spatial_ref_sys_pkey ON public.spatial_ref_sys USING btree (srid); 자동으로 생성 되나?

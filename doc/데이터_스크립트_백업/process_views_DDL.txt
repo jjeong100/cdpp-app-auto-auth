@@ -1,0 +1,381 @@
+-- process.vw_perfil_consumidor source
+
+CREATE OR REPLACE VIEW process.vw_perfil_consumidor
+AS SELECT con.row_id AS id_siebel,
+        CASE
+            WHEN con.cpf__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cpf,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS cpf_saneado,
+    to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text) AS dt_criacao,
+    substr(to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text), 1, 10) AS dia_criacao,
+    substr(to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text), 12, 17) AS hora_criacao,
+    con.con_cd__c AS tipo,
+        CASE
+            WHEN con.firstname IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS nome,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS nome_saneado,
+        CASE
+            WHEN con.lastname IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS sobrenome,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS sobrenome_saneado,
+        CASE
+            WHEN con.birthdate IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS dt_nasc,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS dt_nasc_saneado,
+        CASE
+            WHEN con.attrib_36__c::text = 'Uninformed'::text OR con.attrib_36__c::text = 'Not informed'::text OR con.attrib_36__c IS NULL THEN 'N'::text
+            ELSE 'Y'::text
+        END AS renda,
+        CASE
+            WHEN substr(con.homephone::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS home_ph,
+    substr(con.homephone::text, 1, 14) AS home_ph_2,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS home_ph_saneado,
+        CASE
+            WHEN substr(con.companyphone__c::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS work_ph,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS work_ph_saneado,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS contato_saneado,
+    con.mailingstate AS estado,
+        CASE
+            WHEN con.mailingstreet IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS endereco,
+        CASE
+            WHEN con.mailingstreet_2__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS numero,
+        CASE
+            WHEN con.mailingstreet_3__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS complemento,
+        CASE
+            WHEN con.mailingpostalcode IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cep,
+        CASE
+            WHEN con.mailingcounty IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS bairro,
+    con.mailingcity AS cidade,
+        CASE
+            WHEN con.mailingcountry IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS pas,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS endereo_saneado,
+        CASE
+            WHEN con.mailingpostalcode IS NULL THEN 'N'::text
+            ELSE 'Y'::text
+        END AS existe_endereo,
+    con.gender__c AS genero,
+    floor(round(((CURRENT_DATE - con.birthdate) / 365)::numeric, 1)) AS idade,
+    con.maritalstatus__c AS estado_civil,
+    ''::character varying AS "CHASSI_DE_COMPRA",
+    ''::character varying AS "MODELO_DE_COMPRA",
+    ''::character varying AS "MOTOR_DE_COMPRA",
+    ''::character varying AS "VERSAO_DE_COMPRA",
+    ''::character varying AS "CAMBIO_DE_COMPRA",
+    ''::text AS "DATA_DE_COMPRA",
+    con.loyaltystatus__c AS status_hyundai_sempre,
+    con.receivenewsletterflag__c AS optin_news_flg,
+    con.receiveproductnewsflag__c AS optin_product_flg,
+    con.receiveresearchflag__c AS optin_research_flg,
+    con.receiveretailoffersflag__c AS optin_retail_flg,
+    con.receiveserviceoffersflag__c AS optin_offer_flg,
+    con.receiveeventsflag__c AS optin_events_flg,
+    con.loyaltystatus__c AS loyalty_optin_flg,
+    con.occupation__c AS ocupacao,
+        CASE
+            WHEN con.email IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS email,
+    con.email AS email_2,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS email_saneado,
+        CASE
+            WHEN substr(con.mobilephone::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cel_ph,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS cel_ph_saneado,
+    con.x_loyalty_crm_index__c AS crm_index,
+    con.x_seg_life_cycle__c AS life_cycle,
+    con.x_seg_value__c AS seg_value,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.reason__c::text = 'Sales opportunity'::text AND service_request.voctype__c::text = 'Sales'::text AND service_request.voc_class::text = 'Request a quote'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS quote,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.voc_class::text = 'Test drive'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS test_drive,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.voc_class::text = 'Brochure'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS brochure,
+    ( SELECT max(s.relatedmodel__c::text) AS max
+           FROM process.service_request s
+          WHERE s.reason__c::text = 'Sales opportunity'::text AND s.voctype__c::text = 'Sales'::text AND s.voc_class::text = 'Request a quote'::text AND (s.voc_level_2__c::text <> 'Outbound'::text OR s.voc_level_2__c IS NULL) AND s.contact_row_id__c::text = con.row_id::text AND s.legacycreateddate__c = (( SELECT max(r.legacycreateddate__c) AS max
+                   FROM process.service_request r
+                  WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text))) AS quote_model,
+    ( SELECT max(r.quotetransmission__c::text) AS max
+           FROM process.service_request r
+          WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text AND r.legacycreateddate__c = (( SELECT max(r_1.legacycreateddate__c) AS max
+                   FROM process.service_request r_1
+                  WHERE r_1.reason__c::text = 'Sales opportunity'::text AND r_1.voctype__c::text = 'Sales'::text AND r_1.voc_class::text = 'Request a quote'::text AND (r_1.voc_level_2__c::text <> 'Outbound'::text OR r_1.voc_level_2__c IS NULL) AND r_1.contact_row_id__c::text = con.row_id::text))) AS quote_motor,
+    ( SELECT max(r.version__c::text) AS max
+           FROM process.service_request r
+          WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text AND r.legacycreateddate__c = (( SELECT max(r_1.legacycreateddate__c) AS max
+                   FROM process.service_request r_1
+                  WHERE r_1.reason__c::text = 'Sales opportunity'::text AND r_1.voctype__c::text = 'Sales'::text AND r_1.voc_class::text = 'Request a quote'::text AND (r_1.voc_level_2__c::text <> 'Outbound'::text OR r_1.voc_level_2__c IS NULL) AND r_1.contact_row_id__c::text = con.row_id::text))) AS quote_version,
+    con.loyaltystatus__c,
+    to_char(con.loyaltyactivationdate__c::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text) AS dt_ativacao
+   FROM process.contact con,
+    process.account ac
+  WHERE ac.s_con_par_row_id::text = con.row_id::text AND (con.con_cd__c::text = ANY (ARRAY['Prospect'::character varying, 'Dealer'::character varying, 'Ex-Customer'::character varying]::text[])) AND ac.legacy_created >= (CURRENT_DATE - 30) AND (EXISTS ( SELECT 1
+           FROM process.service_request
+          WHERE service_request.contact_row_id__c::text = con.row_id::text)) AND NOT (EXISTS ( SELECT 1
+           FROM process.contact ctt
+             JOIN process.customer_vehicle ac_1 ON ac_1.account_id::text = ctt.row_id::text
+             JOIN process.asset asset ON asset.row_id::text = ac_1.asset_id::text
+          WHERE ctt.row_id::text = con.row_id::text AND (ac_1.relation_type_cd::text = ANY (ARRAY['First owner'::character varying, 'Owner'::character varying]::text[])) AND ac_1.status_cd::text = 'Active'::text))
+UNION ALL
+ SELECT con.row_id AS id_siebel,
+        CASE
+            WHEN con.cpf__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cpf,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS cpf_saneado,
+    to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text) AS dt_criacao,
+    substr(to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text), 1, 10) AS dia_criacao,
+    substr(to_char(ac.legacy_created::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text), 12, 17) AS hora_criacao,
+    con.con_cd__c AS tipo,
+        CASE
+            WHEN con.firstname IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS nome,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS nome_saneado,
+        CASE
+            WHEN con.lastname IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS sobrenome,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS sobrenome_saneado,
+        CASE
+            WHEN con.birthdate IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS dt_nasc,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS dt_nasc_saneado,
+        CASE
+            WHEN con.attrib_36__c::text = 'Uninformed'::text OR con.attrib_36__c::text = 'Not informed'::text OR con.attrib_36__c IS NULL THEN 'N'::text
+            ELSE 'Y'::text
+        END AS renda,
+        CASE
+            WHEN substr(con.homephone::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS home_ph,
+    substr(con.homephone::text, 1, 14) AS home_ph_2,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS home_ph_saneado,
+        CASE
+            WHEN substr(con.companyphone__c::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS work_ph,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS work_ph_saneado,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS contato_saneado,
+    con.mailingstate AS estado,
+        CASE
+            WHEN con.mailingstreet IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS endereco,
+        CASE
+            WHEN con.mailingstreet_2__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS numero,
+        CASE
+            WHEN con.mailingstreet_3__c IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS complemento,
+        CASE
+            WHEN con.mailingpostalcode IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cep,
+        CASE
+            WHEN con.mailingcounty IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS bairro,
+    con.mailingcity AS cidade,
+        CASE
+            WHEN con.mailingcountry IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS pas,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS endereo_saneado,
+        CASE
+            WHEN con.mailingpostalcode IS NULL THEN 'N'::text
+            ELSE 'Y'::text
+        END AS existe_endereo,
+    con.gender__c AS genero,
+    floor(round(((CURRENT_DATE - con.birthdate) / 365)::numeric, 1)) AS idade,
+    con.maritalstatus__c AS estado_civil,
+    asset.serialnumber AS "CHASSI_DE_COMPRA",
+    prod.chassi_model__c AS "MODELO_DE_COMPRA",
+    prod.engine__c AS "MOTOR_DE_COMPRA",
+    asset.version__c AS "VERSAO_DE_COMPRA",
+    prod.transmission__c AS "CAMBIO_DE_COMPRA",
+    to_char(asset.billing_date__c, 'DD/MM/YYYY HH24:MI:SS'::text) AS "DATA_DE_COMPRA",
+    con.loyaltystatus__c AS status_hyundai_sempre,
+    con.receivenewsletterflag__c AS optin_news_flg,
+    con.receiveproductnewsflag__c AS optin_product_flg,
+    con.receiveresearchflag__c AS optin_research_flg,
+    con.receiveretailoffersflag__c AS optin_retail_flg,
+    con.receiveserviceoffersflag__c AS optin_offer_flg,
+    con.receiveeventsflag__c AS optin_events_flg,
+    con.loyaltystatus__c AS loyalty_optin_flg,
+    con.occupation__c AS ocupacao,
+        CASE
+            WHEN con.email IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS email,
+    con.email AS email_2,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS email_saneado,
+        CASE
+            WHEN substr(con.mobilephone::text, 1, 14) IS NOT NULL THEN 'Y'::text
+            ELSE 'N'::text
+        END AS cel_ph,
+        CASE
+            WHEN con.x_sanitized_flg__c IS NULL OR con.x_sanitized_flg__c = false THEN 'N'::text
+            ELSE 'Y'::text
+        END AS cel_ph_saneado,
+    con.x_loyalty_crm_index__c AS crm_index,
+    con.x_seg_life_cycle__c AS life_cycle,
+    con.x_seg_value__c AS seg_value,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.reason__c::text = 'Sales opportunity'::text AND service_request.voctype__c::text = 'Sales'::text AND service_request.voc_class::text = 'Request a quote'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS quote,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.voc_class::text = 'Test drive'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS test_drive,
+        CASE
+            WHEN (( SELECT count(*) AS count
+               FROM process.service_request
+              WHERE service_request.voc_class::text = 'Brochure'::text AND (service_request.voc_level_2__c::text <> 'Outbound'::text OR service_request.voc_level_2__c IS NULL) AND service_request.contact_row_id__c::text = con.row_id::text)) >= 1 THEN 'Y'::text
+            ELSE 'N'::text
+        END AS brochure,
+    ( SELECT max(s.relatedmodel__c::text) AS max
+           FROM process.service_request s
+          WHERE s.reason__c::text = 'Sales opportunity'::text AND s.voctype__c::text = 'Sales'::text AND s.voc_class::text = 'Request a quote'::text AND (s.voc_level_2__c::text <> 'Outbound'::text OR s.voc_level_2__c IS NULL) AND s.contact_row_id__c::text = con.row_id::text AND s.legacycreateddate__c = (( SELECT max(r.legacycreateddate__c) AS max
+                   FROM process.service_request r
+                  WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text))) AS quote_model,
+    ( SELECT max(r.quotetransmission__c::text) AS max
+           FROM process.service_request r
+          WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text AND r.legacycreateddate__c = (( SELECT max(r_1.legacycreateddate__c) AS max
+                   FROM process.service_request r_1
+                  WHERE r_1.reason__c::text = 'Sales opportunity'::text AND r_1.voctype__c::text = 'Sales'::text AND r_1.voc_class::text = 'Request a quote'::text AND (r_1.voc_level_2__c::text <> 'Outbound'::text OR r_1.voc_level_2__c IS NULL) AND r_1.contact_row_id__c::text = con.row_id::text))) AS quote_motor,
+    ( SELECT max(r.version__c::text) AS max
+           FROM process.service_request r
+          WHERE r.reason__c::text = 'Sales opportunity'::text AND r.voctype__c::text = 'Sales'::text AND r.voc_class::text = 'Request a quote'::text AND (r.voc_level_2__c::text <> 'Outbound'::text OR r.voc_level_2__c IS NULL) AND r.contact_row_id__c::text = con.row_id::text AND r.legacycreateddate__c = (( SELECT max(r_1.legacycreateddate__c) AS max
+                   FROM process.service_request r_1
+                  WHERE r_1.reason__c::text = 'Sales opportunity'::text AND r_1.voctype__c::text = 'Sales'::text AND r_1.voc_class::text = 'Request a quote'::text AND (r_1.voc_level_2__c::text <> 'Outbound'::text OR r_1.voc_level_2__c IS NULL) AND r_1.contact_row_id__c::text = con.row_id::text))) AS quote_version,
+    con.loyaltystatus__c,
+    to_char(con.loyaltyactivationdate__c::timestamp with time zone, 'DD/MM/YYYY hh24:mi:ss'::text) AS dt_ativacao
+   FROM process.customer_vehicle asset_con,
+    process.contact con,
+    process.asset asset,
+    process.product prod,
+    process.account ac
+  WHERE ac.s_con_par_row_id::text = con.row_id::text AND (asset_con.relation_type_cd::text = ANY (ARRAY['First owner'::character varying, 'Owner'::character varying]::text[])) AND asset_con.status_cd::text = 'Active'::text AND con.row_id::text = asset_con.account_id::text AND (con.con_cd__c::text = ANY (ARRAY['Customer'::character varying, 'Dealer'::character varying]::text[])) AND asset.row_id::text = asset_con.asset_id::text AND asset.billing_date__c IS NOT NULL AND prod.row_id::text = asset.product2id::text AND asset.billing_date__c >= (CURRENT_DATE - 30);
+
+
+-- process.vw_pesquisa_n_compra source
+
+CREATE OR REPLACE VIEW process.vw_pesquisa_n_compra
+AS SELECT sr.protocol__c AS protocol_survey,
+    sr.legacycreateddate__c AS criado,
+    sr.contact_row_id__c AS "ID_SIEBEL",
+    sr2.protocol__c AS protocol_lead,
+    cx.research_date,
+    cx.research_name,
+    dlr.dealercode__c AS dlr_code,
+    dlr.corporaterepresentativename__c AS dlr_name,
+    cxa.question_code,
+    cxa.question_comments,
+    cxa.answer_long,
+    cxa.answer_compl
+   FROM process.service_request sr,
+    process.amaro cx,
+    process.service_request sr2,
+    process.amaro_answer cxa,
+    process.account dlr
+  WHERE sr.contact_row_id__c::text = cx.contact_id::text AND cx.sra_sr_id::text = sr2.row_id::text AND cx.integration_id::text = cxa.integration_id::text AND dlr.row_id::text = cx.dealer_id::text AND sr.reason__c::text = 'Information'::text AND sr.voctype__c::text = 'Marketing'::text AND sr.voc_class::text = 'Survey'::text AND sr.voc_level_2__c::text ~~ 'Reason Not%'::text AND cx.source::text = 'ZICARD'::text AND sr2.legacycreateddate__c >= to_date('03/01/2022 00:00:00'::text, 'DD/MM/YYYY hh24:mi:ss'::text) AND sr.legacycreateddate__c >= (CURRENT_DATE - 7)
+  ORDER BY sr.legacycreateddate__c;

@@ -1,0 +1,5137 @@
+-- process."CX_AP_ESCL_LOG" definition
+
+-- Drop table
+
+-- DROP TABLE process."CX_AP_ESCL_LOG";
+
+CREATE TABLE process."CX_AP_ESCL_LOG" (
+	row_id varchar(15) NOT NULL,
+	created timestamp NOT NULL DEFAULT now(),
+	created_by varchar(15) NOT NULL,
+	last_upd timestamp NOT NULL DEFAULT now(),
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(15) NOT NULL,
+	"name" varchar(100) NOT NULL,
+	"type" varchar(30) NOT NULL,
+	db_last_upd timestamp NULL,
+	sla_expiration numeric(22, 7) NULL,
+	db_last_upd_src varchar(50) NULL,
+	email_action_id varchar(15) NULL,
+	email_addr varchar(2000) NULL,
+	log_detail varchar(2000) NULL,
+	sr_id varchar(15) NULL,
+	consecutive_hours varchar(1) NULL,
+	dlr_based_sla varchar(1) NULL,
+	sla_expired_flg varchar(1) NULL,
+	CONSTRAINT cx_ap_escl_log_pk PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX cx_ap_escl_log_conflict_id_idx ON process."CX_AP_ESCL_LOG" USING btree (conflict_id, par_row_id, name, type);
+CREATE INDEX cx_ap_escl_log_par_row_id_idx ON process."CX_AP_ESCL_LOG" USING btree (par_row_id, sla_expired_flg, sla_expiration);
+CREATE INDEX cx_ap_escl_log_type_idx ON process."CX_AP_ESCL_LOG" USING btree (type, name);
+
+
+-- process."EmailSendLog" definition
+
+-- Drop table
+
+-- DROP TABLE process."EmailSendLog";
+
+CREATE TABLE process."EmailSendLog" (
+	"BounceType" varchar(50) NULL,
+	"BounceDetail" varchar(254) NULL,
+	"BouncedDate" varchar(25) NULL,
+	"Clicked" varchar(5) NULL,
+	"MessageName" varchar(255) NULL,
+	"Delivered" varchar(5) NULL,
+	"SpamComplaint" varchar(5) NULL,
+	"ClickedDate" varchar(25) NULL,
+	"Sent" varchar(5) NULL,
+	"JourneyVersion" varchar(3) NULL,
+	"Bounced" varchar(5) NULL,
+	"AccountName" varchar(20) NULL,
+	"ContactKey" varchar(254) NOT NULL,
+	"SpamComplaintDate" varchar(25) NULL,
+	"Undelivered" varchar(5) NULL,
+	"LastModifiedDate" varchar(25) NULL,
+	"BatchId" varchar(50) NOT NULL,
+	"JobId" varchar(10) NOT NULL,
+	"JourneyName" varchar(200) NULL,
+	"OpenedDate" varchar(25) NULL,
+	"ActivityName" varchar(200) NULL,
+	"Unsubscribed" varchar(5) NULL,
+	"ContactType" varchar(20) NULL,
+	"Subject" varchar(255) NULL,
+	"Domain" varchar(128) NULL,
+	"AssetId" varchar(10) NULL,
+	"Download" varchar(5) NULL,
+	"AccountID" varchar(50) NULL,
+	"ListId" varchar(10) NULL,
+	"FowardedDate" varchar(25) NULL,
+	"Fowarded" varchar(5) NULL,
+	"ContactChannel" varchar(50) NULL,
+	"JourneyVersionID" varchar(50) NULL,
+	"ActivityID" varchar(40) NULL,
+	"UnsubscribedDate" varchar(25) NULL,
+	"DownloadDate" timestamp NULL,
+	"Opened" varchar(5) NULL,
+	"CampaignCode" varchar(7) NULL,
+	"Email" varchar(254) NULL,
+	"SentDate" varchar(25) NULL,
+	"JourneyID" varchar(40) NULL,
+	CONSTRAINT pk_emailsendlog PRIMARY KEY ("ContactKey", "BatchId", "JobId")
+);
+
+
+-- process."SMSSendLog" definition
+
+-- Drop table
+
+-- DROP TABLE process."SMSSendLog";
+
+CREATE TABLE process."SMSSendLog" (
+	"Undelivered" varchar(5) NULL,
+	"ContactKey" varchar(254) NOT NULL,
+	"JobID" varchar(50) NULL,
+	"AssetID" varchar(50) NOT NULL,
+	"OptIn" varchar(5) NULL,
+	"SentDate" varchar(25) NULL,
+	"Mobile" varchar(50) NULL,
+	"OptOut" varchar(5) NULL,
+	"Unsubscribed" varchar(5) NULL,
+	"JourneyVersion" varchar(3) NULL,
+	"ActivityID" varchar(40) NULL,
+	"Opened" varchar(5) NULL,
+	"AccountID" varchar(12) NULL,
+	"JourneyName" varchar(200) NULL,
+	"ContactType" varchar(20) NULL,
+	"MessageName" varchar(200) NULL,
+	"Sent" varchar(5) NULL,
+	"CampaignCode" varchar(7) NULL,
+	"MobileMessageTrackingID" varchar(50) NOT NULL,
+	"JourneyID" varchar(40) NULL,
+	"MessageText" varchar(160) NULL,
+	"JourneyVersionID" varchar(40) NULL,
+	"Delivered" varchar(5) NULL,
+	"LastModifiedDate" varchar(25) NULL,
+	"AccountName" varchar(20) NULL,
+	"ActivityName" varchar(200) NULL,
+	"ContactChannel" varchar(10) NULL,
+	CONSTRAINT pk_smssendlog PRIMARY KEY ("ContactKey", "AssetID", "MobileMessageTrackingID")
+);
+
+
+-- process."S_PARTY_PER" definition
+
+-- Drop table
+
+-- DROP TABLE process."S_PARTY_PER";
+
+CREATE TABLE process."S_PARTY_PER" (
+	row_id varchar(15) NOT NULL,
+	created timestamp NOT NULL DEFAULT now(),
+	created_by varchar(15) NOT NULL,
+	last_upd timestamp NOT NULL DEFAULT now(),
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	direct_rel_flg varchar(1) NOT NULL DEFAULT 'N'::character varying,
+	party_id varchar(15) NOT NULL,
+	person_id varchar(15) NOT NULL,
+	reference_flg varchar(1) NOT NULL DEFAULT 'N'::character varying,
+	start_dt timestamp NOT NULL,
+	admit_flg varchar(1) NULL,
+	board_seat_flg varchar(1) NULL,
+	db_last_upd timestamp NULL,
+	end_dt timestamp NULL,
+	"COMMENTS" varchar(255) NULL,
+	db_last_upd_src varchar(50) NULL,
+	pr_relation_id varchar(15) NULL,
+	reference_type_cd varchar(30) NULL,
+	rel_sub_type_cd varchar(30) NULL,
+	rel_type_cd varchar(30) NULL,
+	responsibility varchar(250) NULL,
+	title varchar(100) NULL,
+	x_department varchar(100) NULL,
+	x_notes varchar(200) NULL,
+	x_status varchar(30) NULL,
+	CONSTRAINT s_party_per_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX s_party_per_party_id_idx ON process."S_PARTY_PER" USING btree (party_id);
+CREATE UNIQUE INDEX s_party_per_person_id_idx ON process."S_PARTY_PER" USING btree (person_id, party_id, conflict_id);
+CREATE INDEX s_party_per_person_id_idx2 ON process."S_PARTY_PER" USING btree (person_id, party_id);
+
+
+-- process."WhatsAppSendLog" definition
+
+-- Drop table
+
+-- DROP TABLE process."WhatsAppSendLog";
+
+CREATE TABLE process."WhatsAppSendLog" (
+	"OpenedDate" varchar(25) NULL,
+	"UndeliveredReason" varchar(254) NULL,
+	"ChannelID" varchar(50) NOT NULL,
+	"Mobile" varchar(50) NULL,
+	"Delivered" varchar(5) NULL,
+	"ContactChannel" varchar(10) NULL,
+	"JourneyVersionID" varchar(50) NULL,
+	"JourneyID" varchar(40) NULL,
+	"ContactKey" varchar(254) NOT NULL,
+	"JourneyVersion" varchar(3) NULL,
+	"ChannelName" varchar(50) NULL,
+	"SentDate" varchar(25) NULL,
+	"MessageTypeID" varchar(50) NULL,
+	"CampaignCode" varchar(7) NULL,
+	"Sent" varchar(5) NULL,
+	"JourneyName" varchar(200) NULL,
+	"JobId" varchar(50) NOT NULL,
+	"ActivityID" varchar(40) NULL,
+	"AccountID" varchar(12) NULL,
+	"LastModifiedDate" varchar(25) NULL,
+	"ActivityName" varchar(200) NULL,
+	"AccountName" varchar(20) NULL,
+	"ContactType" varchar(20) NULL,
+	"UnDelivered" varchar(5) NULL,
+	"AssetID" varchar(50) NULL,
+	"Opened" varchar(5) NULL,
+	CONSTRAINT pk_whatsappsendlog PRIMARY KEY ("ChannelID", "ContactKey", "JobId")
+);
+
+
+-- process."Z_DR_ATT_DATA" definition
+
+-- Drop table
+
+-- DROP TABLE process."Z_DR_ATT_DATA";
+
+CREATE TABLE process."Z_DR_ATT_DATA" (
+	dr_row_id numeric(15) NOT NULL,
+	created timestamp NULL DEFAULT now(),
+	created_by varchar(500) NULL,
+	last_up timestamp NULL DEFAULT now(),
+	last_upd_by varchar(500) NULL,
+	par_row_id varchar(15) NOT NULL,
+	file_name varchar(200) NULL,
+	file_data bytea NULL,
+	"COMMENTS" varchar(1000) NULL,
+	"VALID" varchar(1) NULL,
+	ws_row_id varchar(15) NULL,
+	CONSTRAINT z_dr_att_data_pk PRIMARY KEY (dr_row_id)
+);
+
+
+-- process.account definition
+
+-- Drop table
+
+-- DROP TABLE process.account;
+
+CREATE TABLE process.account (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('account'::character varying),
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate timestamp NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	reclame_aqui_id__c varchar(20) NULL,
+	offergroup__c varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	blockedemails__c bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	blockedmobile__pc bool NULL,
+	accparentaccount__c varchar(18) NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personpronouns varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	external_id__pc varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	cppd__c bool NULL,
+	workcontact__pc varchar(40) NULL,
+	sapworkaddress__c varchar(255) NULL,
+	optinoutnotificationdate__pc date NULL,
+	blockedletters__c bool NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	personcontactid varchar(18) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	persondepartment varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	hyundaicustomeryn__pc bool NULL,
+	accountsource varchar(255) NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	createdsystem__c varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	managingemployeename__pc varchar(18) NULL,
+	masterrecordid varchar(18) NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	contractrenewaldate__c date NULL,
+	nationality__pc varchar(255) NULL,
+	ccpd__c bool NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	expirationdate__pc timestamp NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	nps__c float8 NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	personotherpostalcode varchar(20) NULL,
+	lastactivitydate date NULL,
+	personotherphone varchar(40) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	pcc__c bool NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	personlastcuupdatedate timestamp NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	fleetsize__c float8 NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	emailusabilityyn__pc bool NULL,
+	influentialperson__c varchar(100) NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	process_account_type varchar(15) NULL,
+	CONSTRAINT account_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_apikey__c_idx ON process.account USING btree (apikey__c);
+CREATE INDEX account_companyphone__pc_idx ON process.account USING btree (companyphone__pc);
+CREATE INDEX account_corporateregistrationnumber__c_idx ON process.account USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_cpf__c_idx ON process.account USING btree (cpf__c);
+CREATE INDEX account_cust_stat_cd__c_idx ON process.account USING btree (cust_stat_cd__c);
+CREATE INDEX account_dealercode__c_idx ON process.account USING btree (dealercode__c);
+CREATE INDEX account_integrationid_idx ON process.account USING btree (integrationid);
+CREATE INDEX account_name_idx ON process.account USING btree (name);
+CREATE INDEX account_personemail_idx ON process.account USING btree (personemail, firstname, lastname);
+CREATE INDEX account_personhomephone_idx ON process.account USING btree (personhomephone);
+CREATE INDEX account_personmobilephone_idx ON process.account USING btree (personmobilephone);
+CREATE INDEX account_phone_idx ON process.account USING btree (phone, emailaddress);
+CREATE INDEX account_pr_con_id_idx ON process.account USING btree (pr_con_id);
+CREATE INDEX account_registrysource__c_idx ON process.account USING btree (registrysource__c);
+CREATE INDEX account_row_id_idx ON process.account USING btree (row_id);
+CREATE INDEX account_type_idx ON process.account USING btree (type);
+CREATE INDEX idx_account_external_id ON process.account USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account ON process.account USING btree (row_id);
+
+
+-- process.account_benefit_map definition
+
+-- Drop table
+
+-- DROP TABLE process.account_benefit_map;
+
+CREATE TABLE process.account_benefit_map (
+	row_id int8 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE),
+	personid varchar(15) NULL,
+	externalid varchar(15) NULL,
+	benefitname varchar(250) NULL,
+	benefiturl text NULL,
+	appsource varchar(30) NULL,
+	businessid varchar(15) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT account_benefit_map_pk PRIMARY KEY (row_id)
+);
+
+
+-- process.account_billingcounty_length definition
+
+-- Drop table
+
+-- DROP TABLE process.account_billingcounty_length;
+
+CREATE TABLE process.account_billingcounty_length (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	CONSTRAINT account_billingcounty_length_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_account_billingcounty_length_personemail_idx ON process.account_billingcounty_length USING btree (personemail, firstname, lastname);
+CREATE INDEX account_billingcounty_length_corporateregistrationnumber__c_idx ON process.account_billingcounty_length USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_billingcounty_length_cpf__c_idx ON process.account_billingcounty_length USING btree (cpf__c);
+CREATE INDEX account_billingcounty_length_dealercode__c_idx ON process.account_billingcounty_length USING btree (dealercode__c);
+CREATE INDEX account_billingcounty_length_integrationid_idx ON process.account_billingcounty_length USING btree (integrationid);
+CREATE INDEX account_billingcounty_length_name_idx ON process.account_billingcounty_length USING btree (name);
+CREATE INDEX account_billingcounty_length_personemail_idx ON process.account_billingcounty_length USING btree (personemail, firstname, lastname);
+CREATE INDEX account_billingcounty_length_pr_con_id_idx ON process.account_billingcounty_length USING btree (pr_con_id);
+CREATE INDEX account_billingcounty_length_registrysource__c_idx ON process.account_billingcounty_length USING btree (registrysource__c);
+CREATE INDEX account_billingcounty_length_row_id_idx ON process.account_billingcounty_length USING btree (row_id);
+CREATE INDEX account_billingcounty_length_type_idx ON process.account_billingcounty_length USING btree (type);
+CREATE INDEX idx_account_billingcounty_length_external_id ON process.account_billingcounty_length USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_billingcounty_length ON process.account_billingcounty_length USING btree (row_id);
+
+
+-- process.account_business_condition definition
+
+-- Drop table
+
+-- DROP TABLE process.account_business_condition;
+
+CREATE TABLE process.account_business_condition (
+	row_id varchar(15) NOT NULL,
+	pr_addr_id varchar(15) NULL
+);
+
+
+-- process.account_cleansing definition
+
+-- Drop table
+
+-- DROP TABLE process.account_cleansing;
+
+CREATE TABLE process.account_cleansing (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('account'::character varying),
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	fleettype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	businesstype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate timestamp NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	reclame_aqui_id__c varchar(20) NULL,
+	offergroup__c varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	blockedemails__c bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	blockedmobile__pc bool NULL,
+	accparentaccount__c varchar(18) NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personpronouns varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	external_id__pc varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	cppd__c bool NULL,
+	workcontact__pc varchar(40) NULL,
+	sapworkaddress__c varchar(255) NULL,
+	optinoutnotificationdate__pc date NULL,
+	blockedletters__c bool NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	personcontactid varchar(18) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	persondepartment varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	hyundaicustomeryn__pc bool NULL,
+	accountsource varchar(255) NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	createdsystem__c varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	managingemployeename__pc varchar(18) NULL,
+	masterrecordid varchar(18) NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	contractrenewaldate__c date NULL,
+	nationality__pc varchar(255) NULL,
+	ccpd__c bool NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	expirationdate__pc timestamp NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	nps__c float8 NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	personotherpostalcode varchar(20) NULL,
+	lastactivitydate date NULL,
+	personotherphone varchar(40) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	pcc__c bool NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	personlastcuupdatedate timestamp NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	fleetsize__c float8 NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	emailusabilityyn__pc bool NULL,
+	influentialperson__c varchar(100) NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	process_account_type varchar(15) NULL,
+	CONSTRAINT account_cleansing_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_cleansing_apikey__c_idx ON process.account_cleansing USING btree (apikey__c);
+CREATE INDEX account_cleansing_corporateregistrationnumber__c_idx ON process.account_cleansing USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_cleansing_cpf__c_idx ON process.account_cleansing USING btree (cpf__c);
+CREATE INDEX account_cleansing_dealercode__c_idx ON process.account_cleansing USING btree (dealercode__c);
+CREATE INDEX account_cleansing_integrationid_idx ON process.account_cleansing USING btree (integrationid);
+CREATE INDEX account_cleansing_name_idx ON process.account_cleansing USING btree (name);
+CREATE INDEX account_cleansing_personemail_idx ON process.account_cleansing USING btree (personemail, firstname, lastname);
+CREATE INDEX account_cleansing_pr_con_id_idx ON process.account_cleansing USING btree (pr_con_id);
+CREATE INDEX account_cleansing_process_account_type_idx ON process.account_cleansing USING btree (process_account_type);
+CREATE INDEX account_cleansing_registrysource__c_idx ON process.account_cleansing USING btree (registrysource__c);
+CREATE INDEX account_cleansing_row_id_idx ON process.account_cleansing USING btree (row_id);
+CREATE INDEX account_cleansing_type_idx ON process.account_cleansing USING btree (type);
+CREATE INDEX idx_account_cleansing_external_id ON process.account_cleansing USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_cleansing ON process.account_cleansing USING btree (row_id);
+
+
+-- process.account_cpf_dup definition
+
+-- Drop table
+
+-- DROP TABLE process.account_cpf_dup;
+
+CREATE TABLE process.account_cpf_dup (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	mst_yn varchar(1) NULL DEFAULT 'N'::character varying,
+	mst_row_id varchar(30) NULL,
+	CONSTRAINT account_cpf_dup_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx ON process.account_cpf_dup USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_cpf_dup_cpf__c_idx ON process.account_cpf_dup USING btree (cpf__c);
+CREATE INDEX account_cpf_dup_dealercode__c_idx ON process.account_cpf_dup USING btree (dealercode__c);
+CREATE INDEX account_cpf_dup_integrationid_idx ON process.account_cpf_dup USING btree (integrationid);
+CREATE INDEX account_cpf_dup_name_idx ON process.account_cpf_dup USING btree (name);
+CREATE INDEX account_cpf_dup_personemail_idx ON process.account_cpf_dup USING btree (personemail, firstname, lastname);
+CREATE INDEX account_cpf_dup_pr_con_id_idx ON process.account_cpf_dup USING btree (pr_con_id);
+CREATE INDEX account_cpf_dup_registrysource__c_idx ON process.account_cpf_dup USING btree (registrysource__c);
+CREATE INDEX account_cpf_dup_row_id_idx ON process.account_cpf_dup USING btree (row_id);
+CREATE INDEX account_cpf_dup_type_idx ON process.account_cpf_dup USING btree (type);
+CREATE INDEX idx_account_cpf_dup_external_id ON process.account_cpf_dup USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_cpf_dup ON process.account_cpf_dup USING btree (row_id);
+
+
+-- process.account_cpf_dup_only_old definition
+
+-- Drop table
+
+-- DROP TABLE process.account_cpf_dup_only_old;
+
+CREATE TABLE process.account_cpf_dup_only_old (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	mst_yn varchar(1) NULL DEFAULT 'N'::character varying,
+	mst_row_id varchar(30) NULL,
+	CONSTRAINT account_cpf_dup_pk_2 PRIMARY KEY (row_id)
+);
+CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx_2 ON process.account_cpf_dup_only_old USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_cpf_dup_cpf__c_idx_2 ON process.account_cpf_dup_only_old USING btree (cpf__c);
+CREATE INDEX account_cpf_dup_dealercode__c_idx_2 ON process.account_cpf_dup_only_old USING btree (dealercode__c);
+CREATE INDEX account_cpf_dup_integrationid_idx_2 ON process.account_cpf_dup_only_old USING btree (integrationid);
+CREATE INDEX account_cpf_dup_name_idx_2 ON process.account_cpf_dup_only_old USING btree (name);
+CREATE INDEX account_cpf_dup_personemail_idx_2 ON process.account_cpf_dup_only_old USING btree (personemail, firstname, lastname);
+CREATE INDEX account_cpf_dup_pr_con_id_idx_2 ON process.account_cpf_dup_only_old USING btree (pr_con_id);
+CREATE INDEX account_cpf_dup_registrysource__c_idx_2 ON process.account_cpf_dup_only_old USING btree (registrysource__c);
+CREATE INDEX account_cpf_dup_row_id_idx_2 ON process.account_cpf_dup_only_old USING btree (row_id);
+CREATE INDEX account_cpf_dup_type_idx_2 ON process.account_cpf_dup_only_old USING btree (type);
+CREATE INDEX idx_account_cpf_dup_external_id_2 ON process.account_cpf_dup_only_old USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_cpf_dup_2 ON process.account_cpf_dup_only_old USING btree (row_id);
+
+
+-- process.account_cpf_dup_wo_old definition
+
+-- Drop table
+
+-- DROP TABLE process.account_cpf_dup_wo_old;
+
+CREATE TABLE process.account_cpf_dup_wo_old (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	mst_yn varchar(1) NULL DEFAULT 'N'::character varying,
+	mst_row_id varchar(30) NULL,
+	CONSTRAINT account_cpf_dup_pk_1 PRIMARY KEY (row_id)
+);
+CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_cpf_dup_cpf__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (cpf__c);
+CREATE INDEX account_cpf_dup_dealercode__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (dealercode__c);
+CREATE INDEX account_cpf_dup_integrationid_idx_1 ON process.account_cpf_dup_wo_old USING btree (integrationid);
+CREATE INDEX account_cpf_dup_name_idx_1 ON process.account_cpf_dup_wo_old USING btree (name);
+CREATE INDEX account_cpf_dup_personemail_idx_1 ON process.account_cpf_dup_wo_old USING btree (personemail, firstname, lastname);
+CREATE INDEX account_cpf_dup_pr_con_id_idx_1 ON process.account_cpf_dup_wo_old USING btree (pr_con_id);
+CREATE INDEX account_cpf_dup_registrysource__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (registrysource__c);
+CREATE INDEX account_cpf_dup_row_id_idx_1 ON process.account_cpf_dup_wo_old USING btree (row_id);
+CREATE INDEX account_cpf_dup_type_idx_1 ON process.account_cpf_dup_wo_old USING btree (type);
+CREATE INDEX idx_account_cpf_dup_external_id_1 ON process.account_cpf_dup_wo_old USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_cpf_dup_1 ON process.account_cpf_dup_wo_old USING btree (row_id);
+
+
+-- process.account_dealer_condition definition
+
+-- Drop table
+
+-- DROP TABLE process.account_dealer_condition;
+
+CREATE TABLE process.account_dealer_condition (
+	row_id varchar(15) NOT NULL,
+	pr_addr_id varchar(15) NULL
+);
+
+
+-- process.account_firstname_length definition
+
+-- Drop table
+
+-- DROP TABLE process.account_firstname_length;
+
+CREATE TABLE process.account_firstname_length (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	CONSTRAINT account_firstname_length_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_firstname_length_corporateregistrationnumber__c_idx ON process.account_firstname_length USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_firstname_length_cpf__c_idx ON process.account_firstname_length USING btree (cpf__c);
+CREATE INDEX account_firstname_length_dealercode__c_idx ON process.account_firstname_length USING btree (dealercode__c);
+CREATE INDEX account_firstname_length_integrationid_idx ON process.account_firstname_length USING btree (integrationid);
+CREATE INDEX account_firstname_length_name_idx ON process.account_firstname_length USING btree (name);
+CREATE INDEX account_firstname_length_personemail_idx ON process.account_firstname_length USING btree (personemail, firstname, lastname);
+CREATE INDEX account_firstname_length_pr_con_id_idx ON process.account_firstname_length USING btree (pr_con_id);
+CREATE INDEX account_firstname_length_registrysource__c_idx ON process.account_firstname_length USING btree (registrysource__c);
+CREATE INDEX account_firstname_length_row_id_idx ON process.account_firstname_length USING btree (row_id);
+CREATE INDEX account_firstname_length_type_idx ON process.account_firstname_length USING btree (type);
+CREATE INDEX idx_account_firstname_length_external_id ON process.account_firstname_length USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_firstname_length ON process.account_firstname_length USING btree (row_id);
+
+
+-- process.account_lastname_validation definition
+
+-- Drop table
+
+-- DROP TABLE process.account_lastname_validation;
+
+CREATE TABLE process.account_lastname_validation (
+	row_id varchar NOT NULL,
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate date NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	CONSTRAINT account_lastname_validation_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX account_lastname_validation_corporateregistrationnumber__c_idx ON process.account_lastname_validation USING btree (corporateregistrationnumber__c, name);
+CREATE INDEX account_lastname_validation_cpf__c_idx ON process.account_lastname_validation USING btree (cpf__c);
+CREATE INDEX account_lastname_validation_dealercode__c_idx ON process.account_lastname_validation USING btree (dealercode__c);
+CREATE INDEX account_lastname_validation_integrationid_idx ON process.account_lastname_validation USING btree (integrationid);
+CREATE INDEX account_lastname_validation_name_idx ON process.account_lastname_validation USING btree (name);
+CREATE INDEX account_lastname_validation_personemail_idx ON process.account_lastname_validation USING btree (personemail, firstname, lastname);
+CREATE INDEX account_lastname_validation_pr_con_id_idx ON process.account_lastname_validation USING btree (pr_con_id);
+CREATE INDEX account_lastname_validation_registrysource__c_idx ON process.account_lastname_validation USING btree (registrysource__c);
+CREATE INDEX account_lastname_validation_row_id_idx ON process.account_lastname_validation USING btree (row_id);
+CREATE INDEX account_lastname_validation_type_idx ON process.account_lastname_validation USING btree (type);
+CREATE INDEX idx_account_lastname_validation_external_id ON process.account_lastname_validation USING btree (external_id__c);
+CREATE UNIQUE INDEX idx_unique_account_lastname_validation ON process.account_lastname_validation USING btree (row_id);
+
+
+-- process.account_person_check definition
+
+-- Drop table
+
+-- DROP TABLE process.account_person_check;
+
+CREATE TABLE process.account_person_check (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('account'::character varying),
+	external_id__c varchar(30) NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	corporaterepresentativename__c varchar(100) NULL,
+	ori_cd__c varchar(30) NULL,
+	x_contracted_since__c date NULL,
+	registrysource__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	fax varchar(40) NULL,
+	emailaddress varchar(350) NULL,
+	website varchar(100) NULL,
+	situationstatusreason__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	"type" varchar(255) NULL,
+	prtnrshp_start_dt__c date NULL,
+	prtnrshp_end_dt__c date NULL,
+	fleet__c varchar(30) NULL,
+	industry varchar(255) NULL,
+	numberofemployees varchar(30) NULL,
+	x_tot_flt_size__c varchar(10) NULL,
+	businesstype__c varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personemail varchar(80) NULL,
+	salesflag__c bool NULL,
+	serviceflag__c bool NULL,
+	businesshours__c varchar(255) NULL,
+	facebook__c varchar(255) NULL,
+	x_dlr_srvc_type__c varchar(30) NULL,
+	attrib_14__c int4 NULL,
+	billingstreet varchar(255) NULL,
+	billingstreet_2__c varchar(100) NULL,
+	billingstreet_3__c varchar(100) NULL,
+	billingcountry varchar(80) NULL,
+	billingcity varchar(40) NULL,
+	billingstate varchar(80) NULL,
+	billingpostalcode varchar(20) NULL,
+	billinglatitude float8 NULL,
+	billinglongitude float8 NULL,
+	x_sales_rep__c varchar(100) NULL,
+	description text NULL,
+	leadmanager__c bool NULL,
+	dms__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	whatsappphone__c varchar(40) NULL,
+	personassistantphone varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	personhomephone varchar(40) NULL,
+	companyphone__pc varchar(255) NULL,
+	personmobilephone varchar(40) NULL,
+	occupation__pc varchar(255) NULL,
+	gender__pc varchar(255) NULL,
+	personbirthdate date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	calloptyn__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	emailaddress__c varchar(80) NULL,
+	addr_landing_id varchar(15) NULL,
+	fleettype__c varchar(255) NULL,
+	sanitized__c bool NULL,
+	income__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	pcd__c varchar(255) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	loyaltystatus__c varchar(255) NULL,
+	countrycode__c varchar(255) NULL,
+	prtnrflag__c bool NULL,
+	addrssname__c varchar(100) NULL,
+	position__c varchar(100) NULL,
+	org_par_row_id varchar(22) NULL,
+	s_con_par_row_id varchar(22) NULL,
+	partnertype__c varchar(255) NULL,
+	neighborhood varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	engagement__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	satificationlevel__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	x_printed_card__c bool NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	escalation_flg varchar(1) NULL,
+	integrationid varchar(30) NULL,
+	pr_con_id varchar(15) NULL,
+	blockedsms__c bool NULL,
+	amount_friends int4 NULL,
+	amount_children int4 NULL,
+	loyaltyexpirationtodate__c date NULL,
+	loyaltyengagementindex__c varchar(30) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	loyaltylifecycle__c varchar(30) NULL,
+	numeric_row_id varchar(50) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	salesgroup__c varchar(255) NULL,
+	salesmanager__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	salesoffice__c varchar(255) NULL,
+	division__c varchar(255) NULL,
+	age__c int4 NULL,
+	hkmeretaildate timestamp NULL,
+	billingcounty varchar(100) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	CONSTRAINT account_person_check_pk PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX idx_unique_account_person_check ON process.account_person_check USING btree (row_id);
+
+
+-- process.amaro definition
+
+-- Drop table
+
+-- DROP TABLE process.amaro;
+
+CREATE TABLE process.amaro (
+	amr_row_id varchar(30) NOT NULL DEFAULT process.get_proc_id('amaro'::character varying),
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	db_last_upd date NULL,
+	rating_all int4 NULL,
+	rating_attendant int4 NULL,
+	rating_mechanic int4 NULL,
+	research_date timestamp NULL,
+	sna_cod int4 NULL,
+	sna_date date NULL,
+	account_id varchar(30) NULL,
+	asset_id varchar(30) NULL,
+	contact_id varchar(30) NULL,
+	db_last_upd_src varchar(50) NULL,
+	dealer_id varchar(15) NULL,
+	integration_id varchar(100) NULL,
+	research_name varchar(100) NULL,
+	sna_comment varchar(255) NULL,
+	sna_type varchar(100) NULL,
+	"source" varchar(30) NULL,
+	status varchar(100) NULL,
+	sub_status varchar(100) NULL,
+	sra_sr_id varchar(15) NULL,
+	sr_id varchar(20) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT amaro_pk PRIMARY KEY (amr_row_id)
+);
+CREATE INDEX amaro_created_idx ON process.amaro USING btree (created);
+CREATE INDEX amaro_integration_id_idx ON process.amaro USING btree (integration_id);
+CREATE INDEX amaro_source_idx ON process.amaro USING btree (source);
+CREATE INDEX amaro_sra_sr_id_idx ON process.amaro USING btree (sra_sr_id);
+
+
+-- process.aprovou_levou definition
+
+-- Drop table
+
+-- DROP TABLE process.aprovou_levou;
+
+CREATE TABLE process.aprovou_levou (
+	row_id varchar(30) NOT NULL,
+	par_row_id varchar(30) NULL,
+	cpf_cnpj varchar(30) NULL,
+	dealer varchar(30) NULL,
+	dealer_cnpj varchar(30) NULL,
+	first_name varchar(30) NULL,
+	last_name varchar(30) NULL,
+	email varchar(295) NULL,
+	telefone varchar(30) NULL,
+	data_validade varchar(30) NULL,
+	modelo varchar(295) NULL,
+	parcela varchar(30) NULL,
+	dealer_code varchar(30) NULL,
+	id_siebel varchar(30) NULL,
+	lead_status varchar(30) NULL,
+	customer_type varchar(30) NULL,
+	lead_type varchar(30) NULL,
+	reason varchar(30) NULL,
+	level1 varchar(30) NULL,
+	level2 varchar(30) NULL,
+	level3 varchar(30) NULL,
+	origin varchar(30) NULL,
+	protocol__c varchar(255) NULL
+);
+CREATE UNIQUE INDEX unique_aprovou_levou ON process.aprovou_levou USING btree (row_id);
+
+
+-- process.asset definition
+
+-- Drop table
+
+-- DROP TABLE process.asset;
+
+CREATE TABLE process.asset (
+	row_id varchar(30) NOT NULL DEFAULT process.get_proc_id('asset'::character varying),
+	modelname__c varchar(255) NULL,
+	enginetype__c varchar(255) NULL,
+	latestmileage__c float8 NULL,
+	"name" varchar(255) NULL,
+	x_license_plate__c varchar(30) NULL,
+	x_vehicle_intent_change__c varchar(30) NULL,
+	x_is_current_flg__c bool NULL,
+	x_vehicle_cli_expec_val__c int4 NULL,
+	vin__c varchar(15) NULL,
+	assetaccountrollupkey__c varchar(255) NULL,
+	status varchar(255) NULL,
+	serialnumber varchar(100) NULL,
+	carregistrationnumber__c varchar(255) NULL,
+	warranty_start_dt__c timestamp NULL,
+	billing_date__c timestamp NULL,
+	oper_status_cd__c varchar(30) NULL,
+	ownr_type_cd__c varchar(30) NULL,
+	purch_loc_desc__c varchar(100) NULL,
+	dlr_con_int_id__c varchar(30) NULL,
+	modelyear__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	purchaseprice__c float8 NULL,
+	renavam_code__c varchar(30) NULL,
+	fueltype__c varchar(255) NULL,
+	manufacturedate varchar(30) NULL,
+	dealer_rcpt_dt__c timestamp NULL,
+	vehicledeliverydate__c timestamp NULL,
+	enginenumber__c varchar(255) NULL,
+	vehicleinternalcolor__c varchar(255) NULL,
+	vehiclecolor__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	fsc__c varchar(255) NULL,
+	dlr_accnt_ref_id__c varchar(255) NULL,
+	vehicle_year_model__c varchar(255) NULL,
+	car_mileage__c float8 NULL,
+	x_vehiclecolor__c varchar(255) NULL,
+	vehicle_license_date__c timestamp NULL,
+	friendly_model__c varchar(50) NULL,
+	transmission__c varchar(30) NULL,
+	x_sales_cancel_dt__c timestamp NULL,
+	special_moment__c varchar(100) NULL,
+	campaigncode__c varchar(50) NULL,
+	x_svc_conducted__c bool NULL,
+	salesman__c varchar(100) NULL,
+	x_dig_sales__c bool NULL,
+	x_td_home__c bool NULL,
+	x_del_home__c bool NULL,
+	cf_eval_svc_cd__c varchar(30) NULL,
+	latestmileagelastupdatedate__c timestamp NULL,
+	account_row_id__c varchar(255) NULL,
+	contact_row_id__c varchar(255) NULL,
+	prod_id varchar(15) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd timestamp NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	product2id varchar(255) NULL,
+	version__c varchar NULL,
+	start_date date NULL,
+	end_date date NULL,
+	urlphotodate__c timestamp NULL,
+	urlauthopublication__c varchar(255) NULL,
+	salesrepfirstname varchar(50) NULL,
+	salesreplastname varchar(50) NULL,
+	hexawarrantyflag__c bpchar(1) NULL,
+	inter_flag varchar(30) NULL,
+	enginecapacity__c varchar(255) NULL,
+	productdate__c date NULL,
+	ref_number varchar(255) NULL,
+	description varchar NULL,
+	CONSTRAINT asset_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX asset_account_row_id__c__c_idx ON process.asset USING btree (account_row_id__c);
+CREATE INDEX asset_billing_date__c_idx ON process.asset USING btree (billing_date__c);
+CREATE INDEX asset_carregistrationnumber__c_idx ON process.asset USING btree (carregistrationnumber__c);
+CREATE INDEX asset_contact_row_id__c_idx ON process.asset USING btree (contact_row_id__c);
+CREATE INDEX asset_external_id__c_idx ON process.asset USING btree (external_id__c);
+CREATE INDEX asset_legacy_created_idx ON process.asset USING btree (legacy_created);
+CREATE INDEX asset_name_idx ON process.asset USING btree (name);
+CREATE INDEX asset_product2id_idx ON process.asset USING btree (product2id);
+CREATE INDEX asset_renavam_code__c_idx ON process.asset USING btree (renavam_code__c);
+CREATE INDEX asset_row_id_idx ON process.asset USING btree (row_id);
+CREATE INDEX asset_serialnumber_idx ON process.asset USING btree (serialnumber);
+
+
+-- process.asset_accnt definition
+
+-- Drop table
+
+-- DROP TABLE process.asset_accnt;
+
+CREATE TABLE process.asset_accnt (
+	row_id varchar(22) NOT NULL DEFAULT concat('proc'::text || lpad(nextval('process.seq_asset_accnt'::regclass)::text, 18, '0'::text))::character varying,
+	accnt_id varchar(15) NOT NULL,
+	asset_id varchar(15) NOT NULL,
+	percentage int4 NULL,
+	revoc_flg bool NULL,
+	rel_type_cd varchar(30) NULL,
+	status_cd varchar(30) NULL,
+	x_employee_flg bool NULL,
+	external_id__c varchar(255) NULL,
+	proc_accnt_id varchar(25) NULL,
+	proc_asset_id varchar(25) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT asset_accnt_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX asset_accnt_accnt_id_idx ON process.asset_accnt USING btree (accnt_id);
+CREATE INDEX asset_accnt_asset_id_idx ON process.asset_accnt USING btree (asset_id);
+CREATE INDEX asset_accnt_proc_accnt_id_idx ON process.asset_accnt USING btree (proc_accnt_id, proc_asset_id);
+
+
+-- process.asset_con definition
+
+-- Drop table
+
+-- DROP TABLE process.asset_con;
+
+CREATE TABLE process.asset_con (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('asset_con'::character varying),
+	asset_id varchar(15) NOT NULL,
+	contact_id varchar(15) NOT NULL,
+	relation_type_cd varchar(30) NOT NULL DEFAULT 'STANDARD'::character varying,
+	billpay_enbl_flg bool NULL,
+	attrib_26 date NULL,
+	cert_fin_resp_flg bool NULL,
+	guarantor_flg bool NULL,
+	addr_per_id varchar(15) NULL,
+	owner_cd varchar(30) NULL,
+	pr_discnt_id varchar(15) NULL,
+	status_cd varchar(30) NULL,
+	x_employee_flg bool NULL,
+	external_id__c varchar(255) NULL,
+	inter_flag varchar(30) NULL
+);
+CREATE INDEX asset_con_asset_id_idx ON process.asset_con USING btree (asset_id);
+CREATE INDEX asset_con_contact_id_idx ON process.asset_con USING btree (contact_id);
+CREATE UNIQUE INDEX unique_asset_con ON process.asset_con USING btree (row_id);
+
+
+-- process.bluelink definition
+
+-- Drop table
+
+-- DROP TABLE process.bluelink;
+
+CREATE TABLE process.bluelink (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('bluelink'::character varying),
+	type__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	integrationid__c varchar(30) NULL,
+	chassi__c varchar(100) NULL,
+	createddate timestamp NULL,
+	firstactivation__c varchar(255) NULL,
+	activationdate__c timestamp NULL,
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	eventdate__c timestamp NULL,
+	asset_id varchar(22) NULL,
+	assetdate__c timestamp NULL,
+	inter_flag varchar(30) NULL,
+	latestmileage__c float8 NULL,
+	CONSTRAINT bluelink_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX bluelink_asset_id_idx ON process.bluelink USING btree (asset_id);
+CREATE INDEX bluelink_assetdate__c_idx ON process.bluelink USING btree (assetdate__c);
+CREATE INDEX bluelink_chassi__c_idx ON process.bluelink USING btree (chassi__c);
+CREATE INDEX bluelink_eventdate__c_idx ON process.bluelink USING btree (eventdate__c);
+CREATE INDEX bluelink_latestmileage__c_idx ON process.bluelink USING btree (latestmileage__c);
+CREATE INDEX bluelink_type__c_idx ON process.bluelink USING btree (type__c);
+
+
+-- process.bounce_performance definition
+
+-- Drop table
+
+-- DROP TABLE process.bounce_performance;
+
+CREATE TABLE process.bounce_performance (
+	row_id varchar NOT NULL DEFAULT nextval('process.seq_bounce_perfrom'::regclass)::text,
+	campaign_name varchar(80) NULL,
+	treatmenttype varchar(255) NULL,
+	contacttype varchar(255) NULL,
+	bouncestatuscode varchar(255) NULL,
+	bouncereasoncode varchar(255) NULL,
+	bounced float8 NULL
+);
+CREATE UNIQUE INDEX unique_bounce_performance ON process.bounce_performance USING btree (row_id);
+
+
+-- process.campaign definition
+
+-- Drop table
+
+-- DROP TABLE process.campaign;
+
+CREATE TABLE process.campaign (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('campaign'::character varying),
+	type__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	inter_flag varchar(30) NULL
+);
+
+
+-- process.campaign_performance_rpt definition
+
+-- Drop table
+
+-- DROP TABLE process.campaign_performance_rpt;
+
+CREATE TABLE process.campaign_performance_rpt (
+	row_id varchar NOT NULL DEFAULT nextval('process.seq_campaign_rpt'::regclass)::text,
+	campaign_id varchar(22) NULL,
+	campaign_name varchar(80) NULL,
+	treatmenttype varchar(255) NULL,
+	contacttype varchar(255) NULL,
+	numberoftargeted varchar(255) NULL,
+	numberofdeployed varchar(255) NULL,
+	ratioofdeployed varchar(255) NULL,
+	numberofsent varchar(255) NULL,
+	ratioofsent varchar(255) NULL,
+	numberofbounced varchar(255) NULL,
+	ratioofbounced varchar(255) NULL,
+	numberofopened varchar(255) NULL,
+	ratioofopened varchar(255) NULL,
+	numberofclicked varchar(255) NULL,
+	ratioofclicked varchar(255) NULL
+);
+CREATE UNIQUE INDEX unique_campaign_performance_rpt ON process.campaign_performance_rpt USING btree (row_id);
+
+
+-- process."case" definition
+
+-- Drop table
+
+-- DROP TABLE process."case";
+
+CREATE TABLE process."case" (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('case'::character varying),
+	account_row_id__c varchar(255) NULL,
+	contact_row_id__c varchar(255) NULL,
+	protocol__c varchar NULL,
+	service_request_reason__c varchar(30) NULL,
+	voctype__c varchar(255) NULL,
+	voc_class varchar(255) NULL,
+	voc_level_2__c varchar(255) NULL,
+	voc_level_3__c varchar(255) NULL,
+	origin varchar(255) NULL,
+	source__c varchar(255) NULL,
+	description text NULL,
+	status varchar(255) NULL,
+	priority varchar(255) NULL,
+	resolution__c varchar(255) NULL,
+	anonymous__c bool NULL,
+	sr_impact_cd__c varchar(30) NULL,
+	customersatisfied__c varchar(255) NULL,
+	business_row_id varchar(30) NULL,
+	causing_area__c varchar(30) NULL,
+	date_of_immobilization__c timestamp NULL,
+	x_quote_desc__c text NULL,
+	engine_transmission__c varchar(100) NULL,
+	version__c varchar(100) NULL,
+	car_version_price__c varchar(100) NULL,
+	color__c varchar(100) NULL,
+	color_price__c varchar(100) NULL,
+	unit_value__c varchar NULL,
+	car_replacement_intention__c varchar(100) NULL,
+	sap_code_test_drive__c varchar(30) NULL,
+	test_drive_confirmed__c bool NULL,
+	time_test_drive__c varchar(30) NULL,
+	date_test_drive__c date NULL,
+	pne_flg__c bool NULL,
+	campaignid__c varchar(15) NULL,
+	source_tag__c varchar(60) NULL,
+	stock_tag__c varchar(30) NULL,
+	medium_tag__c varchar(60) NULL,
+	content_tag__c varchar(60) NULL,
+	campaign_tag__c varchar(60) NULL,
+	add_comment__c text NULL,
+	causing_person__c varchar(30) NULL,
+	customer_rep__c varchar(100) NULL,
+	customer_rep_rel__c varchar(30) NULL,
+	diagnosis_difficulty__c bool NULL,
+	diagnosis_pending__c bool NULL,
+	dlr_response__c text NULL,
+	dlr_fup__c text NULL,
+	dlr_pending__c text NULL,
+	dlr_retraction__c bool NULL,
+	dlr_reversal__c text NULL,
+	hotline_flg__c bool NULL,
+	hotline_num__c varchar(30) NULL,
+	hotline_open_dt__c date NULL,
+	purchase_proposal_num__c varchar(30) NULL,
+	pwa_flg__c bool NULL,
+	pwa_number__c varchar(30) NULL,
+	pwa_oped_dt__c date NULL,
+	recurrence__c bool NULL,
+	recurrence_num__c int4 NULL,
+	vehicle_delivery_dt__c date NULL,
+	vehicle_delivery_flg__c bool NULL,
+	wants_loan__c bool NULL,
+	loan_type__c varchar(50) NULL,
+	installments_amt__c int4 NULL,
+	down_payment__c int4 NULL,
+	usedcar_payment__c bool NULL,
+	dlr_temp__c varchar(10) NULL,
+	asset_external_id__c varchar(30) NULL,
+	external__c varchar(22) NULL,
+	asset_id varchar(22) NULL,
+	status_date__c date NULL,
+	relatedmodel__c varchar(30) NULL,
+	colorprice__c varchar(50) NULL,
+	rsa_integration_id varchar(50) NULL,
+	salesrepid__c varchar(30) NULL,
+	serialnumber__c varchar(100) NULL,
+	url varchar(200) NULL,
+	legacycreateddate__c date NULL,
+	legacylastmodifieddate__c date NULL,
+	integrationid__c varchar(30) NULL,
+	dealercode__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	reclame_aqui_external_id__c varchar(30) NULL,
+	reclame_aqui_id__c varchar(20) NULL,
+	reclame_aqui_status__c varchar(30) NULL,
+	subject varchar(255) NULL,
+	ra_moderation_request__c bool NULL,
+	request_evaluation__c varchar(50) NULL,
+	ra_frozen__c bool NULL,
+	ra_complaint_reason__c varchar(50) NULL,
+	ra_customer_feeling__c varchar(50) NULL,
+	ra_complaint_response_contents__c varchar(1000) NULL,
+	ra_complaint_response_date__c timestamp NULL,
+	ra_issue_resolved__c varchar(20) NULL,
+	ra_backdoing_business__c varchar(8) NULL,
+	ra_consumer_consideration__c varchar(1500) NULL,
+	ra_consumer_consideration_date__c timestamp NULL,
+	ra_rating__c float8 NULL,
+	ra_rating_date__c date NULL,
+	ra_moderation_request_message__c varchar(255) NULL,
+	ra_moderation_response_message__c varchar(255) NULL,
+	ra_active_complaint__c bool NULL,
+	ra_moderation_status__c varchar(50) NULL,
+	ra_moderation_reason__c varchar(255) NULL,
+	ra_moderation_request_date__c timestamp NULL,
+	ra_moderation_response_date__c timestamp NULL,
+	ra_contact_row_id varchar(30) NULL,
+	ra_birthday date NULL,
+	ra_cpf varchar(30) NULL,
+	ra_email varchar(80) NULL,
+	ra_phonenumbers varchar(40) NULL,
+	ra_firstname varchar(50) NULL,
+	ra_lastname varchar(80) NULL,
+	ra_city varchar(40) NULL,
+	ra_address_state varchar(80) NULL,
+	attach_detail_description varchar(1000) NULL,
+	attach_name varchar(255) NULL,
+	attach_creation_date timestamp NULL,
+	ra_customer_id__c varchar NULL,
+	close_date__c timestamp NULL,
+	owner_emp_id varchar(15) NULL,
+	CONSTRAINT case_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX case_account_row_id__c_idx ON process."case" USING btree (account_row_id__c);
+CREATE INDEX case_asset_id_idx ON process."case" USING btree (asset_id);
+CREATE INDEX case_contact_row_id__c_idx ON process."case" USING btree (contact_row_id__c);
+CREATE INDEX case_external__c_idx ON process."case" USING btree (external__c);
+CREATE INDEX case_integrationid__c_idx ON process."case" USING btree (integrationid__c);
+CREATE INDEX case_protocol__c_idx ON process."case" USING btree (protocol__c);
+CREATE INDEX case_reclame_aqui_external_id__c_idx ON process."case" USING btree (reclame_aqui_external_id__c);
+CREATE INDEX case_reclame_aqui_id__c_idx ON process."case" USING btree (reclame_aqui_id__c);
+CREATE INDEX case_serialnumber__c_idx ON process."case" USING btree (serialnumber__c);
+CREATE INDEX case_voc_class_idx ON process."case" USING btree (voc_class, voctype__c, voc_level_2__c, voc_level_3__c);
+CREATE INDEX case_voc_level_2__c_idx ON process."case" USING btree (voc_level_2__c);
+CREATE INDEX case_voc_level_3__c_idx ON process."case" USING btree (voc_level_3__c);
+CREATE INDEX case_voctype__c_idx ON process."case" USING btree (voctype__c);
+
+
+-- process.checkinteractnum definition
+
+-- Drop table
+
+-- DROP TABLE process.checkinteractnum;
+
+CREATE TABLE process.checkinteractnum (
+	count int8 NULL
+);
+
+
+-- process.click_performance definition
+
+-- Drop table
+
+-- DROP TABLE process.click_performance;
+
+CREATE TABLE process.click_performance (
+	row_id varchar NOT NULL DEFAULT nextval('process.seq_click_perform'::regclass)::text,
+	campaign_name varchar(80) NULL,
+	contacttype varchar(255) NULL,
+	treatmenttype varchar(255) NULL,
+	hyperlinkname varchar(255) NULL,
+	responses float8 NULL
+);
+CREATE UNIQUE INDEX unique_click_performance ON process.click_performance USING btree (row_id);
+
+
+-- process.color_information definition
+
+-- Drop table
+
+-- DROP TABLE process.color_information;
+
+CREATE TABLE process.color_information (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('color_information'::character varying),
+	external_id__c varchar(255) NULL,
+	dcking_num float8 NULL,
+	active_flg bool NULL,
+	dflt_lic_flg bool NULL,
+	lang_id__c varchar(15) NULL,
+	mltorg_disalw_flg bool NULL,
+	multi_lingual_flg bool NULL,
+	name_code varchar(50) NULL,
+	reqd_lic_flg bool NULL,
+	rplctn_lvl_cd varchar(30) NULL,
+	"type" varchar(30) NULL,
+	val varchar(30) NULL,
+	modifiable_flg bool NULL,
+	order_by float8 NULL,
+	translate_flg__c bool NULL,
+	weighting_factor float8 NULL,
+	code varchar(50) NULL,
+	desc_text varchar(255) NULL,
+	high varchar(100) NULL,
+	low varchar(100) NULL,
+	integration_id__c varchar(30) NULL,
+	sub_type varchar(30) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	inter_flag varchar(30) NULL
+);
+CREATE INDEX color_information_external_id__c_idx ON process.color_information USING btree (external_id__c);
+CREATE INDEX color_information_lang_id__c_idx ON process.color_information USING btree (lang_id__c);
+CREATE INDEX color_information_name_code_idx ON process.color_information USING btree (name_code);
+CREATE INDEX color_information_row_id_idx ON process.color_information USING btree (row_id);
+CREATE INDEX color_information_type_idx ON process.color_information USING btree (type);
+
+
+-- process.contact definition
+
+-- Drop table
+
+-- DROP TABLE process.contact;
+
+CREATE TABLE process.contact (
+	row_id varchar(25) NOT NULL DEFAULT process.get_proc_id('contact'::character varying),
+	external_id__c varchar(30) NULL,
+	cpf__c varchar(30) NULL,
+	firstname varchar(50) NULL,
+	lastname varchar(80) NULL,
+	email varchar(80) NULL,
+	homephone varchar(40) NULL,
+	companyphone__c varchar(255) NULL,
+	mobilephone varchar(40) NULL,
+	title varchar(128) NULL,
+	gender__c varchar(255) NULL,
+	birthdate date NULL,
+	x_sanitized_flg__c bool NULL,
+	con_cd__c varchar(30) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	calloptyn__c bool NULL,
+	directmailoptyn__c bool NULL,
+	emailoptyn__c bool NULL,
+	x_printed_card__c bool NULL,
+	leadsource varchar(255) NULL,
+	occupation__c varchar(255) NULL,
+	attrib_36__c varchar(50) NULL,
+	productofinterest__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	x_seg_behavioral__c varchar(30) NULL,
+	x_seg_value__c varchar(30) NULL,
+	x_seg_google__c varchar(30) NULL,
+	x_seg_facebook__c varchar(30) NULL,
+	x_seg_life_cycle__c varchar(30) NULL,
+	x_seg_interest__c varchar(30) NULL,
+	x_loyalty_optin_flg__c varchar(255) NULL,
+	x_amount_friends__c float8 NULL,
+	x_amount_children__c float8 NULL,
+	loyaltyexpirationdate__c date NULL,
+	loyaltyactivationdate__c date NULL,
+	x_loyalty_exp_dt__c timestamp NULL,
+	x_loyalty_engagement__c varchar(30) NULL,
+	x_loyalty_satisfaction__c varchar(30) NULL,
+	x_loyalty_crm_index__c varchar(30) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	x_already_customer__c varchar(255) NULL,
+	mailingstreet varchar(255) NULL,
+	mailingstreet_2__c varchar(255) NULL,
+	mailingstreet_3__c varchar(255) NULL,
+	mailingcountry varchar(80) NULL,
+	mailingstate varchar(80) NULL,
+	mailingpostalcode varchar(20) NULL,
+	salutation varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	attrib_45__c varchar(100) NULL,
+	attrib_50__c varchar(100) NULL,
+	pcd__c varchar(255) NULL,
+	x_rowid_to_num__c varchar(50) NULL,
+	employee__c bool NULL,
+	favoritedealer__c varchar(255) NULL,
+	department varchar(80) NULL,
+	x_emp_area__c varchar(30) NULL,
+	emp_work_loc_name__c varchar(50) NULL,
+	receiveproductnewsflag__c bool NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveserviceoffersflag__c bool NULL,
+	receivenewsletterflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	receiveresearchflag__c bool NULL,
+	blockedmobile__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	mailingcity varchar(40) NULL,
+	account_row_id varchar(25) NULL,
+	created date NULL,
+	note__c varchar(200) NULL,
+	statusdealer__c varchar(30) NULL,
+	partytypecode__c varchar(30) NULL,
+	mailinglatitude float8 NULL,
+	mailinglongitude float8 NULL,
+	integrationid varchar(30) NULL,
+	blockedsms__c bool NULL,
+	mailingcounty varchar(100) NULL,
+	amountfriends int4 NULL,
+	amountchildren int4 NULL,
+	rownum float8 NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT contact_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX contact_companyphone__c_idx ON process.contact USING btree (companyphone__c);
+CREATE INDEX contact_email_idx ON process.contact USING btree (email);
+CREATE INDEX contact_firstname_idx ON process.contact USING btree (firstname);
+CREATE INDEX contact_lastname_idx ON process.contact USING btree (lastname);
+CREATE INDEX idx_contact__account_row_id ON process.contact USING btree (account_row_id);
+CREATE INDEX idx_contact__cpf__c ON process.contact USING btree (cpf__c);
+CREATE INDEX idx_contact__external_id__c ON process.contact USING btree (external_id__c);
+
+
+-- process.customer_vehicle definition
+
+-- Drop table
+
+-- DROP TABLE process.customer_vehicle;
+
+CREATE TABLE process.customer_vehicle (
+	row_id varchar(25) NOT NULL DEFAULT process.get_proc_id('customer_vehicle'::character varying),
+	asset_id varchar(25) NULL,
+	x_employee_flg bool NULL,
+	relation_type_cd varchar(30) NULL,
+	status_cd varchar(30) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	account_id varchar(25) NULL,
+	accnt_type varchar(30) NULL,
+	con_cd varchar(30) NULL,
+	billpay_enbl_flg bool NULL,
+	retail_date timestamp NULL,
+	guarantor_flg bool NULL,
+	addr_per_id varchar(15) NULL,
+	owner_cd varchar(30) NULL,
+	revoc_flg bool NULL,
+	cv_type varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	relationshipenddate__c timestamp NULL
+);
+CREATE INDEX customer_vehicle_account_id_idx ON process.customer_vehicle USING btree (account_id);
+CREATE INDEX customer_vehicle_asset_id_idx ON process.customer_vehicle USING btree (asset_id);
+CREATE INDEX customer_vehicle_cv_type_idx ON process.customer_vehicle USING btree (cv_type);
+CREATE INDEX customer_vehicle_relation_type_cd_idx ON process.customer_vehicle USING btree (relation_type_cd);
+CREATE INDEX customer_vehicle_row_id_idx ON process.customer_vehicle USING btree (row_id);
+CREATE INDEX customer_vehicle_status_cd_idx ON process.customer_vehicle USING btree (status_cd);
+
+
+-- process.cx_chat definition
+
+-- Drop table
+
+-- DROP TABLE process.cx_chat;
+
+CREATE TABLE process.cx_chat (
+	cht_row_id varchar NOT NULL DEFAULT process.get_proc_id('cx_chat'::character varying),
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	modification_num int4 NULL,
+	conflict_id varchar(15) NULL,
+	chat_date timestamp NULL,
+	db_last_upd date NULL,
+	chat_cd varchar(100) NULL,
+	db_last_upd_src varchar(50) NULL,
+	description varchar(300) NULL,
+	"source" varchar(30) NULL,
+	sr_id varchar(15) NULL,
+	user_name varchar(100) NULL,
+	x_attrib_01 varchar(100) NULL,
+	protocol__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT cx_chat_pk PRIMARY KEY (cht_row_id)
+);
+CREATE INDEX cx_chat_protocol__c_idx ON process.cx_chat USING btree (protocol__c);
+
+
+-- process.cx_chat_message_foreignkey_dup definition
+
+-- Drop table
+
+-- DROP TABLE process.cx_chat_message_foreignkey_dup;
+
+CREATE TABLE process.cx_chat_message_foreignkey_dup (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('cx_chat_message'::character varying),
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	modification_num int4 NULL,
+	conflict_id varchar(15) NULL,
+	cht_row_id varchar NULL,
+	"name" varchar(100) NULL,
+	"type" varchar(30) NULL,
+	db_last_upd date NULL,
+	msg_dt date NULL,
+	db_last_upd_src varchar(50) NULL,
+	msg_cd varchar(100) NULL,
+	msg_text text NULL,
+	status varchar(30) NULL,
+	x_attrib_01 varchar(100) NULL,
+	origin_par_row_id varchar(15) NULL,
+	CONSTRAINT cx_chat_message_foreignkey_dup_pk PRIMARY KEY (row_id)
+);
+
+
+-- process.dealer_appointment_history definition
+
+-- Drop table
+
+-- DROP TABLE process.dealer_appointment_history;
+
+CREATE TABLE process.dealer_appointment_history (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('dealer_appointment_history'::character varying),
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(22) NOT NULL,
+	db_last_upd date NULL,
+	srvc_arrival_date timestamp NULL,
+	srvc_delivery_date timestamp NULL,
+	srvc_duration int4 NULL,
+	srvc_start_date timestamp NULL,
+	db_last_upd_src varchar(50) NULL,
+	srvc_consultant_id varchar(15) NULL,
+	srvc_status_cd varchar(30) NULL,
+	srvc_technician_id varchar(15) NULL,
+	srvc_type varchar(30) NULL,
+	x_sr_response_time int4 NULL,
+	external_id__c varchar(255) NULL,
+	protocol__c varchar NULL,
+	inter_flag varchar(30) NULL,
+	contact_row_id__c varchar(255) NULL,
+	cpf__c varchar(30) NULL,
+	personemail varchar(80) NULL,
+	personmobilephone varchar(40) NULL,
+	dealercode__c varchar(30) NULL,
+	account_row_id__c varchar(255) NULL
+);
+CREATE INDEX dealer_appointment_history_cpf__c_idx ON process.dealer_appointment_history USING btree (cpf__c);
+CREATE INDEX dealer_appointment_history_dealercode__c_idx ON process.dealer_appointment_history USING btree (dealercode__c);
+CREATE UNIQUE INDEX unique_cx_sr_mntsrvc_x ON process.dealer_appointment_history USING btree (row_id);
+
+
+-- process.dealerdistance definition
+
+-- Drop table
+
+-- DROP TABLE process.dealerdistance;
+
+CREATE TABLE process.dealerdistance (
+	st_distance float8 NULL
+);
+
+
+-- process.dealerholiday definition
+
+-- Drop table
+
+-- DROP TABLE process.dealerholiday;
+
+CREATE TABLE process.dealerholiday (
+	row_id varchar(30) NOT NULL DEFAULT process.get_proc_id('dealerholiday'::character varying),
+	type__c varchar(30) NULL,
+	external_id__c varchar(15) NULL,
+	holiday_name__c varchar(100) NULL,
+	holiday_day__c varchar(30) NULL,
+	holiday_date__c date NULL,
+	par_row_id__c varchar NULL,
+	createdby varchar(30) NOT NULL DEFAULT 'interface'::character varying,
+	createddate timestamp NOT NULL DEFAULT now(),
+	lastmodifiedby varchar(30) NOT NULL DEFAULT 'interface'::character varying,
+	lastmodifieddate timestamp NOT NULL DEFAULT now(),
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT dealerholiday_pk PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX unique_dealerholiday ON process.dealerholiday USING btree (row_id);
+
+
+-- process.dealerservice definition
+
+-- Drop table
+
+-- DROP TABLE process.dealerservice;
+
+CREATE TABLE process.dealerservice (
+	row_id varchar(25) NOT NULL DEFAULT process.get_proc_id('dealerservice'::character varying),
+	type__c varchar(30) NULL,
+	external_id__c varchar(15) NULL,
+	dlr_srvc_type__c varchar(30) NULL,
+	par_row_id__c varchar(15) NULL,
+	createdby varchar(30) NOT NULL DEFAULT 'interface'::character varying,
+	createddate timestamp NOT NULL DEFAULT now(),
+	lastmodifiedby varchar(30) NOT NULL DEFAULT 'interface'::character varying,
+	lastmodifieddate timestamp NOT NULL DEFAULT now(),
+	dlr_srvc_len__c int4 NOT NULL DEFAULT 0,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT dealerservice_pk PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX unique_dealerservice ON process.dealerservice USING btree (row_id);
+
+
+-- process.file_attachment definition
+
+-- Drop table
+
+-- DROP TABLE process.file_attachment;
+
+CREATE TABLE process.file_attachment (
+	row_id varchar(22) NOT NULL,
+	par_row_id__c varchar(15) NOT NULL,
+	file_auto_upd_flg__c varchar(1) NOT NULL,
+	file_defer_flg__c varchar(1) NOT NULL,
+	file_dock_req_flg__c varchar(1) NOT NULL,
+	file_dock_stat_flg__c varchar(1) NOT NULL,
+	file_name__c varchar(200) NOT NULL,
+	file_date__c date NULL,
+	file_size__c int4 NULL,
+	comments__c text NULL,
+	file_ext__c varchar(10) NULL,
+	file_rev_num__c varchar(15) NULL,
+	file_src_path__c varchar(255) NULL,
+	file_src_type__c varchar(30) NULL,
+	publish_cd__c varchar(30) NULL,
+	x_dp_if_dt__c date NULL,
+	x_dp_if_filename__c varchar(200) NULL,
+	db_last_upd_src__c varchar(50) NULL,
+	db_last_upd__c date NULL,
+	x_dp_if_flg__c varchar(1) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	modification_num__c int4 NULL,
+	inter_flag varchar(30) NULL
+);
+CREATE UNIQUE INDEX unique_file_attachment ON process.file_attachment USING btree (row_id);
+
+
+-- process.financing_installment definition
+
+-- Drop table
+
+-- DROP TABLE process.financing_installment;
+
+CREATE TABLE process.financing_installment (
+	row_id varchar(30) NOT NULL,
+	par_row_id varchar(30) NULL,
+	chassi varchar(30) NULL,
+	produto varchar(30) NULL,
+	inicio date NOT NULL DEFAULT to_date(now()::text, 'YYYY-MM-DD'::text),
+	fim date NOT NULL DEFAULT to_date(now()::text, 'YYYY-MM-DD'::text),
+	prazo varchar(30) NULL,
+	parcela varchar(30) NULL,
+	ano_fabricacao varchar(30) NULL,
+	ano_modelo varchar(30) NULL,
+	marca varchar(30) NULL,
+	modelo varchar(30) NULL,
+	concessionario varchar(50) NULL,
+	frase text NULL,
+	lead_status varchar(30) NULL,
+	customer_type varchar(30) NULL,
+	lead_type varchar(30) NULL,
+	reason varchar(30) NULL,
+	level1 varchar(30) NULL,
+	level2 varchar(30) NULL,
+	firstname varchar(40) NULL,
+	lastname varchar(80) NULL,
+	email varchar(80) NULL,
+	mobilephone varchar(40) NULL,
+	cpf__c varchar(11) NULL,
+	dealercode varchar(30) NULL,
+	origin varchar(30) NULL,
+	protocol__c varchar(255) NULL
+);
+CREATE UNIQUE INDEX unique_financing_installment ON process.financing_installment USING btree (row_id);
+
+
+-- process.if_info definition
+
+-- Drop table
+
+-- DROP TABLE process.if_info;
+
+CREATE TABLE process.if_info (
+	if_id varchar(30) NOT NULL,
+	if_title varchar(255) NULL,
+	if_from varchar(255) NULL,
+	if_to varchar(255) NULL,
+	if_url varchar(255) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT if_info_pk PRIMARY KEY (if_id)
+);
+
+
+-- process.if_info_logs_backup definition
+
+-- Drop table
+
+-- DROP TABLE process.if_info_logs_backup;
+
+CREATE TABLE process.if_info_logs_backup (
+	seq_no serial4 NOT NULL,
+	if_id varchar(30) NOT NULL,
+	created_at timestamptz NULL DEFAULT now(),
+	last_mod_at timestamptz NULL DEFAULT now(),
+	if_request_at timestamp NULL,
+	if_response_at timestamp NULL,
+	if_step1_at timestamp NULL,
+	if_step2_at timestamp NULL,
+	if_step3_at timestamp NULL,
+	if_req_json varchar NULL,
+	if_res_json varchar NULL,
+	if_err_flag varchar(1) NULL DEFAULT 'N'::character varying,
+	if_err_msg varchar NULL,
+	if_tr_id varchar(255) NULL,
+	step1_perf numeric(9, 3) NULL DEFAULT 0,
+	step2_perf numeric(9, 3) NULL DEFAULT 0,
+	step3_perf numeric(9, 3) NULL DEFAULT 0,
+	resp_perf numeric(9, 3) NULL DEFAULT 0,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT if_info_logs_pk_1 PRIMARY KEY (seq_no)
+);
+
+
+-- process.invoiceinfo definition
+
+-- Drop table
+
+-- DROP TABLE process.invoiceinfo;
+
+CREATE TABLE process.invoiceinfo (
+	row_id varchar(25) NOT NULL DEFAULT process.get_proc_id('invoiceinfo'::character varying),
+	"name" varchar(80) NULL,
+	renavamcode__c varchar(255) NULL,
+	enginenumber__c varchar(255) NULL,
+	vehiclelicensenumber__c varchar(255) NULL,
+	fsc_ocn__c varchar(255) NULL,
+	modelname__c varchar(255) NULL,
+	internalcolorcode__c varchar(255) NULL,
+	externalcolorcode__c varchar(255) NULL,
+	fueltype__c varchar(255) NULL,
+	purchaseprice__c float8 NULL,
+	manufactureyear__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	mileage__c float8 NULL,
+	salestodealerdate__c timestamp NULL,
+	warrantystartdate__c timestamp NULL,
+	billingdate__c timestamp NULL,
+	delivertocustomerdate__c timestamp NULL,
+	dealercode__c varchar(255) NULL,
+	negotiationtype__c varchar(255) NULL,
+	subscriptiontype__c varchar(255) NULL,
+	fiscalreceipt__c varchar(255) NULL,
+	salespersonid__c varchar(255) NULL,
+	salespersonfirstname__c varchar(255) NULL,
+	salespersonlastname__c varchar(255) NULL,
+	urlphoto__c varchar(255) NULL,
+	urlphotodate__c timestamp NULL,
+	urlauthopublication__c varchar(255) NULL,
+	vehiclelicensedate__c timestamp NULL,
+	digitalsales__c bool NULL,
+	status varchar(30) NULL,
+	deliveryathome bool NULL,
+	tdathome bool NULL,
+	ccs_flg bool NULL,
+	person_account_id varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT invoiceinfo_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX invoiceinfo_person_account_id_idx ON process.invoiceinfo USING btree (person_account_id);
+
+
+-- process.landing_code definition
+
+-- Drop table
+
+-- DROP TABLE process.landing_code;
+
+CREATE TABLE process.landing_code (
+	code varchar(50) NULL
+);
+
+
+-- process."lead" definition
+
+-- Drop table
+
+-- DROP TABLE process."lead";
+
+CREATE TABLE process."lead" (
+	row_id varchar NULL DEFAULT concat('proc'::text || lpad(nextval('process.seq_lead'::regclass)::text, 11, '0'::text))::character varying,
+	partneraccountid varchar(64) NULL,
+	state varchar(30) NULL,
+	testdrv_dt date NULL,
+	test_drv_tm varchar(30) NULL,
+	test_drv_confirmed bpchar(1) NULL,
+	sr_area varchar(30) NULL,
+	desc_text__c varchar(2000) NULL,
+	x_camp_id__c varchar(30) NULL,
+	sr_num__c varchar(64) NULL,
+	dealercode__c varchar(255) NULL,
+	sourcechannelcategory__c varchar(255) NULL,
+	sourcechannelitem__c varchar(255) NULL,
+	act_open_dt__c date NULL,
+	sr_stat_id__c varchar(30) NULL,
+	sr_sev_cd__c varchar(30) NULL,
+	x_pne_flg__c bool NULL,
+	customertype__c varchar(255) NULL,
+	x_already_customer__c bool NULL,
+	x_opv_usedcar_paymnt__c bool NULL,
+	calloptin__c varchar(30) NULL,
+	company varchar(100) NULL,
+	cust_stat_cd__c varchar(30) NULL,
+	description text NULL,
+	convertedaccountid varchar(15) NULL,
+	x_opv_wants_loan__c varchar(1) NULL,
+	x_opv_loan_type__c varchar(50) NULL,
+	x_opv_down_paymnt__c int4 NULL,
+	x_opv_installments_amt__c int4 NULL,
+	created date NULL,
+	protocol__c varchar NULL,
+	firstname varchar(40) NULL,
+	lastname varchar(80) NULL,
+	mobilephone varchar(40) NULL,
+	email varchar(80) NULL,
+	leadtype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	phone varchar(40) NULL,
+	personhomephone__c varchar(40) NULL,
+	fax varchar(40) NULL,
+	gender__c varchar(255) NULL,
+	productofinterest__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	level1__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	level3__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	sourcetag__c varchar(255) NULL,
+	mediumtag__c varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	postalcode varchar(20) NULL,
+	street varchar(255) NULL,
+	city varchar(40) NULL,
+	country varchar(80) NULL,
+	external_id__c varchar NULL,
+	inter_flag varchar(30) NULL
+);
+
+
+-- process.loyalty_program definition
+
+-- Drop table
+
+-- DROP TABLE process.loyalty_program;
+
+CREATE TABLE process.loyalty_program (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('loyalty_program'::character varying),
+	external_id__c varchar(255) NULL,
+	person_account_id varchar NULL,
+	dealer_account_id varchar NULL,
+	name__c varchar(100) NULL,
+	type__c varchar(30) NULL,
+	x_benefit_use__c date NULL,
+	x_benefit_name__c varchar(250) NULL,
+	x_src_app__c varchar(30) NULL,
+	x_benefit_url__c text NULL,
+	partnername varchar(255) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(30) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(30) NULL,
+	legacy_modification_num float8 NULL,
+	partnercnpj varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	contact_row_id varchar NULL
+);
+CREATE UNIQUE INDEX unique_account_benefit_history ON process.loyalty_program USING btree (row_id);
+
+
+-- process.loyalty_retention definition
+
+-- Drop table
+
+-- DROP TABLE process.loyalty_retention;
+
+CREATE TABLE process.loyalty_retention (
+	row_id varchar(30) NOT NULL,
+	par_row_id varchar(30) NULL,
+	chassi varchar(30) NULL,
+	delaer_code varchar(30) NULL,
+	dealer_nickname varchar(30) NULL,
+	dealer_grupo varchar(30) NULL,
+	dealer_regiao varchar(30) NULL,
+	dealer_cidade varchar(30) NULL,
+	dt_ultima_venda varchar(30) NULL,
+	id_contato_siebel varchar(30) NULL,
+	marca varchar(30) NULL,
+	modelo varchar(30) NULL,
+	concessionario varchar(30) NULL,
+	cliente_recompra varchar(30) NULL,
+	frase text NULL,
+	lead_status varchar(30) NULL,
+	customer_type varchar(30) NULL,
+	lead_type varchar(30) NULL,
+	reason varchar(30) NULL,
+	level1 varchar(30) NULL,
+	level2 varchar(30) NULL,
+	level3 varchar(30) NULL,
+	form varchar(295) NULL,
+	firstname varchar(40) NULL,
+	lastname varchar(80) NULL,
+	mobilephone varchar(40) NULL,
+	email varchar(80) NULL,
+	origin varchar(30) NULL,
+	protocol__c varchar(255) NULL
+);
+CREATE UNIQUE INDEX unique_loyalty_retention ON process.loyalty_retention USING btree (row_id);
+
+
+-- process.maintenanceable_availability definition
+
+-- Drop table
+
+-- DROP TABLE process.maintenanceable_availability;
+
+CREATE TABLE process.maintenanceable_availability (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('maintenanceable_availability'::character varying),
+	created timestamp NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd timestamp NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	proc_result_yn bpchar(1) NULL,
+	proc_result_msg varchar(255) NULL,
+	excp_id varchar(30) NULL,
+	employee_cpf varchar(30) NOT NULL,
+	dealer_code varchar(30) NOT NULL,
+	excp_start_date timestamp NULL,
+	excp_end_date timestamp NULL,
+	absence_period bpchar(1) NULL,
+	period1_start timestamp NOT NULL,
+	period1_end timestamp NOT NULL,
+	period2_start timestamp NULL,
+	period2_end timestamp NULL,
+	period3_start timestamp NULL,
+	period3_end timestamp NULL,
+	excp_desc varchar(100) NULL,
+	"source" varchar(30) NOT NULL,
+	day_name varchar(30) NULL,
+	excp_date date NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT if_mntsrvc_manage_emp_avail_excp_pkey PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX unique_maintenanceable_availability ON process.maintenanceable_availability USING btree (row_id);
+
+
+-- process.novo_de_novo definition
+
+-- Drop table
+
+-- DROP TABLE process.novo_de_novo;
+
+CREATE TABLE process.novo_de_novo (
+	row_id varchar(30) NOT NULL,
+	par_row_id varchar(30) NULL,
+	campaign varchar(30) NULL,
+	oferta varchar(30) NULL,
+	cpf_cnpj varchar(30) NULL,
+	nome varchar(30) NULL,
+	email varchar(295) NULL,
+	telefone varchar(30) NULL,
+	veiculo varchar(30) NULL,
+	modelo varchar(295) NULL,
+	entrada varchar(30) NULL,
+	parcela varchar(30) NULL,
+	ocn varchar(30) NULL,
+	frase text NULL,
+	lead_status varchar(30) NULL,
+	customer_type varchar(30) NULL,
+	lead_type varchar(30) NULL,
+	reason varchar(30) NULL,
+	level1 varchar(30) NULL,
+	level2 varchar(30) NULL,
+	level3 varchar(30) NULL,
+	firstname varchar(30) NULL,
+	lastname varchar(30) NULL,
+	origin varchar(30) NULL,
+	protocol__c varchar(255) NULL
+);
+CREATE UNIQUE INDEX unique_novo_de_novo ON process.novo_de_novo USING btree (row_id);
+
+
+-- process.opportunity definition
+
+-- Drop table
+
+-- DROP TABLE process.opportunity;
+
+CREATE TABLE process.opportunity (
+	row_id varchar(30) NOT NULL DEFAULT process.get_proc_id('opportunity'::character varying),
+	external_id__c varchar(30) NULL,
+	contenttag__c varchar(255) NULL,
+	loss_reason__c varchar(255) NULL,
+	salesqualifieddate__c timestamp NULL,
+	salesstatus__c varchar(255) NULL,
+	closedate date NULL,
+	consultenddate__c timestamp NULL,
+	autonumberforname__c varchar(10) NULL,
+	bodytype__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	transferredopportunitydate__c timestamp NULL,
+	additionalnote__c text NULL,
+	mig_sys__c varchar(20) NULL,
+	dealer__c varchar(200) NULL,
+	"name" varchar(120) NULL,
+	consultfixeddate__c timestamp NULL,
+	accepteddate__c timestamp NULL,
+	dealeraccount__c varchar NULL,
+	dmsopportunityname__c varchar(255) NULL,
+	salesopportunitycode__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	level4__c varchar(255) NULL,
+	case__c varchar(18) NULL,
+	level3__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	contactdate__c timestamp NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	consultno__c varchar(255) NULL,
+	transferredopportunity__c bool NULL,
+	companionsalesname__c varchar(255) NULL,
+	testdriveprotocolid__c varchar(255) NULL,
+	closestatus__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	companionsalesnumber__c varchar(255) NULL,
+	completedate__c timestamp NULL,
+	description text NULL,
+	dcxtopportunitykey__c varchar(18) NULL,
+	modelyear__c varchar(255) NULL,
+	mig_desc__c varchar(255) NULL,
+	mediumtag__c varchar(255) NULL,
+	budget__c varchar(200) NULL,
+	budget_confirmed__c bool NULL,
+	reason__c varchar(255) NULL,
+	predictive_temp__c varchar(255) NULL,
+	lostreason__c varchar NULL,
+	contact_row_id__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	protocol__c varchar(30) NULL,
+	oppty_name varchar(120) NULL,
+	campaign_tag__c varchar(60) NULL,
+	content_tag__c varchar(60) NULL,
+	interactionstartdate__c date NULL,
+	form__c varchar(30) NULL,
+	voctype__c varchar(255) NULL,
+	voc_class varchar(255) NULL,
+	voc_level_2__c varchar(255) NULL,
+	voc_level_3__c varchar(255) NULL,
+	status varchar(30) NULL,
+	source_tag__c varchar(60) NULL,
+	medium_tag__c varchar(60) NULL,
+	"type" varchar(30) NULL,
+	origin varchar(255) NULL,
+	statussales__c varchar(100) NULL,
+	close_date__c date NULL,
+	inter_flag varchar(30) NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	CONSTRAINT opportunity_pkey PRIMARY KEY (row_id)
+);
+CREATE INDEX opportunity_predictive_temp__c_idx ON process.opportunity USING btree (predictive_temp__c);
+CREATE INDEX opportunity_protocol__c_idx ON process.opportunity USING btree (protocol__c);
+CREATE INDEX opportunity_testdriveprotocolid__c_idx ON process.opportunity USING btree (testdriveprotocolid__c);
+CREATE INDEX opportunity_transferredopportunitydate__c_idx ON process.opportunity USING btree (transferredopportunitydate__c);
+
+
+-- process.proc_table_info definition
+
+-- Drop table
+
+-- DROP TABLE process.proc_table_info;
+
+CREATE TABLE process.proc_table_info (
+	id serial4 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	created_dt timestamp NULL DEFAULT now(),
+	modified_dt timestamp NULL DEFAULT now(),
+	CONSTRAINT proc_table_info_pkey PRIMARY KEY (id)
+);
+CREATE UNIQUE INDEX uidx_proc_table_info ON process.proc_table_info USING btree (name);
+
+
+-- process.product definition
+
+-- Drop table
+
+-- DROP TABLE process.product;
+
+CREATE TABLE process.product (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('product'::character varying),
+	"family" varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	stockkeepingunit varchar(180) NULL,
+	"name" varchar(255) NULL,
+	displayurl varchar(1000) NULL,
+	lastmodifieddate timestamp NULL,
+	isdeleted bool NULL,
+	isactive bool NULL,
+	createddate timestamp NULL,
+	quantityunitofmeasure varchar(255) NULL,
+	productcode varchar(255) NULL,
+	description varchar(4000) NULL,
+	engine__c varchar(30) NULL,
+	cylinder_capacity__c varchar(50) NULL,
+	version_desc__c varchar(50) NULL,
+	chassi_model__c varchar(50) NULL,
+	fuel__c varchar(30) NULL,
+	body_style__c varchar(30) NULL,
+	source_system__c varchar(30) NULL,
+	part__c varchar(50) NULL,
+	model_year__c float8 NULL DEFAULT 0,
+	doors_amount__c varchar(30) NULL,
+	advanced_desc__c varchar(2000) NULL,
+	engine_desc__c varchar(50) NULL,
+	suggested_price__c float8 NULL,
+	transmission_desc__c varchar(50) NULL,
+	product_type__c varchar(255) NULL,
+	transmission__c varchar(30) NULL,
+	source__c varchar(30) NULL,
+	sap_description__c varchar(50) NULL,
+	advanced_description__c varchar(2000) NULL,
+	sap_cylinder_capacity__c varchar(30) NULL,
+	sap_engine__c varchar(30) NULL,
+	engine_description__c varchar(50) NULL,
+	version__c varchar(50) NULL,
+	transmission_description__c varchar(50) NULL,
+	sap_transmission__c varchar(30) NULL,
+	door_amount__c int4 NULL,
+	external_id varchar(15) NULL,
+	int_x_par_row_id varchar(20) NULL,
+	inter_flag varchar(30) NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	CONSTRAINT product_pkey PRIMARY KEY (row_id)
+);
+CREATE INDEX product_name_idx ON process.product USING btree (name);
+CREATE INDEX product_suggested_price__c_idx ON process.product USING btree (suggested_price__c);
+
+
+-- process.quotehistory definition
+
+-- Drop table
+
+-- DROP TABLE process.quotehistory;
+
+CREATE TABLE process.quotehistory (
+	row_id varchar(22) NULL DEFAULT process.get_proc_id('quotehistory__c'::character varying),
+	protocolid__c varchar(64) NULL,
+	reason__c varchar(255) NULL,
+	voctype__c varchar(255) NULL,
+	voc_class varchar(255) NULL,
+	voc_level_2__c varchar(255) NULL,
+	voc_level_3__c varchar(255) NULL,
+	source_tag__c varchar NULL,
+	"method" varchar(255) NULL,
+	requestdescription__c varchar(2000) NULL,
+	status varchar(255) NULL,
+	dealercode__c varchar(30) NULL,
+	relatedmodel__c varchar(30) NULL,
+	enginetransmission__c varchar(100) NULL,
+	version__c varchar(100) NULL,
+	carversionprice__c varchar(100) NULL,
+	color__c varchar(100) NULL,
+	colorprice varchar(100) NULL,
+	finalprice varchar(100) NULL,
+	carreplacementintention varchar(100) NULL,
+	pneflag__c bool NULL,
+	campaign_id varchar(15) NULL,
+	account_id varchar(255) NULL,
+	external_id__c varchar(30) NULL,
+	contact_row_id__c varchar(30) NULL,
+	protocol__c varchar(64) NULL,
+	"type" varchar(255) NULL,
+	subject varchar(255) NULL,
+	priority varchar(255) NULL,
+	planneddt__c date NULL,
+	ownerid varchar(18) NULL,
+	description text NULL,
+	activitydate date NULL,
+	completeddatetime date NULL,
+	result__c varchar(100) NULL,
+	answer__c text NULL,
+	serialnumber__c varchar(100) NULL,
+	legacy_created_by varchar(18) NULL,
+	plannedenddt__c date NULL,
+	dpuser__c varchar(50) NULL,
+	statussales__c varchar(100) NULL,
+	salespersoncode__c varchar(100) NULL,
+	interactionstartdate__c date NULL,
+	dmsenddate__c date NULL,
+	dmsreceivedate__c date NULL,
+	dealerrespondetime__c float8 NULL,
+	visitscheduled__c date NULL,
+	visitdate__c date NULL,
+	visitstatus__c varchar(50) NULL,
+	integrationid__c varchar(30) NULL,
+	hotlineid__c varchar(50) NULL,
+	hotlinecreation__c date NULL,
+	pwaid__c varchar(50) NULL,
+	pwacreation__c varchar(15) NULL,
+	roid__c varchar(50) NULL,
+	rocreation__c date NULL,
+	mobisid__c varchar(50) NULL,
+	mobisstatus__c varchar(50) NULL,
+	expecteddelivery__c date NULL,
+	purchasepurposeid__c varchar(50) NULL,
+	legacycreateddate__c date NULL,
+	ordernum__c varchar(15) NULL,
+	stock__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	origin varchar(255) NULL,
+	form__c varchar(30) NULL,
+	content_tag__c varchar(255) NULL,
+	medium_tag__c varchar(255) NULL,
+	campaign_tag__c varchar(255) NULL,
+	wants_loan__c bool NULL,
+	loan_type__c varchar(50) NULL,
+	reserve_amount__c varchar(22) NULL,
+	payment_method__c varchar(22) NULL,
+	payment_status__c varchar(22) NULL,
+	payment_date__c timestamp NULL,
+	usedcar_as_down_payment__c bool NULL,
+	usedcar_plate__c varchar(30) NULL,
+	usedcar_chassi__c varchar(50) NULL,
+	usedcar_year__c varchar(30) NULL,
+	usedcar_version__c varchar(100) NULL,
+	usedcar_km__c varchar(30) NULL,
+	usedcar_color__c varchar(30) NULL,
+	usedcar_brand__c varchar(100) NULL,
+	usedcar_model__c varchar(100) NULL,
+	usedcar_max_price__c varchar(30) NULL,
+	usedcar_mid_price__c varchar(30) NULL,
+	usedcar_min_price__c varchar(30) NULL,
+	account_row_id__c varchar(255) NULL,
+	quote_description__c text NULL,
+	quotetransmission__c varchar(100) NULL,
+	quote_version_price__c varchar(100) NULL,
+	quote_color__c varchar(100) NULL,
+	quote_color_price__c varchar(100) NULL,
+	quote_price__c varchar(100) NULL,
+	quote_replace_intention__c varchar(100) NULL,
+	dealer_account_row_id__c varchar(30) NULL,
+	legacy_last_update__c date NULL,
+	legacy_last_upd_by varchar(15) NULL
+);
+CREATE UNIQUE INDEX idx_quotehistory__c ON process.quotehistory USING btree (row_id);
+CREATE INDEX quotehistory__c_external_id__c_idx ON process.quotehistory USING btree (external_id__c);
+CREATE INDEX quotehistory_level1__c_idx ON process.quotehistory USING btree (voctype__c);
+CREATE INDEX quotehistory_level2__c_idx ON process.quotehistory USING btree (voc_class);
+CREATE INDEX quotehistory_protocolid__c_idx ON process.quotehistory USING btree (protocolid__c);
+CREATE INDEX quotehistory_reason__c_idx ON process.quotehistory USING btree (reason__c);
+
+
+-- process.recl_cpf definition
+
+-- Drop table
+
+-- DROP TABLE process.recl_cpf;
+
+CREATE TABLE process.recl_cpf (
+	cpf varchar(30) NULL
+);
+
+
+-- process.rental definition
+
+-- Drop table
+
+-- DROP TABLE process.rental;
+
+CREATE TABLE process.rental (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('rental'::character varying),
+	"name" varchar(80) NULL,
+	rental_status__c varchar(255) NULL,
+	deltaprotocolnumber__c varchar(100) NULL,
+	external_id__c varchar(255) NULL,
+	confirmedmodelofrentalcar__c varchar(100) NULL,
+	confirmedrentalstartdate__c date NULL,
+	confirmedrentalenddate__c date NULL,
+	inter_flag varchar(30) NULL
+);
+
+
+-- process.road_side_assistant definition
+
+-- Drop table
+
+-- DROP TABLE process.road_side_assistant;
+
+CREATE TABLE process.road_side_assistant (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('road_side_assistant'::character varying),
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	claim_date timestamp NULL,
+	db_last_upd date NULL,
+	eff_end_date timestamp NULL,
+	eff_start_date timestamp NULL,
+	exchange_date timestamp NULL,
+	mileage int4 NULL,
+	brkdwn_cd varchar(100) NULL,
+	brkdwn_desc text NULL,
+	brkdwn_nature varchar(100) NULL,
+	claim_reason varchar(50) NULL,
+	db_last_upd_src varchar(50) NULL,
+	integration_id varchar(50) NULL,
+	req_document varchar(15) NULL,
+	req_first_name varchar(50) NULL,
+	req_last_name varchar(50) NULL,
+	req_vehicle_rel varchar(30) NULL,
+	status_cd varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	car_registration_number varchar(30) NULL,
+	serial_number varchar(100) NULL,
+	protocol__c varchar NULL DEFAULT process.get_protocol_id(),
+	inter_flag varchar(30) NULL,
+	case_id varchar(18) NULL,
+	account_id varchar(22) NULL
+);
+
+
+-- process.road_side_assistant_service definition
+
+-- Drop table
+
+-- DROP TABLE process.road_side_assistant_service;
+
+CREATE TABLE process.road_side_assistant_service (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('road_side_assistant_service'::character varying),
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	"name" varchar(100) NULL,
+	tmcpredicted__c int4 NULL,
+	latitude__c int4 NULL,
+	longitude__c int4 NULL,
+	createdate__c timestamp NULL,
+	db_last_upd date NULL,
+	provider__c varchar(255) NULL,
+	addresscomplement__c varchar(100) NULL,
+	attrib_03 varchar(100) NULL,
+	attrib_04 varchar(30) NULL,
+	addressnumber__c varchar(30) NULL,
+	zipcode__c varchar(30) NULL,
+	expense__c varchar(30) NULL,
+	servicecode__c varchar(50) NULL,
+	specialty__c varchar(50) NULL,
+	vehicleproblem__c varchar(50) NULL,
+	requeststatus__c varchar(50) NULL,
+	actuationstatus__c varchar(50) NULL,
+	state__c varchar(50) NULL,
+	county__c varchar(100) NULL,
+	city__c varchar(100) NULL,
+	dealername__c varchar(100) NULL,
+	addressname__c varchar(255) NULL,
+	db_last_upd_src varchar(50) NULL,
+	reference__c varchar(255) NULL,
+	dealernickname__c varchar(100) NULL,
+	problemdescription__c varchar(2000) NULL,
+	important__c varchar(2000) NULL,
+	x_business_courtesy varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	rsa_row_id varchar(22) NULL,
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	inter_flag varchar(30) NULL
+);
+CREATE UNIQUE INDEX unique_s_srv_req_xm ON process.road_side_assistant_service USING btree (row_id);
+
+
+-- process.s_activity_att definition
+
+-- Drop table
+
+-- DROP TABLE process.s_activity_att;
+
+CREATE TABLE process.s_activity_att (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL DEFAULT now(),
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL DEFAULT now(),
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(15) NOT NULL,
+	file_auto_upd_flg bpchar(1) NOT NULL,
+	file_defer_flg bpchar(1) NOT NULL,
+	file_dock_req_flg bpchar(1) NOT NULL,
+	file_dock_stat_flg bpchar(1) NOT NULL,
+	file_name varchar(200) NOT NULL,
+	db_last_upd date NULL,
+	file_date date NULL,
+	file_size numeric(10) NULL,
+	"comments" varchar(250) NULL,
+	db_last_upd_src varchar(50) NULL,
+	file_ext varchar(10) NULL,
+	file_rev_num varchar(15) NULL,
+	file_src_path varchar(255) NULL,
+	file_src_type varchar(30) NULL,
+	mail_att_type_cd varchar(30) NULL
+);
+CREATE UNIQUE INDEX unique_s_activity_att ON process.s_activity_att USING btree (row_id);
+
+
+-- process.s_audit_item definition
+
+-- Drop table
+
+-- DROP TABLE process.s_audit_item;
+
+CREATE TABLE process.s_audit_item (
+	item_iden_num numeric(15) NOT NULL DEFAULT 0,
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL DEFAULT CURRENT_DATE,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL DEFAULT CURRENT_DATE,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	buscomp_name varchar(75) NOT NULL,
+	operation_cd varchar(30) NOT NULL,
+	record_id varchar(15) NOT NULL,
+	user_id varchar(15) NOT NULL,
+	audit_log text NULL,
+	db_last_upd date NULL,
+	operation_dt date NULL,
+	sync_dt date NULL,
+	audit_source_cd varchar(50) NULL,
+	bc_base_tbl varchar(30) NULL,
+	child_bc_base_tbl varchar(30) NULL,
+	child_bc_name varchar(75) NULL,
+	child_record_id varchar(15) NULL,
+	db_last_upd_src varchar(50) NULL,
+	field_name varchar(75) NULL,
+	group_num varchar(15) NULL,
+	link_name varchar(175) NULL,
+	new_val varchar(2000) NULL,
+	node_name varchar(50) NULL,
+	old_val varchar(2000) NULL,
+	src_dest_id varchar(15) NULL,
+	tbl_name varchar(30) NULL,
+	tbl_record_id varchar(15) NULL,
+	inter_flag varchar(30) NULL
+);
+CREATE UNIQUE INDEX unique_s_audit_item ON process.s_audit_item USING btree (row_id);
+
+
+-- process.s_call_lst definition
+
+-- Drop table
+
+-- DROP TABLE process.s_call_lst;
+
+CREATE TABLE process.s_call_lst (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	dcking_num int4 NULL DEFAULT 0,
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	bu_id varchar(15) NOT NULL DEFAULT '0-R9NH'::character varying,
+	call_lst_num varchar(30) NOT NULL DEFAULT 'x'::character varying,
+	con_genrtd_flg bpchar(1) NOT NULL DEFAULT 'Y'::bpchar,
+	incl_accntcon_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	incl_accnt_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	incl_con_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	incl_emp_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	incl_postn_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	incl_prsp_con_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	"name" varchar(200) NOT NULL,
+	rte_contacts_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	rte_prsp_cons_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	file_defer_flg bpchar(1) NULL DEFAULT 'R'::bpchar,
+	clean_file_flg bpchar(1) NULL,
+	db_last_upd date NULL,
+	dedup_file_flg bpchar(1) NULL,
+	desired_num_cons int4 NULL,
+	desired_pct_of_seg int4 NULL,
+	expiration_dt date NULL,
+	file_auto_upd_flg bpchar(1) NULL,
+	file_date date NULL,
+	file_dock_req_flg bpchar(1) NULL,
+	file_dock_stat_flg bpchar(1) NULL,
+	file_size int4 NULL,
+	last_cnts_upd_dt date NULL,
+	num_cons_upd_dt date NULL,
+	num_contacts int4 NULL,
+	num_created_cmpcon int4 NULL,
+	num_created_prsp int4 NULL,
+	num_created_rspns int4 NULL,
+	num_errors int4 NULL,
+	num_incoming_prsp int4 NULL,
+	priority_num int4 NULL,
+	private_flg bpchar(1) NULL,
+	purch_amt int4 NULL,
+	purch_dt date NULL,
+	access_lvl_cd varchar(30) NULL,
+	assign_to_type_cd varchar(30) NULL,
+	cap_type_cd varchar(30) NULL,
+	chart_aggr_spec varchar(250) NULL,
+	chart_search_spec varchar(2000) NULL,
+	codepage_cd varchar(30) NULL,
+	col_map_tmpl_id varchar(15) NULL,
+	col_separator varchar(1) NULL,
+	db_last_upd_src varchar(50) NULL,
+	dedup_type_cd varchar(30) NULL,
+	desc_text varchar(255) NULL,
+	file_ext varchar(10) NULL,
+	file_name varchar(200) NULL,
+	file_rev_num varchar(15) NULL,
+	file_src_path varchar(250) NULL,
+	file_src_type varchar(30) NULL,
+	folder_path varchar(250) NULL,
+	import_status_cd varchar(30) NULL,
+	indust_id varchar(15) NULL,
+	list_type_cd varchar(30) NULL,
+	log_file_path varchar(250) NULL,
+	match_type_cd varchar(30) NULL,
+	max_ncons_sort_fld varchar(75) NULL,
+	max_num_accnt_cons varchar(30) NULL,
+	message_text varchar(2000) NULL,
+	node_indent varchar(200) NULL,
+	obj_name varchar(75) NULL,
+	par_call_lst_id varchar(15) NULL,
+	predict_model_name varchar(50) NULL,
+	pr_count_qry_id varchar(15) NULL,
+	pr_postn_id varchar(15) NULL,
+	pr_prod_id varchar(15) NULL,
+	pr_srch_qry_id varchar(15) NULL,
+	pr_src_id varchar(15) NULL,
+	purch_curcy_cd varchar(20) NULL,
+	region_cd varchar(30) NULL,
+	region_id varchar(15) NULL,
+	saw_server_id varchar(15) NULL,
+	seg_type_cd varchar(30) NULL,
+	smplng_sort_by_fld varchar(75) NULL,
+	smplng_type_cd varchar(30) NULL,
+	src_ou_id varchar(15) NULL,
+	srtfam_id varchar(15) NULL,
+	srtfam_lvl_id varchar(15) NULL,
+	status_cd varchar(30) NULL,
+	subtype_cd varchar(30) NULL,
+	tmp_calc_text varchar(250) NULL,
+	trgt_grp_id varchar(15) NULL,
+	trgt_grp_name varchar(100) NULL,
+	ultpar_call_lst_id varchar(15) NULL,
+	x_use_num int4 NULL,
+	x_use_once_flg bpchar(1) NULL,
+	cpr_org_name varchar(100) NULL,
+	cpr_prod_name varchar(100) NULL,
+	cpr_treatment_chnl varchar(100) NULL,
+	CONSTRAINT s_call_lst_pk PRIMARY KEY (row_id)
+);
+CREATE UNIQUE INDEX unique_s_call_lst ON process.s_call_lst USING btree (row_id);
+
+
+-- process.s_camp_con definition
+
+-- Drop table
+
+-- DROP TABLE process.s_camp_con;
+
+CREATE TABLE process.s_camp_con (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	dcking_num numeric(22, 7) NOT NULL DEFAULT 0,
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	asgn_usr_excld_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	bu_id varchar(15) NOT NULL DEFAULT '0-R9NH'::character varying,
+	ctrl_grp_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	load_num int4 NOT NULL DEFAULT 0,
+	mark_for_del_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	pr_rep_dnrm_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	pr_rep_manl_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	pr_rep_sys_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	src_id varchar(15) NOT NULL,
+	target_num numeric(22, 7) NOT NULL DEFAULT 1,
+	con_fst_name varchar(50) NULL DEFAULT 'x'::character varying,
+	con_last_name varchar(50) NULL DEFAULT 'x'::character varying,
+	actl_revn int4 NULL,
+	actl_revn_dt date NULL,
+	asgn_dt date NULL,
+	batch_num int4 NULL,
+	call_completed bpchar(1) NULL,
+	camp_con_score int4 NULL,
+	completed_dt date NULL,
+	contacted_dt date NULL,
+	db_last_upd date NULL,
+	ext_score int4 NULL,
+	msg_open_ts date NULL,
+	num_dial_attempts int4 NULL,
+	tgtrev_exch_dt date NULL,
+	tgt_revn int4 NULL,
+	actl_revn_curcy_cd varchar(20) NULL,
+	camp_con_num varchar(75) NULL,
+	camp_ld_wave_id varchar(15) NULL,
+	camp_wave_id varchar(15) NULL,
+	"comments" varchar(250) NULL,
+	con_mid_name varchar(50) NULL,
+	con_per_id varchar(15) NULL,
+	con_pr_dept_ou_id varchar(15) NULL,
+	db_last_upd_src varchar(50) NULL,
+	dcp_id varchar(15) NULL,
+	dd_user_key_id varchar(15) NULL,
+	fn_accnt_id varchar(15) NULL,
+	insert_cd varchar(30) NULL,
+	key_01 varchar(30) NULL,
+	key_02 varchar(30) NULL,
+	key_03 varchar(30) NULL,
+	key_04 varchar(30) NULL,
+	key_05 varchar(30) NULL,
+	key_06 varchar(30) NULL,
+	key_07 varchar(30) NULL,
+	lst_distr_id varchar(15) NULL,
+	msg_bncd_reason_cd varchar(30) NULL,
+	msg_bncd_stat_cd varchar(30) NULL,
+	msg_dlvry_stat_cd varchar(30) NULL,
+	opty_id varchar(15) NULL,
+	orggrp_id varchar(15) NULL,
+	outcome_cd varchar(30) NULL,
+	owner_per_id varchar(15) NULL,
+	pgroup_id varchar(15) NULL,
+	postn_id varchar(15) NULL,
+	prsp_con_per_id varchar(15) NULL,
+	pr_call_lst_id varchar(15) NULL,
+	pr_comm_id varchar(15) NULL,
+	referredby_prsp_id varchar(15) NULL,
+	referred_by_con_id varchar(15) NULL,
+	segment_code_1 varchar(30) NULL,
+	segment_code_2 varchar(30) NULL,
+	src_evt_reg_id varchar(15) NULL,
+	stat_cd varchar(30) NULL,
+	tgtrev_curcy_cd varchar(20) NULL,
+	x_addr1 varchar(500) NULL,
+	x_addr2 varchar(500) NULL,
+	x_addr3 varchar(500) NULL,
+	x_callback_dt date NULL,
+	x_camp_join_flg bpchar(1) NULL,
+	x_cell_phone varchar(40) NULL,
+	x_dedup_cd varchar(30) NULL,
+	x_dedup_flg bpchar(1) NULL,
+	x_dp_int_dt date NULL,
+	x_dp_int_flg bpchar(1) NULL DEFAULT 'N'::bpchar,
+	x_ea varchar(80) NULL,
+	x_goneaway_flg varchar(1) NULL,
+	x_hkme_sales_conid varchar(15) NULL,
+	x_home_phone varchar(40) NULL,
+	x_household_id varchar(15) NULL,
+	x_origin varchar(30) NULL,
+	x_send_tdr_email_dt date NULL,
+	x_send_tdr_email_flg bpchar(1) NULL,
+	x_sms_count int4 NULL,
+	x_suppression_cd varchar(100) NULL,
+	x_suppression_flg bpchar(1) NULL,
+	x_vin varchar(100) NULL,
+	x_web_ems_field varchar(1000) NULL,
+	x_sms_fail_reason varchar(50) NULL,
+	CONSTRAINT s_camp_con_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX s_camp_con_actl_revn_curcy_cd_idx ON process.s_camp_con USING btree (actl_revn_curcy_cd);
+CREATE INDEX s_camp_con_created_idx ON process.s_camp_con USING btree (created);
+CREATE INDEX s_camp_con_msg_bncd_reason_cd_idx ON process.s_camp_con USING btree (msg_bncd_reason_cd);
+CREATE INDEX s_camp_con_msg_bncd_stat_cd_idx ON process.s_camp_con USING btree (msg_bncd_stat_cd);
+CREATE INDEX s_camp_con_msg_open_ts_idx ON process.s_camp_con USING btree (msg_open_ts);
+CREATE INDEX s_camp_con_pr_call_lst_id_idx ON process.s_camp_con USING btree (pr_call_lst_id);
+CREATE INDEX s_camp_con_src_id_idx ON process.s_camp_con USING btree (src_id);
+CREATE INDEX s_camp_con_stat_cd_idx ON process.s_camp_con USING btree (stat_cd);
+CREATE INDEX unique_s_camp_con ON process.s_camp_con USING btree (row_id);
+
+
+-- process.s_camp_ld_wave definition
+
+-- Drop table
+
+-- DROP TABLE process.s_camp_ld_wave;
+
+CREATE TABLE process.s_camp_ld_wave (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	camp_id varchar(15) NOT NULL,
+	load_num numeric(10) NOT NULL,
+	wave_num numeric(10) NOT NULL,
+	alloc_pct numeric(22, 7) NULL,
+	db_last_upd date NULL,
+	dt_lag numeric(10) NULL,
+	exported_ts date NULL,
+	launched_ts date NULL,
+	loaded_ts date NULL,
+	num_loaded_cons numeric(10) NULL,
+	scheduled_ts date NULL,
+	db_last_upd_src varchar(50) NULL,
+	dt_lag_units_cd varchar(30) NULL,
+	exec_status_cd varchar(30) NULL,
+	exec_stat_desc varchar(250) NULL,
+	pr_dcp_id varchar(15) NULL,
+	wave_setting_num varchar(10) NULL,
+	x_ds_cons numeric(10) NULL,
+	x_ds_flag varchar(1) NULL
+);
+CREATE INDEX s_camp_ld_wave_camp_id_idx ON process.s_camp_ld_wave USING btree (camp_id);
+CREATE UNIQUE INDEX unique_s_camp_ld_wave ON process.s_camp_ld_wave USING btree (row_id);
+
+
+-- process.s_comm_dtl definition
+
+-- Drop table
+
+-- DROP TABLE process.s_comm_dtl;
+
+CREATE TABLE process.s_comm_dtl (
+	row_id varchar(15) NOT NULL,
+	created date NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num int4 NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(15) NOT NULL,
+	db_last_upd date NULL,
+	banner_ad_strng varchar(100) NULL,
+	client_ip_addr varchar(100) NULL,
+	current_url varchar(200) NULL,
+	db_last_upd_src varchar(50) NULL,
+	hyperlink_name varchar(100) NULL,
+	keyword_strng varchar(100) NULL,
+	mkt_srvy_lang_id varchar(5) NULL,
+	referrer_url varchar(200) NULL,
+	referrer_username varchar(100) NULL,
+	response_url varchar(250) NULL,
+	rply_dlvry_mthd_cd varchar(30) NULL,
+	rply_email_addr varchar(350) NULL,
+	rply_fax_ph_num varchar(40) NULL,
+	rply_mail_addr varchar(200) NULL,
+	rply_mail_city varchar(50) NULL,
+	rply_mail_country varchar(30) NULL,
+	rply_mail_county varchar(50) NULL,
+	rply_mail_province varchar(50) NULL,
+	rply_mail_state varchar(10) NULL,
+	rply_mail_zipcode varchar(30) NULL,
+	rply_ph_num varchar(40) NULL,
+	rply_priority_cd varchar(30) NULL,
+	rply_time_cd varchar(30) NULL,
+	subscr_drct_ml_cd varchar(30) NULL,
+	subscr_email_cd varchar(30) NULL,
+	subscr_fax_cd varchar(30) NULL,
+	subscr_phone_cd varchar(30) NULL
+);
+CREATE INDEX s_comm_dtl_hyperlink_name_idx ON process.s_comm_dtl USING btree (hyperlink_name);
+CREATE UNIQUE INDEX unique_s_comm_dtl ON process.s_comm_dtl USING btree (row_id);
+
+
+-- process.s_communication definition
+
+-- Drop table
+
+-- DROP TABLE process.s_communication;
+
+CREATE TABLE process.s_communication (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL DEFAULT CURRENT_DATE,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL DEFAULT CURRENT_DATE,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	bu_id varchar(15) NOT NULL DEFAULT '0-R9NH'::character varying,
+	comm_date date NOT NULL,
+	comm_uid varchar(30) NOT NULL DEFAULT 'x'::character varying,
+	resp_type_cd varchar(30) NOT NULL DEFAULT 'Unclassified response'::character varying,
+	pgroup_public_flg bpchar(1) NULL DEFAULT 'N'::bpchar,
+	asgn_dt date NULL,
+	asgn_usr_excld_flg bpchar(1) NULL,
+	call_duration numeric(22, 7) NULL,
+	cost_amt numeric(22, 7) NULL,
+	cs_score numeric(10) NULL,
+	db_last_upd date NULL,
+	inbound_flg bpchar(1) NULL,
+	load_num numeric(10) NULL,
+	ofcr_dir_flg bpchar(1) NULL,
+	priv_flg bpchar(1) NULL,
+	prod_msg_postn_num numeric(10) NULL,
+	prod_msg_score numeric(10) NULL,
+	pr_rep_dnrm_flg bpchar(1) NULL,
+	pr_rep_manl_flg bpchar(1) NULL,
+	pr_rep_sys_flg bpchar(1) NULL,
+	supp_notif_flg bpchar(1) NULL,
+	urgent_flg bpchar(1) NULL,
+	accnt_id varchar(15) NULL,
+	activity_id varchar(15) NULL,
+	ani varchar(40) NULL,
+	call_lst_id varchar(15) NULL,
+	camp_con_id varchar(15) NULL,
+	camp_con_num varchar(75) NULL,
+	camp_media_id varchar(15) NULL,
+	comm_method varchar(30) NULL,
+	con_type_cd varchar(30) NULL,
+	cost_curcy_cd varchar(20) NULL,
+	cs_path_id varchar(15) NULL,
+	cs_run_id varchar(15) NULL,
+	db_last_upd_src varchar(50) NULL,
+	dcp_id varchar(15) NULL,
+	desc_text varchar(250) NULL,
+	disposition_cd varchar(30) NULL,
+	doc_type_cd varchar(30) NULL,
+	downld_lit_id varchar(15) NULL,
+	equiv_act_id varchar(15) NULL,
+	evt_reg_id varchar(15) NULL,
+	lead_id varchar(15) NULL,
+	meet_loc varchar(50) NULL,
+	mkt_srvy_id varchar(15) NULL,
+	nosale_res_cd varchar(30) NULL,
+	offer_num varchar(30) NULL,
+	order_id varchar(15) NULL,
+	outcome_cd varchar(30) NULL,
+	par_comm_id varchar(15) NULL,
+	prod_id varchar(15) NULL,
+	prod_msg_id varchar(15) NULL,
+	prod_msg_lang_id varchar(5) NULL,
+	prod_msg_src_id varchar(15) NULL,
+	prod_msg_title varchar(100) NULL,
+	prsp_con_id varchar(15) NULL,
+	pr_con_id varchar(15) NULL,
+	pr_emp_id varchar(15) NULL,
+	pr_opty_id varchar(15) NULL,
+	pr_postn_id varchar(15) NULL,
+	pr_prtnr_id varchar(15) NULL,
+	pr_ptcpt_emp_id varchar(15) NULL,
+	pr_terr_id varchar(15) NULL,
+	reason_cd varchar(30) NULL,
+	reject_comment varchar(250) NULL,
+	reject_reason_cd varchar(30) NULL,
+	rel_prod_id varchar(15) NULL,
+	resp_value_cd varchar(30) NULL,
+	src_evt_id varchar(15) NULL,
+	src_id varchar(15) NULL,
+	status_cd varchar(30) NULL,
+	subject_text varchar(250) NULL,
+	suppress_doc_id varchar(15) NULL,
+	suppress_party_id varchar(15) NULL,
+	supprs_doc_item_id varchar(15) NULL,
+	"text" varchar NULL,
+	x_call_end_time date NULL,
+	x_call_id varchar(50) NULL,
+	x_call_start_time date NULL,
+	x_subsch varchar(30) NULL,
+	x_vrs_id varchar(50) NULL,
+	lndng_site_offr_id varchar(15) NULL,
+	lndng_st_trtmnt_id varchar(15) NULL
+);
+CREATE INDEX s_communication_dcp_id_idx ON process.s_communication USING btree (dcp_id);
+CREATE INDEX s_communication_pr_con_id_idx ON process.s_communication USING btree (pr_con_id);
+CREATE INDEX s_communication_resp_type_cd_id_idx ON process.s_communication USING btree (resp_type_cd);
+CREATE INDEX s_communicationcamp_con_id_idx ON process.s_communication USING btree (camp_con_id);
+CREATE INDEX s_communicationcamp_src_id_idx ON process.s_communication USING btree (src_id);
+CREATE UNIQUE INDEX unique_s_communication ON process.s_communication USING btree (row_id);
+
+
+-- process.s_contact_att definition
+
+-- Drop table
+
+-- DROP TABLE process.s_contact_att;
+
+CREATE TABLE process.s_contact_att (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL DEFAULT now(),
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL DEFAULT now(),
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(15) NOT NULL,
+	file_auto_upd_flg bpchar(1) NOT NULL,
+	file_defer_flg bpchar(1) NOT NULL,
+	file_dock_req_flg bpchar(1) NOT NULL,
+	file_dock_stat_flg bpchar(1) NOT NULL,
+	file_name varchar(200) NOT NULL,
+	db_last_upd date NULL,
+	file_date date NULL,
+	file_size numeric(10) NULL,
+	"comments" varchar(250) NULL,
+	db_last_upd_src varchar(50) NULL,
+	file_ext varchar(10) NULL,
+	file_rev_num varchar(15) NULL,
+	file_src_path varchar(255) NULL,
+	file_src_type varchar(30) NULL,
+	keyword varchar(255) NULL,
+	type_cd varchar(30) NULL
+);
+CREATE UNIQUE INDEX unique_s_contact_att ON process.s_contact_att USING btree (row_id);
+
+
+-- process.s_contact_loyx definition
+
+-- Drop table
+
+-- DROP TABLE process.s_contact_loyx;
+
+CREATE TABLE process.s_contact_loyx (
+	row_id varchar(15) NOT NULL,
+	created date NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num int4 NOT NULL,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	par_row_id varchar(15) NOT NULL,
+	smoke_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	suppress_sms_flg bpchar(1) NOT NULL DEFAULT 'N'::bpchar,
+	db_last_upd date NULL,
+	expiration_dt date NULL,
+	issue_dt date NULL,
+	passport_expr_dt date NULL,
+	passport_issue_dt date NULL,
+	"comments" varchar(250) NULL,
+	country varchar(30) NULL,
+	db_last_upd_src varchar(50) NULL,
+	drvr_lic_number varchar(30) NULL,
+	drvr_lic_state_cd varchar(10) NULL,
+	emgc_cell_ph_num varchar(40) NULL,
+	emgc_email_addr varchar(350) NULL,
+	emgc_per_id varchar(15) NULL,
+	emgc_ph_num varchar(40) NULL,
+	home_airport varchar(30) NULL,
+	issue_site varchar(30) NULL,
+	passport_num varchar(50) NULL,
+	pref1_air_id varchar(15) NULL,
+	pref1_hotel_id varchar(15) NULL,
+	pref1_rental_id varchar(15) NULL,
+	pref2_air_id varchar(15) NULL,
+	pref2_hotel_id varchar(15) NULL,
+	pref2_rental_id varchar(15) NULL,
+	pref_bed_cd varchar(30) NULL,
+	pref_car_cd varchar(30) NULL,
+	pref_cruise_ln_cd varchar(30) NULL,
+	pref_hotl_brand_cd varchar(30) NULL,
+	pref_hotl_chain_cd varchar(30) NULL,
+	pref_loc_cd varchar(30) NULL,
+	pref_meal_cd varchar(30) NULL,
+	pref_paper_cd varchar(30) NULL,
+	pref_seat_cd varchar(30) NULL,
+	pref_smokeing_cd varchar(30) NULL,
+	prev_fst_name varchar(50) NULL,
+	prev_lst_name varchar(50) NULL,
+	prev_mi_name varchar(50) NULL,
+	pr_fax_num_id varchar(15) NULL,
+	pr_loy_member_id varchar(15) NULL,
+	pr_sms_num_id varchar(15) NULL,
+	referred_by_id varchar(15) NULL,
+	spec_air_req_text varchar(250) NULL,
+	spec_hotel_req_txt varchar(250) NULL,
+	spec_med_req_text varchar(250) NULL,
+	spec_rentl_req_txt varchar(250) NULL
+);
+CREATE UNIQUE INDEX unique_s_contact_loyx ON process.s_contact_loyx USING btree (row_id);
+
+
+-- process.s_mktg_srvr_tsk definition
+
+-- Drop table
+
+-- DROP TABLE process.s_mktg_srvr_tsk;
+
+CREATE TABLE process.s_mktg_srvr_tsk (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	process_cd varchar(30) NOT NULL,
+	db_last_upd date NULL,
+	end_ts date NULL,
+	error_cnt numeric(10) NULL,
+	load_row_cnt numeric(10) NULL,
+	query_row_cnt numeric(10) NULL,
+	start_ts date NULL,
+	camp_id varchar(15) NULL,
+	camp_ld_wave_id varchar(15) NULL,
+	con_sync_schd_id varchar(15) NULL,
+	db_last_upd_src varchar(50) NULL,
+	desc_text varchar(250) NULL,
+	imprt_tsk_id varchar(15) NULL,
+	program_id varchar(15) NULL,
+	srm_request_id varchar(15) NULL,
+	stage_id varchar(15) NULL,
+	status_cd varchar(30) NULL,
+	user_id varchar(15) NULL
+);
+CREATE UNIQUE INDEX unique_s_mktg_srvr_tsk ON process.s_mktg_srvr_tsk USING btree (row_id);
+
+
+-- process.s_note_accnt definition
+
+-- Drop table
+
+-- DROP TABLE process.s_note_accnt;
+
+CREATE TABLE process.s_note_accnt (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	src_row_id varchar(15) NOT NULL,
+	db_last_upd date NULL,
+	duration numeric(22, 7) NULL,
+	end_dt date NULL,
+	priv_flg bpchar(1) NULL,
+	start_dt date NULL,
+	area_cd varchar(30) NULL,
+	category_cd varchar(30) NULL,
+	db_last_upd_src varchar(50) NULL,
+	note_type varchar(30) NULL,
+	priority_cd varchar(30) NULL,
+	sub_area_cd varchar(30) NULL,
+	target_ou_id varchar(15) NULL,
+	unit_cd varchar(30) NULL,
+	note text NULL
+);
+CREATE UNIQUE INDEX unique_s_note_accnt ON process.s_note_accnt USING btree (row_id);
+
+
+-- process.sales_consult_history definition
+
+-- Drop table
+
+-- DROP TABLE process.sales_consult_history;
+
+CREATE TABLE process.sales_consult_history (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('sales_consult_history'::character varying),
+	description_interaction__c text NULL,
+	contact_flag__c bool NULL,
+	first_interaction_date__c timestamp NULL,
+	createddate date NULL,
+	isdeleted bool NULL,
+	"name" varchar(80) NULL,
+	systemmodstamp timestamp NULL,
+	salesstatus__c varchar(255) NULL,
+	contactcustomer__c bool NULL,
+	result__c varchar(255) NULL,
+	source__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	pcd__c bool NULL,
+	date__c timestamp NULL,
+	salescpf__c varchar(255) NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	visitdate__c timestamp NULL,
+	visitstatus__c varchar(50) NULL,
+	scheduledvisitdate__c timestamp NULL,
+	temperaturenumber__c varchar(255) NULL,
+	interactionnumber__c varchar(255) NULL,
+	predictivetemp__c varchar(255) NULL,
+	protocol__c varchar(30) NULL,
+	integrationid__c varchar(30) NULL,
+	statussales__c varchar(100) NULL,
+	salespersoncode__c varchar(100) NULL,
+	dmsenddate__c timestamp NULL,
+	dmsreceivedate__c timestamp NULL,
+	dealerrespondetime__c float8 NULL,
+	pne_flag__c bool NULL,
+	visitscheduled__c date NULL,
+	interactionstartdate__c timestamp NULL,
+	status__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	contact_row_id__c varchar(255) NULL,
+	account_row_id__c varchar(255) NULL,
+	external_id__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	lostreason__c varchar(255) NULL
+);
+CREATE INDEX sales_consult_history_account_row_id__c_idx ON process.sales_consult_history USING btree (account_row_id__c);
+CREATE INDEX sales_consult_history_contact_row_id__c_idx ON process.sales_consult_history USING btree (contact_row_id__c);
+CREATE INDEX sales_consult_history_external_id__c_idx ON process.sales_consult_history USING btree (external_id__c);
+CREATE INDEX sales_consult_history_interactionnumber__c_idx ON process.sales_consult_history USING btree (interactionnumber__c);
+CREATE INDEX sales_consult_history_protocol__c_idx ON process.sales_consult_history USING btree (protocol__c);
+CREATE INDEX sales_consult_history_temperaturenumber__c_idx ON process.sales_consult_history USING btree (temperaturenumber__c);
+CREATE UNIQUE INDEX unique_sales_consult_history ON process.sales_consult_history USING btree (row_id);
+
+
+-- process.service_event_act definition
+
+-- Drop table
+
+-- DROP TABLE process.service_event_act;
+
+CREATE TABLE process.service_event_act (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('service_event_act'::character varying),
+	"type" varchar(30) NULL,
+	priority varchar(30) NULL,
+	planneddt__c timestamp NULL,
+	status__c varchar(30) NULL,
+	description text NULL,
+	completeddatetime timestamp NULL,
+	result__c varchar(100) NULL,
+	answer__c text NULL,
+	dpuser__c varchar NULL,
+	interactionstartdate__c timestamp NULL,
+	visitscheduled__c timestamp NULL,
+	visitdate__c timestamp NULL,
+	visitstatus__c varchar(50) NULL,
+	integrationid__c varchar(30) NULL,
+	hotlineid__c varchar(50) NULL,
+	hotlinecreation__c timestamp NULL,
+	pwaid__c varchar(50) NULL,
+	pwacreation__c timestamp NULL,
+	roid__c varchar(50) NULL,
+	rocreation__c timestamp NULL,
+	mobisid__c varchar(50) NULL,
+	mobisstatus__c varchar(50) NULL,
+	expecteddelivery__c timestamp NULL,
+	purchasepurposeid__c varchar(50) NULL,
+	created timestamp NULL,
+	ordernum__c varchar(15) NULL,
+	get_lead_date timestamp NULL,
+	protocol__c varchar NULL,
+	legacy_created timestamp NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd timestamp NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	external_id__c varchar(30) NULL,
+	serialnumber varchar(100) NULL,
+	dp_user varchar(50) NULL,
+	contact_row_id__c varchar(255) NULL,
+	dealercode__c varchar(30) NULL,
+	stock__c varchar(30) NULL,
+	sra_sr_id varchar(30) NULL,
+	asset_id varchar(15) NULL,
+	dealer_account_id varchar(15) NULL,
+	target_ou_id varchar(15) NULL,
+	subject varchar(255) NULL,
+	ownerid varchar NULL,
+	activitydate date NULL,
+	plannedenddt__c date NULL,
+	statussales__c varchar(100) NULL,
+	salespersoncode__c varchar(30) NULL,
+	reason__c varchar(255) NULL,
+	dmsenddate__c date NULL,
+	dmsreceivedate__c date NULL,
+	dealerrespondetime__c float8 NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT service_event_act_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX service_event_act_external_id__c_idx ON process.service_event_act USING btree (external_id__c);
+CREATE INDEX service_event_act_integration_id_idx ON process.service_event_act USING btree (integrationid__c);
+CREATE INDEX service_event_act_legacy_created_idx ON process.service_event_act USING btree (legacy_created);
+CREATE INDEX service_event_act_protocol__c_idx ON process.service_event_act USING btree (protocol__c);
+CREATE INDEX service_event_act_service_request_id_idx ON process.service_event_act USING btree (sra_sr_id);
+CREATE INDEX service_event_act_sra_sr_id_idx ON process.service_event_act USING btree (sra_sr_id);
+CREATE INDEX service_event_act_status_idx ON process.service_event_act USING btree (status__c);
+CREATE INDEX service_event_act_type_idx ON process.service_event_act USING btree (type);
+
+
+-- process.service_request definition
+
+-- Drop table
+
+-- DROP TABLE process.service_request;
+
+CREATE TABLE process.service_request (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('service_request'::character varying),
+	account_row_id__c varchar(255) NULL,
+	contact_row_id__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	close_date__c timestamp NULL,
+	legacy_last_update__c date NULL,
+	protocol__c varchar NULL DEFAULT process.get_protocol_id(),
+	reason__c varchar(30) NULL,
+	voctype__c varchar(255) NULL,
+	voc_class varchar(255) NULL,
+	voc_level_2__c varchar(255) NULL,
+	voc_level_3__c varchar(255) NULL,
+	origin varchar(255) NULL,
+	"method" varchar(255) NULL,
+	description text NULL,
+	status varchar(255) NULL,
+	status_date__c date NULL,
+	priority varchar(255) NULL,
+	solution__c varchar(255) NULL,
+	anonymous_flag__c bool NULL,
+	tendency__c varchar(30) NULL,
+	customersatisfied__c varchar(255) NULL,
+	causing_area__c varchar(30) NULL,
+	immobilization_date__c timestamp NULL,
+	quote_description__c text NULL,
+	quotetransmission__c varchar(100) NULL,
+	version__c varchar(100) NULL,
+	quote_version_price__c varchar(100) NULL,
+	quote_color__c varchar(100) NULL,
+	quote_color_price__c varchar(100) NULL,
+	quote_price__c varchar(100) NULL,
+	quote_replace_intention__c varchar(100) NULL,
+	integrationid__c varchar(30) NULL,
+	testdrive_confirmed__c bool NULL,
+	testdrive_time__c varchar(30) NULL,
+	date_test_drive__c date NULL,
+	pne_flag__c bool NULL,
+	campaignid__c varchar(15) NULL,
+	source_tag__c varchar(60) NULL,
+	stock__c varchar(30) NULL,
+	medium_tag__c varchar(60) NULL,
+	content_tag__c varchar(60) NULL,
+	campaign_tag__c varchar(60) NULL,
+	form__c varchar(30) NULL,
+	additional_comments__c text NULL,
+	causing_person__c varchar(30) NULL,
+	cust_representative__c varchar(100) NULL,
+	cust_representative_rel__c varchar(30) NULL,
+	diagnosis_difficultyflg__c bool NULL,
+	diagnosis_pendingflg__c bool NULL,
+	dlr_description__c text NULL,
+	dlr_fup__c text NULL,
+	dlr_pending__c text NULL,
+	dlr_retractionflg__c bool NULL,
+	dlr_reversal__c text NULL,
+	hotline_flg__c bool NULL,
+	hotline_num__c varchar(30) NULL,
+	hotline_open_dt__c timestamp NULL,
+	purchase_proposal_num__c varchar(30) NULL,
+	pwa_flg__c bool NULL,
+	pwa_number__c varchar(30) NULL,
+	pwa_oped_dt__c timestamp NULL,
+	recurrence_flg__c bool NULL,
+	recurrence_num__c int4 NULL,
+	vehicle_delivery_dt__c timestamp NULL,
+	vehicle_delivery_flg__c bool NULL,
+	wants_loan__c bool NULL,
+	loan_type__c varchar(50) NULL,
+	installments_amt__c int4 NULL,
+	down_payment__c int4 NULL,
+	usedcar_as_down_payment__c bool NULL,
+	predictive_temp__c varchar(255) NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	relatedmodel__c varchar(30) NULL,
+	legacy_created timestamp NULL,
+	legacy_last_upd timestamp NULL,
+	serialnumber varchar(100) NULL,
+	business_row_id varchar(30) NULL,
+	roadservicerequest varchar(30) NULL,
+	sales_representative_cpf varchar(30) NULL,
+	payment_date__c timestamp NULL,
+	payment_method__c varchar(22) NULL,
+	payment_status__c varchar(22) NULL,
+	reserve_amount__c varchar(22) NULL,
+	sched_date timestamp NULL,
+	sched_type varchar(30) NULL,
+	usedcar_brand__c varchar(100) NULL,
+	usedcar_model__c varchar(100) NULL,
+	usedcar_chassi__c varchar(50) NULL,
+	usedcar_version__c varchar(100) NULL,
+	usedcar_plate__c varchar(30) NULL,
+	usedcar_year__c varchar(30) NULL,
+	usedcar_color__c varchar(30) NULL,
+	usedcar_km__c varchar(30) NULL,
+	usedcar_max_price__c varchar(30) NULL,
+	usedcar_mid_price__c varchar(30) NULL,
+	usedcar_min_price__c varchar(30) NULL,
+	external_id__c varchar(30) NULL,
+	x_camp_id__c varchar(30) NULL,
+	vechicle_sr_mileage__c float8 NULL,
+	ins_rec_type__c varchar(30) NULL,
+	x_dlr_temperature_receive_dt__c date NULL,
+	x_dlr_webmotors_sent_dt__c date NULL,
+	x_dlr_dealer_portal_sent_dt__c date NULL,
+	asset_id varchar NULL,
+	dealercode__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	transferredopportunity__c bool NULL,
+	transferredopportunitydate__c timestamp NULL,
+	owner_emp_id varchar(15) NULL,
+	CONSTRAINT service_request_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX service_request_account_row_id__c_idx ON process.service_request USING btree (account_row_id__c);
+CREATE INDEX service_request_contact_row_id__c_idx ON process.service_request USING btree (contact_row_id__c);
+CREATE INDEX service_request_external_id__c_idx ON process.service_request USING btree (external_id__c);
+CREATE INDEX service_request_legacy_last_update__c_idx ON process.service_request USING btree (legacy_last_update__c);
+CREATE INDEX service_request_legacycreateddate__c_idx ON process.service_request USING btree (legacycreateddate__c);
+CREATE INDEX service_request_origin_idx ON process.service_request USING btree (origin);
+CREATE INDEX service_request_predictive_temp__c_idx ON process.service_request USING btree (predictive_temp__c);
+CREATE INDEX service_request_protocol__c_idx ON process.service_request USING btree (protocol__c);
+CREATE INDEX service_request_reason__c_idx ON process.service_request USING btree (reason__c, voctype__c, voc_class);
+CREATE INDEX service_request_serialnumber_idx ON process.service_request USING btree (serialnumber);
+CREATE INDEX service_request_status_idx ON process.service_request USING btree (status);
+CREATE INDEX service_request_testdrive_confirmed__c_idx ON process.service_request USING btree (testdrive_confirmed__c);
+CREATE INDEX service_request_voc_level_2__c_idx ON process.service_request USING btree (voc_level_2__c);
+CREATE INDEX service_request_voc_level_3__c_idx ON process.service_request USING btree (voc_level_3__c);
+
+
+-- process.service_type definition
+
+-- Drop table
+
+-- DROP TABLE process.service_type;
+
+CREATE TABLE process.service_type (
+	service_type text NULL
+);
+
+
+-- process.service_type1 definition
+
+-- Drop table
+
+-- DROP TABLE process.service_type1;
+
+CREATE TABLE process.service_type1 (
+	service_type text NULL
+);
+
+
+-- process.service_type2 definition
+
+-- Drop table
+
+-- DROP TABLE process.service_type2;
+
+CREATE TABLE process.service_type2 (
+	protocol varchar(64) NULL,
+	service_type text NULL
+);
+
+
+-- process.sr_row_id definition
+
+-- Drop table
+
+-- DROP TABLE process.sr_row_id;
+
+CREATE TABLE process.sr_row_id (
+	count int8 NULL
+);
+
+
+-- process.synergy_action_audit definition
+
+-- Drop table
+
+-- DROP TABLE process.synergy_action_audit;
+
+CREATE TABLE process.synergy_action_audit (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('synergy_action_audit'::character varying),
+	external_id__c varchar(255) NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	modification_num float8 NULL,
+	"name" varchar(80) NULL,
+	type__c varchar(255) NULL,
+	answer__c text NULL,
+	question__c text NULL,
+	taskintegrationid__c varchar(255) NULL,
+	task_row_id varchar(25) NULL,
+	case_id varchar(25) NULL,
+	sr_row_id varchar(25) NULL,
+	protocol__c varchar(25) NULL,
+	CONSTRAINT synergy_action_audit_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX synergy_action_audit_external_id__c_idx ON process.synergy_action_audit USING btree (external_id__c);
+CREATE INDEX synergy_action_audit_taskintegrationid__c_idx ON process.synergy_action_audit USING btree (taskintegrationid__c);
+
+
+-- process.synergy_activity definition
+
+-- Drop table
+
+-- DROP TABLE process.synergy_activity;
+
+CREATE TABLE process.synergy_activity (
+	row_id varchar(22) NOT NULL,
+	sra_sr_id varchar(30) NULL,
+	"type" varchar(30) NULL,
+	planneddt__c timestamp NULL,
+	status__c varchar(30) NULL,
+	description text NULL,
+	activitydate timestamp NULL,
+	completeddatetime timestamp NULL,
+	answer__c text NULL,
+	legacy_created timestamp NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd timestamp NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	priority varchar(30) NULL,
+	CONSTRAINT synergy_activity_pk PRIMARY KEY (row_id)
+);
+
+
+-- process.targetmodel definition
+
+-- Drop table
+
+-- DROP TABLE process.targetmodel;
+
+CREATE TABLE process.targetmodel (
+	contactid__c varchar(18) NULL COLLATE "ucs_basic",
+	contact__c varchar(18) NULL COLLATE "ucs_basic",
+	gender__c varchar(255) NULL,
+	vehicleretentionperiod__c int4 NULL,
+	totalnumberoftestdrives__c int8 NULL,
+	numberoftestdrives1w__c int8 NULL,
+	numberoftestdrives2w__c int8 NULL,
+	numberoftestdrives3w__c int8 NULL,
+	numberoftestdrives1m__c int8 NULL,
+	numberoftestdrives2m__c int8 NULL,
+	totalnumberofquotes__c int8 NULL,
+	numberofquotes1w__c int8 NULL,
+	numberofquotes2w__c int8 NULL,
+	numberofquotes3w__c int8 NULL,
+	numberofquotes1m__c int8 NULL,
+	numberofquotes2m__c int8 NULL,
+	totalnumberofownedvehicles__c int8 NULL,
+	numberofownedvehicles1y__c int8 NULL,
+	numberofownedvehicles3y__c int8 NULL,
+	numberofownedvehicles5y__c int8 NULL,
+	age__c int4 NULL,
+	agegroup__c int4 NULL,
+	blockedsms__c bool NULL,
+	blockedemail__c bool NULL,
+	blockedcall__c bool NULL,
+	blockedwhatsapp__c bool NULL,
+	mailingcountry varchar(80) NULL,
+	mailingstate varchar(80) NULL,
+	mailingcity varchar(40) NULL,
+	ispersonaccount bool NULL,
+	accountid varchar(18) NULL,
+	"name" varchar(121) NULL,
+	lastname varchar(80) NULL,
+	vehicletype__c varchar(255) NULL,
+	latestmileage__c float8 NULL,
+	latestpurchasedate__c date NULL,
+	vehicledeliverydate__c date NULL,
+	fueltype__c varchar(255) NULL,
+	enginecapacity__c varchar(255) NULL,
+	modelname__c varchar(255) NULL,
+	latestdeliverycarownedyn__c bool NULL,
+	contractchannel__c varchar(255) NULL,
+	repairservicepart__c varchar(255) NULL,
+	repairservicetype__c varchar(255) NULL,
+	latestmantenancedate__c date NULL,
+	fatiguelimitexceed__c bool NULL,
+	productofinterest__c varchar(255) NULL,
+	totalnumberofcampaignparticipations__c int8 NULL,
+	numberofcampaignparticipations1m__c int8 NULL,
+	numberofcampaignparticipations1w__c int8 NULL,
+	numberofcampaignparticipations2m__c int8 NULL,
+	numberofcampaignparticipations2w__c int8 NULL,
+	numberofcampaignparticipations3w__c int8 NULL,
+	subsidiarycode__c varchar(18) NULL
+);
+
+
+-- process.task definition
+
+-- Drop table
+
+-- DROP TABLE process.task;
+
+CREATE TABLE process.task (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('task'::character varying),
+	integrationid__c varchar(30) NULL,
+	protocol__c varchar(64) NULL,
+	contactid varchar(15) NULL,
+	created timestamp NULL,
+	created_by varchar(15) NULL,
+	last_upd timestamp NULL,
+	last_upd_by varchar(15) NULL,
+	proc_result_yn bpchar(1) NULL,
+	proc_result_msg varchar(255) NULL,
+	result__c varchar(100) NULL,
+	answer__c varchar(2000) NULL,
+	status varchar(30) NULL,
+	hotlineid__c varchar(50) NULL,
+	hotlinecreation__c timestamp NULL,
+	pwaid__c varchar(15) NULL,
+	pwacreation__c timestamp NULL,
+	roid__c varchar(50) NULL,
+	rocreation__c timestamp NULL,
+	mobisid__c varchar(50) NULL,
+	mobisstatus__c varchar(50) NULL,
+	expecteddelivery__c date NULL,
+	purchasepurposeid__c varchar(50) NULL,
+	"type" varchar(30) NULL,
+	priority varchar(30) NULL,
+	description varchar(1500) NULL,
+	planneddt__c timestamp NULL,
+	serialnumber__c varchar(100) NULL,
+	dealercode__c varchar(30) NULL,
+	creationdt__c timestamp NULL,
+	ordernum__c varchar(15) NULL,
+	stock__c varchar(30) NULL,
+	dpuser__c varchar(50) NULL,
+	active_row_id varchar(30) NULL,
+	plannedenddt__c date NULL,
+	dealerportaluser__c varchar(50) NULL,
+	statussales__c varchar(100) NULL,
+	salespersoncode__c varchar(100) NULL,
+	interactionstartdate__c date NULL,
+	reason__c varchar(255) NULL,
+	dmsenddate__c date NULL,
+	dmsreceivedate__c date NULL,
+	dealerrespondetime__c float8 NULL,
+	visitscheduled__c date NULL,
+	visitdate__c date NULL,
+	visitstatus__c varchar(50) NULL,
+	external_id__c varchar(255) NULL,
+	ownerid varchar(18) NULL,
+	activitydate date NULL,
+	completeddatetime date NULL,
+	subject varchar(255) NULL,
+	sra_sr_id varchar(25) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT task_pkey PRIMARY KEY (row_id)
+);
+CREATE INDEX task_active_row_id_idx ON process.task USING btree (active_row_id);
+CREATE INDEX task_external_id__c_idx ON process.task USING btree (external_id__c);
+CREATE INDEX task_integrationid__c_idx ON process.task USING btree (integrationid__c);
+CREATE INDEX task_protocol__c_idx ON process.task USING btree (protocol__c);
+
+
+-- process.testdrivehistory definition
+
+-- Drop table
+
+-- DROP TABLE process.testdrivehistory;
+
+CREATE TABLE process.testdrivehistory (
+	row_id varchar(22) NOT NULL DEFAULT process.get_proc_id('testdrivehistory'::character varying),
+	reason__c varchar(255) NULL,
+	level1__c varchar(30) NULL,
+	level2__c varchar(30) NULL,
+	level3__c varchar(30) NULL,
+	level4__c varchar(30) NULL,
+	"SourceTag__c" varchar(50) NULL,
+	method__c varchar NULL,
+	"RequestDescription__c" varchar(2000) NULL,
+	status__c varchar(30) NULL,
+	dealercode__c varchar(30) NULL,
+	serialnumber__c varchar(100) NULL,
+	salespersoncode__c varchar(30) NULL,
+	testdrivestarttime__c timestamp NULL,
+	testdriveconfirmed__c bool NULL,
+	account_id__c varchar NULL,
+	contact_id__c varchar NULL,
+	protocolid__c varchar(64) NULL,
+	testdriverequestdate__c timestamp NULL,
+	testdriverequesttime__c varchar NULL,
+	external_id__c varchar(30) NULL,
+	dealerportaltdno__c varchar(255) NULL,
+	type_cd varchar(60) NULL,
+	active_row_id varchar(30) NULL,
+	testdrivetype__c varchar(255) NULL,
+	priority__c varchar(255) NULL,
+	ownerid varchar(50) NULL,
+	tododuedt date NULL,
+	todoactlenddt date NULL,
+	achievement varchar(255) NULL,
+	answer text NULL,
+	testdriveendtime__c date NULL,
+	dealerportaluser__c varchar(50) NULL,
+	statussales__c varchar(100) NULL,
+	dmsenddate__c date NULL,
+	visitscheduled__c date NULL,
+	visitdate__c date NULL,
+	visitstatus__c varchar(50) NULL,
+	requestdescription__c text NULL,
+	dealerrespondetime__c float8 NULL,
+	dmsreceivedate__c date NULL,
+	resoninteraction__c text NULL,
+	legacy_created timestamp NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd timestamp NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	integrationid__c varchar(30) NULL,
+	conflict_id varchar(15) NULL DEFAULT '0'::character varying,
+	relatedmodel__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	origin varchar(255) NULL,
+	CONSTRAINT testdrivehistory_pk PRIMARY KEY (row_id)
+);
+CREATE INDEX testdrivehistory_account_id__c_idx ON process.testdrivehistory USING btree (account_id__c);
+CREATE INDEX testdrivehistory_active_row_id_idx ON process.testdrivehistory USING btree (active_row_id);
+CREATE INDEX testdrivehistory_contact_id__c_idx ON process.testdrivehistory USING btree (contact_id__c);
+CREATE INDEX testdrivehistory_external_id__c_idx ON process.testdrivehistory USING btree (external_id__c);
+CREATE INDEX testdrivehistory_legacy_created_idx ON process.testdrivehistory USING btree (legacy_created);
+CREATE INDEX testdrivehistory_legacy_last_upd_idx ON process.testdrivehistory USING btree (legacy_last_upd);
+CREATE INDEX testdrivehistory_protocolid__c_idx ON process.testdrivehistory USING btree (protocolid__c);
+CREATE INDEX testdrivehistory_reason__c_idx ON process.testdrivehistory USING btree (reason__c, level1__c, level2__c, level3__c, level4__c);
+CREATE INDEX testdrivehistory_status__c_idx ON process.testdrivehistory USING btree (status__c);
+
+
+-- process."user" definition
+
+-- Drop table
+
+-- DROP TABLE process."user";
+
+CREATE TABLE process."user" (
+	row_id varchar(25) NOT NULL,
+	legacy_created date NULL,
+	legacy_created_by varchar(15) NULL,
+	legacy_last_upd date NULL,
+	legacy_last_upd_by varchar(15) NULL,
+	conflict_id varchar(15) NULL,
+	par_row_id varchar(15) NULL,
+	integ_user_flg bool NULL,
+	login varchar(50) NULL,
+	user_flg bool NULL,
+	trng_dl_admin_flg bool NULL,
+	ams_last_upd_dt date NULL,
+	ams_pwd_expr_dt date NULL,
+	days_comp_trng float8 NULL,
+	days_inv_audit float8 NULL,
+	days_overdue_ack float8 NULL,
+	days_report_loss float8 NULL,
+	days_smpl_warning float8 NULL,
+	days_transfer_in float8 NULL,
+	days_trsfr_discr float8 NULL,
+	day_overdue_invchk float8 NULL,
+	db_last_upd date NULL,
+	last_login_ts date NULL,
+	last_uncompress_dt date NULL,
+	last_upd_amspwd_dt date NULL,
+	max_sample_call float8 NULL,
+	min_inventory float8 NULL,
+	num_nws_archv_days float8 NULL,
+	num_nws_hdlns_disp float8 NULL,
+	pw_last_upd date NULL,
+	ams_pwd_freq_cd varchar(10) NULL,
+	challenge_answer varchar(250) NULL,
+	challenge_question varchar(250) NULL,
+	"comments" varchar(250) NULL,
+	cti_acd_userid varchar(15) NULL,
+	cti_pwd varchar(30) NULL,
+	db_last_upd_src varchar(50) NULL,
+	exchng_prof_name varchar(255) NULL,
+	exchng_prof_pwd varchar(250) NULL,
+	exchng_storeid varchar(250) NULL,
+	exchng_sync_type varchar(30) NULL,
+	login_domain varchar(50) NULL,
+	"password" varchar(30) NULL,
+	rpt_srvr_pwd varchar(30) NULL,
+	status_cd varchar(30) NULL,
+	trng_cal_cd varchar(30) NULL,
+	x_cti_stat varchar(20) NULL,
+	x_email_flg varchar(1) NULL,
+	x_group_cd varchar(20) NULL,
+	x_teleset_no varchar(20) NULL,
+	x_vrs_id varchar(20) NULL,
+	x_agent_lst_upd date NULL,
+	chlng_ans_encrpkey varchar(30) NULL,
+	chlng_qst_encrpkey varchar(30) NULL,
+	pr_tag_id varchar(15) NULL,
+	modification_num varchar(50) NULL,
+	inter_flag varchar(30) NULL
+);
+
+
+-- process.v_account_cpf_ck definition
+
+-- Drop table
+
+-- DROP TABLE process.v_account_cpf_ck;
+
+CREATE TABLE process.v_account_cpf_ck (
+	count int8 NULL
+);
+
+
+-- process.v_account_other_ck definition
+
+-- Drop table
+
+-- DROP TABLE process.v_account_other_ck;
+
+CREATE TABLE process.v_account_other_ck (
+	count int8 NULL
+);
+
+
+-- process.zhbrsdt1728 definition
+
+-- Drop table
+
+-- DROP TABLE process.zhbrsdt1728;
+
+CREATE TABLE process.zhbrsdt1728 (
+	soid varchar(20) NOT NULL,
+	dealercode varchar(10) NOT NULL,
+	vincode varchar NOT NULL,
+	mileage float8 NULL,
+	model varchar(40) NULL,
+	zyear int4 NULL,
+	plate varchar(8) NULL,
+	status int2 NULL,
+	quicksrv varchar(1) NULL,
+	consult_cpf varchar(20) NULL,
+	consult_name varchar(30) NULL,
+	opendt varchar(14) NULL,
+	closedt varchar(14) NULL,
+	canceldt varchar(14) NULL,
+	deliverydt varchar(14) NULL,
+	schedulingdt varchar(14) NULL,
+	"comments" varchar(255) NULL,
+	filesentdt varchar(14) NULL,
+	total_worked_hours float8 NULL,
+	total_sold_hours float8 NULL,
+	total_value float8 NULL,
+	partner varchar NULL,
+	firstname varchar(40) NULL,
+	lastname varchar(40) NULL,
+	cpf varchar(20) NULL,
+	city varchar(40) NULL,
+	postl_cod1 varchar(10) NULL,
+	street varchar(60) NULL,
+	house_no varchar(10) NULL,
+	country varchar(3) NULL,
+	region varchar(3) NULL,
+	taxjurcode varchar(15) NULL,
+	email varchar(241) NULL,
+	tel_number varchar(30) NULL,
+	mob_number varchar(30) NULL,
+	blockcontact varchar(1) NULL,
+	queried varchar(8) NULL,
+	ernam varchar(12) NULL,
+	erdat date NULL,
+	erzet time NULL,
+	aenam varchar(12) NULL,
+	aedat date NULL,
+	aezet time NULL,
+	ro_id varchar NOT NULL,
+	account_id varchar(22) NULL,
+	asset_id varchar(22) NULL,
+	dealer_account_id varchar(22) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT zhbrsdt1728_pk PRIMARY KEY (ro_id)
+);
+CREATE INDEX zhbrsdt1728_account_id_idx ON process.zhbrsdt1728 USING btree (account_id);
+CREATE INDEX zhbrsdt1728_dealercode_idx ON process.zhbrsdt1728 USING btree (dealercode);
+CREATE INDEX zhbrsdt1728_soid_idx ON process.zhbrsdt1728 USING btree (soid);
+CREATE INDEX zhbrsdt1728_vincode_idx ON process.zhbrsdt1728 USING btree (vincode);
+
+
+-- process.zipcode definition
+
+-- Drop table
+
+-- DROP TABLE process.zipcode;
+
+CREATE TABLE process.zipcode (
+	row_id varchar(15) NOT NULL,
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	dcking_num numeric(22, 7) NULL DEFAULT 0,
+	modification_num numeric(10) NOT NULL DEFAULT 0,
+	conflict_id varchar(15) NOT NULL DEFAULT '0'::character varying,
+	country varchar(30) NOT NULL DEFAULT 'USA'::character varying,
+	zipcode varchar(30) NOT NULL,
+	db_last_upd date NULL,
+	latitude numeric(22, 7) NULL,
+	longitude numeric(22, 7) NULL,
+	city varchar(100) NULL,
+	continent varchar(30) NULL,
+	county varchar(100) NULL,
+	db_last_upd_src varchar(50) NULL,
+	state_prov varchar(50) NULL,
+	street_abbrev varchar(100) NULL,
+	street_name varchar(150) NULL,
+	x_neighborhood varchar(100) NULL,
+	x_user_key varchar(130) NULL,
+	x_zipcode varchar(30) NULL,
+	x_complement varchar(100) NULL
+);
+CREATE INDEX zipcode_latitude_idx ON process.zipcode USING btree (latitude);
+CREATE INDEX zipcode_longitude_idx ON process.zipcode USING btree (longitude);
+CREATE INDEX zipcode_zipcode_idx ON process.zipcode USING btree (zipcode);
+
+
+-- process.amaro_answer definition
+
+-- Drop table
+
+-- DROP TABLE process.amaro_answer;
+
+CREATE TABLE process.amaro_answer (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('amaro_answer'::character varying),
+	created date NOT NULL,
+	created_by varchar(15) NOT NULL,
+	last_upd date NOT NULL,
+	last_upd_by varchar(15) NOT NULL,
+	modification_num int4 NULL DEFAULT 0,
+	conflict_id varchar(15) NULL DEFAULT '0'::character varying,
+	answer_value int4 NULL,
+	db_last_upd date NULL,
+	answer_compl varchar(255) NULL,
+	db_last_upd_src varchar(50) NULL,
+	integration_id varchar(30) NULL,
+	question_comments varchar(2000) NULL,
+	question_id varchar(30) NULL,
+	question_code int4 NULL,
+	answer_long text NULL,
+	amr_row_id varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT amaro_answer_pk PRIMARY KEY (row_id),
+	CONSTRAINT amaro_answer_fk FOREIGN KEY (amr_row_id) REFERENCES process.amaro(amr_row_id)
+);
+CREATE INDEX amaro_answer_amr_row_id_idx ON process.amaro_answer USING btree (amr_row_id);
+CREATE INDEX amaro_answer_created_idx ON process.amaro_answer USING btree (created);
+CREATE INDEX amaro_answer_integration_id_idx ON process.amaro_answer USING btree (integration_id);
+CREATE INDEX amaro_answer_question_id_idx ON process.amaro_answer USING btree (question_id);
+
+
+-- process.cx_chat_message definition
+
+-- Drop table
+
+-- DROP TABLE process.cx_chat_message;
+
+CREATE TABLE process.cx_chat_message (
+	row_id varchar NOT NULL DEFAULT process.get_proc_id('cx_chat_message'::character varying),
+	created date NULL,
+	created_by varchar(15) NULL,
+	last_upd date NULL,
+	last_upd_by varchar(15) NULL,
+	modification_num int4 NULL,
+	conflict_id varchar(15) NULL,
+	cht_row_id varchar NULL,
+	"name" varchar(100) NULL,
+	"type" varchar(30) NULL,
+	db_last_upd date NULL,
+	msg_dt timestamp NULL,
+	db_last_upd_src varchar(50) NULL,
+	msg_cd varchar(100) NULL,
+	msg_text text NULL,
+	status varchar(30) NULL,
+	x_attrib_01 varchar(100) NULL,
+	protocol__c varchar(30) NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT cx_chat_message_pk PRIMARY KEY (row_id),
+	CONSTRAINT cx_chat_message_fk FOREIGN KEY (cht_row_id) REFERENCES process.cx_chat(cht_row_id)
+);
+CREATE INDEX cx_chat_created_by_idx ON process.cx_chat_message USING btree (created_by);
+CREATE INDEX cx_chat_message_cht_row_id_idx ON process.cx_chat_message USING btree (cht_row_id);
+CREATE INDEX cx_chat_message_conflict_id_idx ON process.cx_chat_message USING btree (conflict_id);
+CREATE INDEX cx_chat_message_protocol__c_idx ON process.cx_chat_message USING btree (protocol__c);
+
+
+-- process.if_info_logs definition
+
+-- Drop table
+
+-- DROP TABLE process.if_info_logs;
+
+CREATE TABLE process.if_info_logs (
+	seq_no serial4 NOT NULL,
+	if_id varchar(30) NOT NULL,
+	created_at timestamptz NULL DEFAULT now(),
+	last_mod_at timestamptz NULL DEFAULT now(),
+	if_request_at timestamp NULL,
+	if_response_at timestamp NULL,
+	if_step1_at timestamp NULL,
+	if_step2_at timestamp NULL,
+	if_step3_at timestamp NULL,
+	if_req_json varchar NULL,
+	if_res_json varchar NULL,
+	if_err_flag varchar(1) NULL DEFAULT 'N'::character varying,
+	if_err_msg varchar NULL,
+	if_tr_id varchar(255) NULL,
+	step1_perf numeric(9, 3) NULL DEFAULT 0,
+	step2_perf numeric(9, 3) NULL DEFAULT 0,
+	step3_perf numeric(9, 3) NULL DEFAULT 0,
+	resp_perf numeric(9, 3) NULL DEFAULT 0,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT if_info_logs_pk PRIMARY KEY (seq_no),
+	CONSTRAINT if_info_logs_fk FOREIGN KEY (if_id) REFERENCES process.if_info(if_id)
+);
+CREATE INDEX if_info_logs_created_at_idx ON process.if_info_logs USING btree (created_at);
+CREATE INDEX if_info_logs_if_err_flag_idx ON process.if_info_logs USING btree (if_err_flag);
+CREATE INDEX if_info_logs_if_id_idx ON process.if_info_logs USING btree (if_id);
+
+-- Table Triggers
+
+create trigger if_info_logs_trigger before
+update
+    on
+    process.if_info_logs for each row execute function process.if_info_logs_update_perf();
+
+
+-- process.zhbrsdt1729 definition
+
+-- Drop table
+
+-- DROP TABLE process.zhbrsdt1729;
+
+CREATE TABLE process.zhbrsdt1729 (
+	soid varchar(20) NOT NULL,
+	dealercode varchar(10) NOT NULL,
+	vincode varchar NOT NULL,
+	itmnum varchar(5) NOT NULL,
+	sotype varchar(255) NULL,
+	codsrc varchar(15) NULL,
+	zdesc varchar NULL,
+	zqty float8 NULL,
+	unit varchar(3) NULL,
+	value float8 NULL,
+	total_value float8 NULL,
+	ernam varchar(12) NULL,
+	erdat date NULL,
+	erzet time NULL,
+	aenam varchar(12) NULL,
+	aedat date NULL,
+	aezet time NULL,
+	ro_id varchar(100) NULL,
+	ro_service_id varchar(100) NOT NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT zhbrsdt1729_pk PRIMARY KEY (ro_service_id),
+	CONSTRAINT zhbrsdt1729_fk FOREIGN KEY (ro_id) REFERENCES process.zhbrsdt1728(ro_id)
+);
+CREATE INDEX zhbrsdt1729_dealercode_idx ON process.zhbrsdt1729 USING btree (dealercode);
+CREATE INDEX zhbrsdt1729_itmnum_idx ON process.zhbrsdt1729 USING btree (itmnum);
+CREATE INDEX zhbrsdt1729_ro_id_idx ON process.zhbrsdt1729 USING btree (ro_id);
+CREATE INDEX zhbrsdt1729_soid_idx ON process.zhbrsdt1729 USING btree (soid);
+CREATE INDEX zhbrsdt1729_vincode_idx ON process.zhbrsdt1729 USING btree (vincode);
+
+
+-- process.zhbrsdt1730 definition
+
+-- Drop table
+
+-- DROP TABLE process.zhbrsdt1730;
+
+CREATE TABLE process.zhbrsdt1730 (
+	soid varchar(20) NULL,
+	dealercode varchar(10) NULL,
+	vincode varchar(17) NULL,
+	itmnum varchar(5) NULL,
+	sotype varchar(255) NULL,
+	pncode varchar(20) NULL,
+	zdesc varchar(30) NULL,
+	zqty float8 NULL,
+	unit varchar(3) NULL,
+	value float8 NULL,
+	total_value float8 NULL,
+	ernam varchar(12) NULL,
+	erdat date NULL,
+	erzet time NULL,
+	aenam varchar(12) NULL,
+	aedat date NULL,
+	aezet time NULL,
+	ro_id varchar(100) NULL,
+	ro_parts_id varchar(100) NOT NULL,
+	inter_flag varchar(30) NULL,
+	CONSTRAINT zhbrsdt1730_pk PRIMARY KEY (ro_parts_id),
+	CONSTRAINT zhbrsdt1730_fk FOREIGN KEY (ro_id) REFERENCES process.zhbrsdt1728(ro_id)
+);
+CREATE INDEX zhbrsdt1730_dealercode_idx ON process.zhbrsdt1730 USING btree (dealercode);
+CREATE INDEX zhbrsdt1730_itmnum_idx ON process.zhbrsdt1730 USING btree (itmnum);
+CREATE INDEX zhbrsdt1730_ro_id_idx ON process.zhbrsdt1730 USING btree (ro_id);
+CREATE INDEX zhbrsdt1730_soid_idx ON process.zhbrsdt1730 USING btree (soid);
+CREATE INDEX zhbrsdt1730_vincode_idx ON process.zhbrsdt1730 USING btree (vincode);

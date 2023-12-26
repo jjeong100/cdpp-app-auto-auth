@@ -1,0 +1,674 @@
+-- "replica"."_hcmeta_id_seq" definition
+
+-- DROP SEQUENCE "replica"."_hcmeta_id_seq";
+
+CREATE SEQUENCE "replica"."_hcmeta_id_seq"
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica"."_sf_event_log_id_seq" definition
+
+-- DROP SEQUENCE "replica"."_sf_event_log_id_seq";
+
+CREATE SEQUENCE "replica"."_sf_event_log_id_seq"
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica"."_trigger_log_id_seq" definition
+
+-- DROP SEQUENCE "replica"."_trigger_log_id_seq";
+
+CREATE SEQUENCE "replica"."_trigger_log_id_seq"
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_bulk2_id_seq definition
+
+-- DROP SEQUENCE "replica".account_bulk2_id_seq;
+
+CREATE SEQUENCE "replica".account_bulk2_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".account_bulk_id_seq;
+
+CREATE SEQUENCE "replica".account_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_business_email_fail_id_seq definition
+
+-- DROP SEQUENCE "replica".account_business_email_fail_id_seq;
+
+CREATE SEQUENCE "replica".account_business_email_fail_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_id_seq definition
+
+-- DROP SEQUENCE "replica".account_id_seq;
+
+CREATE SEQUENCE "replica".account_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_person_check2_id_seq definition
+
+-- DROP SEQUENCE "replica".account_person_check2_id_seq;
+
+CREATE SEQUENCE "replica".account_person_check2_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".account_person_check_id_seq definition
+
+-- DROP SEQUENCE "replica".account_person_check_id_seq;
+
+CREATE SEQUENCE "replica".account_person_check_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".accountcontactrelation_id_seq definition
+
+-- DROP SEQUENCE "replica".accountcontactrelation_id_seq;
+
+CREATE SEQUENCE "replica".accountcontactrelation_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".asset_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".asset_bulk_id_seq;
+
+CREATE SEQUENCE "replica".asset_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".asset_id_seq definition
+
+-- DROP SEQUENCE "replica".asset_id_seq;
+
+CREATE SEQUENCE "replica".asset_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".bluelink__c_id_seq definition
+
+-- DROP SEQUENCE "replica".bluelink__c_id_seq;
+
+CREATE SEQUENCE "replica".bluelink__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".bluelink_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".bluelink_bulk_id_seq;
+
+CREATE SEQUENCE "replica".bluelink_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".bounce_performance_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".bounce_performance_bulk_id_seq;
+
+CREATE SEQUENCE "replica".bounce_performance_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".campaign_performance_rpt_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".campaign_performance_rpt_bulk_id_seq;
+
+CREATE SEQUENCE "replica".campaign_performance_rpt_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".case_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".case_bulk_id_seq;
+
+CREATE SEQUENCE "replica".case_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".case_id_seq definition
+
+-- DROP SEQUENCE "replica".case_id_seq;
+
+CREATE SEQUENCE "replica".case_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".click_performance_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".click_performance_bulk_id_seq;
+
+CREATE SEQUENCE "replica".click_performance_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".colorinformation__c_id_seq definition
+
+-- DROP SEQUENCE "replica".colorinformation__c_id_seq;
+
+CREATE SEQUENCE "replica".colorinformation__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".contact_dealer_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".contact_dealer_bulk_id_seq;
+
+CREATE SEQUENCE "replica".contact_dealer_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".contact_id_seq definition
+
+-- DROP SEQUENCE "replica".contact_id_seq;
+
+CREATE SEQUENCE "replica".contact_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".customervehicle__c_id_seq definition
+
+-- DROP SEQUENCE "replica".customervehicle__c_id_seq;
+
+CREATE SEQUENCE "replica".customervehicle__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".customervehicle_bulk2_id_seq definition
+
+-- DROP SEQUENCE "replica".customervehicle_bulk2_id_seq;
+
+CREATE SEQUENCE "replica".customervehicle_bulk2_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".customervehicle_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".customervehicle_bulk_id_seq;
+
+CREATE SEQUENCE "replica".customervehicle_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".cx_sr_mntsrvc_x__c_id_seq definition
+
+-- DROP SEQUENCE "replica".cx_sr_mntsrvc_x__c_id_seq;
+
+CREATE SEQUENCE "replica".cx_sr_mntsrvc_x__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".dealerappointmenthistory__c_id_seq definition
+
+-- DROP SEQUENCE "replica".dealerappointmenthistory__c_id_seq;
+
+CREATE SEQUENCE "replica".dealerappointmenthistory__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".dealerholiday__c_id_seq definition
+
+-- DROP SEQUENCE "replica".dealerholiday__c_id_seq;
+
+CREATE SEQUENCE "replica".dealerholiday__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".dealerservice__c_id_seq definition
+
+-- DROP SEQUENCE "replica".dealerservice__c_id_seq;
+
+CREATE SEQUENCE "replica".dealerservice__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".invoiceinfo__c_id_seq definition
+
+-- DROP SEQUENCE "replica".invoiceinfo__c_id_seq;
+
+CREATE SEQUENCE "replica".invoiceinfo__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".lead_id_seq definition
+
+-- DROP SEQUENCE "replica".lead_id_seq;
+
+CREATE SEQUENCE "replica".lead_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".loyaltyprogram__c_id_seq definition
+
+-- DROP SEQUENCE "replica".loyaltyprogram__c_id_seq;
+
+CREATE SEQUENCE "replica".loyaltyprogram__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".loyaltyprogram_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".loyaltyprogram_bulk_id_seq;
+
+CREATE SEQUENCE "replica".loyaltyprogram_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".opportunity_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".opportunity_bulk_id_seq;
+
+CREATE SEQUENCE "replica".opportunity_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".opportunity_id_seq definition
+
+-- DROP SEQUENCE "replica".opportunity_id_seq;
+
+CREATE SEQUENCE "replica".opportunity_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".product2_id_seq definition
+
+-- DROP SEQUENCE "replica".product2_id_seq;
+
+CREATE SEQUENCE "replica".product2_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".quotehistory_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".quotehistory_bulk_id_seq;
+
+CREATE SEQUENCE "replica".quotehistory_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".quotehistory_if__c_id_seq definition
+
+-- DROP SEQUENCE "replica".quotehistory_if__c_id_seq;
+
+CREATE SEQUENCE "replica".quotehistory_if__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".recordtype_id_seq definition
+
+-- DROP SEQUENCE "replica".recordtype_id_seq;
+
+CREATE SEQUENCE "replica".recordtype_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".rental__c_id_seq definition
+
+-- DROP SEQUENCE "replica".rental__c_id_seq;
+
+CREATE SEQUENCE "replica".rental__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".roadsideassistance__c_id_seq definition
+
+-- DROP SEQUENCE "replica".roadsideassistance__c_id_seq;
+
+CREATE SEQUENCE "replica".roadsideassistance__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".roadsideassistanceservice__c_id_seq definition
+
+-- DROP SEQUENCE "replica".roadsideassistanceservice__c_id_seq;
+
+CREATE SEQUENCE "replica".roadsideassistanceservice__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".salesconsulthistory_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".salesconsulthistory_bulk_id_seq;
+
+CREATE SEQUENCE "replica".salesconsulthistory_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".salesconsulthistory_if__c_id_seq definition
+
+-- DROP SEQUENCE "replica".salesconsulthistory_if__c_id_seq;
+
+CREATE SEQUENCE "replica".salesconsulthistory_if__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".seq_account_no definition
+
+-- DROP SEQUENCE "replica".seq_account_no;
+
+CREATE SEQUENCE "replica".seq_account_no
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".seq_oppty_name definition
+
+-- DROP SEQUENCE "replica".seq_oppty_name;
+
+CREATE SEQUENCE "replica".seq_oppty_name
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 999999
+	START 1
+	CACHE 1
+	CYCLE;
+
+
+-- "replica".seq_unkown_firstname definition
+
+-- DROP SEQUENCE "replica".seq_unkown_firstname;
+
+CREATE SEQUENCE "replica".seq_unkown_firstname
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".seq_unkown_lastname definition
+
+-- DROP SEQUENCE "replica".seq_unkown_lastname;
+
+CREATE SEQUENCE "replica".seq_unkown_lastname
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".synergy_action_audit_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".synergy_action_audit_bulk_id_seq;
+
+CREATE SEQUENCE "replica".synergy_action_audit_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".task_id_seq definition
+
+-- DROP SEQUENCE "replica".task_id_seq;
+
+CREATE SEQUENCE "replica".task_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".testdrivehistory_bulk_id_seq definition
+
+-- DROP SEQUENCE "replica".testdrivehistory_bulk_id_seq;
+
+CREATE SEQUENCE "replica".testdrivehistory_bulk_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- "replica".testdrivehistory_if__c_id_seq definition
+
+-- DROP SEQUENCE "replica".testdrivehistory_if__c_id_seq;
+
+CREATE SEQUENCE "replica".testdrivehistory_if__c_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;

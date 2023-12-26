@@ -1,0 +1,619 @@
+-- CREATE UNIQUE INDEX click_performance_bulk_pkey ON replica.click_performance_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_click_performance_bulk_systemmodstamp ON replica.click_performance_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_click_performance_bulk_external_id__c ON replica.click_performance_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_click_performance_bulk_sfid ON replica.click_performance_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX asset_pkey ON replica.asset USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_asset_account__external_id__c ON replica.asset USING btree (account__external_id__c);
+-- 
+-- CREATE INDEX hc_idx_asset_accountid ON replica.asset USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_asset_assetprovidedbyid ON replica.asset USING btree (assetprovidedbyid);
+-- 
+-- CREATE INDEX hc_idx_asset_assetservicedbyid ON replica.asset USING btree (assetservicedbyid);
+-- 
+-- CREATE INDEX hc_idx_asset_contactid ON replica.asset USING btree (contactid);
+-- 
+-- CREATE INDEX hc_idx_asset_dealeraccount__c ON replica.asset USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_asset_dealeraccount__r__external_id__c ON replica.asset USING btree (dealeraccount__r__external_id__c);
+-- 
+-- CREATE INDEX hc_idx_asset_lastmodifieddate ON replica.asset USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_asset_parentid ON replica.asset USING btree (parentid);
+-- 
+-- CREATE INDEX hc_idx_asset_product2__external_id__c ON replica.asset USING btree (product2__external_id__c);
+-- 
+-- CREATE INDEX hc_idx_asset_product2id ON replica.asset USING btree (product2id);
+-- 
+-- CREATE INDEX hc_idx_asset_rootassetid ON replica.asset USING btree (rootassetid);
+-- 
+-- CREATE INDEX hc_idx_asset_salesdealername__c ON replica.asset USING btree (salesdealername__c);
+-- 
+-- CREATE INDEX hc_idx_asset_salesdealername__r__external_id__c ON replica.asset USING btree (salesdealername__r__external_id__c);
+-- 
+-- CREATE INDEX hc_idx_asset_systemmodstamp ON replica.asset USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_asset_external_id__c ON replica.asset USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_asset_sfid ON replica.asset USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_lead_convertedaccountid ON replica.lead USING btree (convertedaccountid);
+-- 
+-- CREATE INDEX hc_idx_lead_convertedcontactid ON replica.lead USING btree (convertedcontactid);
+-- 
+-- CREATE INDEX hc_idx_lead_dealeraccount__c ON replica.lead USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_lead_lastmodifieddate ON replica.lead USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_lead_systemmodstamp ON replica.lead USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_lead_hyundaiuniquekeylead__c ON replica.lead USING btree (hyundaiuniquekeylead__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_lead_sfid ON replica.lead USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX lead_pkey ON replica.lead USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_roadsideassistanceservice__c_roadsideassistanceid__c ON replica.roadsideassistanceservice__c USING btree (roadsideassistanceid__c);
+-- 
+-- CREATE INDEX hc_idx_roadsideassistanceservice__c_systemmodstamp ON replica.roadsideassistanceservice__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_roadsideassistanceservice__c_externalid__c ON replica.roadsideassistanceservice__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_roadsideassistanceservice__c_sfid ON replica.roadsideassistanceservice__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX roadsideassistanceservice__c_pkey ON replica.roadsideassistanceservice__c USING btree (id);
+-- 
+-- CREATE INDEX account__hc_err_idx ON replica.account USING btree (_hc_err);
+-- 
+-- CREATE INDEX account__hc_lastop_idx ON replica.account USING btree (_hc_lastop);
+-- 
+-- CREATE INDEX account_cnpj__c_idx ON replica.account USING btree (cnpj__c);
+-- 
+-- CREATE INDEX account_corporateregistrationnumber__c_idx ON replica.account USING btree (corporateregistrationnumber__c);
+-- 
+-- CREATE INDEX account_name_idx ON replica.account USING btree (name);
+-- 
+-- CREATE INDEX account_phone_idx ON replica.account USING btree (phone, emailaddress__c);
+-- 
+-- CREATE UNIQUE INDEX account_pkey ON replica.account USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_account_accparentaccount__c ON replica.account USING btree (accparentaccount__c);
+-- 
+-- CREATE INDEX hc_idx_account_lastmodifieddate ON replica.account USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_account_parentid ON replica.account USING btree (parentid);
+-- 
+-- CREATE INDEX hc_idx_account_systemmodstamp ON replica.account USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_external_id__c ON replica.account USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_sfid ON replica.account USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_opportunity_accountid ON replica.opportunity USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_opportunity_case__c ON replica.opportunity USING btree (case__c);
+-- 
+-- CREATE INDEX hc_idx_opportunity_dealeraccount__c ON replica.opportunity USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_opportunity_systemmodstamp ON replica.opportunity USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_opportunity_external_id__c ON replica.opportunity USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_opportunity_sfid ON replica.opportunity USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX opportunity_pkey ON replica.opportunity USING btree (id);
+-- 
+-- CREATE INDEX opportunity_testdriveprotocolid__c_idx ON replica.opportunity USING btree (testdriveprotocolid__c);
+-- 
+-- CREATE INDEX customervehicle__c_account__r__external_id__c_idx ON replica.customervehicle__c USING btree (account__r__external_id__c);
+-- 
+-- CREATE UNIQUE INDEX customervehicle__c_pkey ON replica.customervehicle__c USING btree (id);
+-- 
+-- CREATE INDEX customervehicle__c_status__c_idx ON replica.customervehicle__c USING btree (status__c);
+-- 
+-- CREATE INDEX customervehicle__c_type__c_idx ON replica.customervehicle__c USING btree (type__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_account__c ON replica.customervehicle__c USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_contact__c ON replica.customervehicle__c USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_customer_vehicle_id__c ON replica.customervehicle__c USING btree (customer_vehicle_id__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_dealercode__c ON replica.customervehicle__c USING btree (dealercode__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_isdeleted ON replica.customervehicle__c USING btree (isdeleted);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_relationship__c ON replica.customervehicle__c USING btree (relationship__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_status__c ON replica.customervehicle__c USING btree (status__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_systemmodstamp ON replica.customervehicle__c USING btree (systemmodstamp);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_type__c ON replica.customervehicle__c USING btree (type__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_vehicle__c ON replica.customervehicle__c USING btree (vehicle__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle__c_vehicle__r__external_id__c ON replica.customervehicle__c USING btree (vehicle__r__external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle__c_external_id__c ON replica.customervehicle__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle__c_sfid ON replica.customervehicle__c USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_rental__c_systemmodstamp ON replica.rental__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_rental__c_external_id__c ON replica.rental__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_rental__c_sfid ON replica.rental__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX rental__c_pkey ON replica.rental__c USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX dealerappointmenthistory__c_pkey ON replica.dealerappointmenthistory__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_dealerappointmenthistory__c_accountid__c ON replica.dealerappointmenthistory__c USING btree (accountid__c);
+-- 
+-- CREATE INDEX hc_idx_dealerappointmenthistory__c_systemmodstamp ON replica.dealerappointmenthistory__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerappointmenthistory__c_externalid__c ON replica.dealerappointmenthistory__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerappointmenthistory__c_sfid ON replica.dealerappointmenthistory__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX bluelink_bulk_pkey ON replica.bluelink_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_bluelink_bulk_asset__c ON replica.bluelink_bulk USING btree (asset__c);
+-- 
+-- CREATE INDEX hc_idx_bluelink_bulk_systemmodstamp ON replica.bluelink_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bluelink_bulk_externalid__c ON replica.bluelink_bulk USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bluelink_bulk_sfid ON replica.bluelink_bulk USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_task_accountid ON replica.task USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_task_systemmodstamp ON replica.task USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_task_external_id__c ON replica.task USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_task_sfid ON replica.task USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX task_pkey ON replica.task USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_dealeraccountid__c_1 ON replica.loyaltyprogram_bulk USING btree (dealeraccountid__c);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_lastmodifieddate_1 ON replica.loyaltyprogram_bulk USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_personaccountid__c_1 ON replica.loyaltyprogram_bulk USING btree (personaccountid__c);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_systemmodstamp_1 ON replica.loyaltyprogram_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_external_id__c_1 ON replica.loyaltyprogram_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_sfid_1 ON replica.loyaltyprogram_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX loyaltyprogram__c_pkey_1 ON replica.loyaltyprogram_bulk USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_opportunity_sfid_sfid ON replica.opportunity_sfid USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX customervehicle_bulk_pkey ON replica.customervehicle_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk_account__c ON replica.customervehicle_bulk USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk_systemmodstamp ON replica.customervehicle_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk_vehicle__c ON replica.customervehicle_bulk USING btree (vehicle__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk_external_id__c ON replica.customervehicle_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk_sfid ON replica.customervehicle_bulk USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_account__c ON replica.quotehistory_if__c USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_contact__c ON replica.quotehistory_if__c USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_dealeraccount__c ON replica.quotehistory_if__c USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_lead__c ON replica.quotehistory_if__c USING btree (lead__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_opportunity__c ON replica.quotehistory_if__c USING btree (opportunity__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_if__c_systemmodstamp ON replica.quotehistory_if__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_quotehistory_if__c_externalid__c ON replica.quotehistory_if__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_quotehistory_if__c_sfid ON replica.quotehistory_if__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX quotehistory_if__c_pkey ON replica.quotehistory_if__c USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX account_bulk_pkey ON replica.account_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_account_bulk_accparentaccount__c ON replica.account_bulk USING btree (accparentaccount__c);
+-- 
+-- CREATE INDEX hc_idx_account_bulk_lastmodifieddate ON replica.account_bulk USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_account_bulk_systemmodstamp ON replica.account_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_bulk_external_id__c ON replica.account_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_bulk_sfid ON replica.account_bulk USING btree (sfid);
+-- 
+-- CREATE INDEX _trigger_log_idx_created_at ON replica._trigger_log USING btree (created_at);
+-- 
+-- CREATE INDEX _trigger_log_idx_state_id ON replica._trigger_log USING btree (state, id);
+-- 
+-- CREATE INDEX _trigger_log_idx_state_table_name ON replica._trigger_log USING btree (state, table_name) WHERE (((state)::text = 'NEW'::text) OR ((state)::text = 'PENDING'::text));
+-- 
+-- CREATE UNIQUE INDEX _trigger_log_pkey ON replica._trigger_log USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX bounce_performance_bulk_pkey ON replica.bounce_performance_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_bounce_performance_bulk_systemmodstamp ON replica.bounce_performance_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bounce_performance_bulk_external_id__c ON replica.bounce_performance_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bounce_performance_bulk_sfid ON replica.bounce_performance_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX case_pkey ON replica."case" USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_case_accountid ON replica."case" USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_case_assetid ON replica."case" USING btree (assetid);
+-- 
+-- CREATE INDEX hc_idx_case_contactid ON replica."case" USING btree (contactid);
+-- 
+-- CREATE INDEX hc_idx_case_customervehicle__c ON replica."case" USING btree (customervehicle__c);
+-- 
+-- CREATE INDEX hc_idx_case_dealer_sold__c ON replica."case" USING btree (dealer_sold__c);
+-- 
+-- CREATE INDEX hc_idx_case_lastmodifieddate ON replica."case" USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_case_masterrecordid ON replica."case" USING btree (masterrecordid);
+-- 
+-- CREATE INDEX hc_idx_case_parentid ON replica."case" USING btree (parentid);
+-- 
+-- CREATE INDEX hc_idx_case_related_dealer_employee__c ON replica."case" USING btree (related_dealer_employee__c);
+-- 
+-- CREATE INDEX hc_idx_case_servicingdealer__c ON replica."case" USING btree (servicingdealer__c);
+-- 
+-- CREATE INDEX hc_idx_case_systemmodstamp ON replica."case" USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_case_external_id__c ON replica."case" USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_case_sfid ON replica."case" USING btree (sfid);
+-- 
+-- CREATE INDEX contact__hc_err_idx ON replica.contact USING btree (_hc_err);
+-- 
+-- CREATE INDEX contact__hc_lastop_idx ON replica.contact USING btree (_hc_lastop);
+-- 
+-- CREATE INDEX contact_account__external_id__c_idx ON replica.contact USING btree (account__external_id__c);
+-- 
+-- CREATE INDEX contact_companyphone__c_idx ON replica.contact USING btree (companyphone__c);
+-- 
+-- CREATE INDEX contact_cpf__c_idx ON replica.contact USING btree (cpf__c);
+-- 
+-- CREATE INDEX contact_email_idx ON replica.contact USING btree (email);
+-- 
+-- CREATE INDEX contact_firstname_idx ON replica.contact USING btree (firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX contact_pkey ON replica.contact USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_contact_accountid ON replica.contact USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_contact_systemmodstamp ON replica.contact USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_contact_external_id__c ON replica.contact USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_contact_sfid ON replica.contact USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX bluelink__c_pkey ON replica.bluelink__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_bluelink__c_activationdate__c ON replica.bluelink__c USING btree (activationdate__c);
+-- 
+-- CREATE INDEX hc_idx_bluelink__c_asset__c ON replica.bluelink__c USING btree (asset__c);
+-- 
+-- CREATE INDEX hc_idx_bluelink__c_systemmodstamp ON replica.bluelink__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bluelink__c_externalid__c ON replica.bluelink__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_bluelink__c_sfid ON replica.bluelink__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX campaign_performance_rpt_bulk_pkey ON replica.campaign_performance_rpt_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_campaign_performance_rpt_bulk_systemmodstamp ON replica.campaign_performance_rpt_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_campaign_performance_rpt_bulk_external_id__c ON replica.campaign_performance_rpt_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_campaign_performance_rpt_bulk_sfid ON replica.campaign_performance_rpt_bulk USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_product2_lastmodifieddate ON replica.product2 USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_product2_systemmodstamp ON replica.product2 USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_product2_external_id__c ON replica.product2 USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_product2_sfid ON replica.product2 USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX product2_pkey ON replica.product2 USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_roadsideassistance__c_account__c ON replica.roadsideassistance__c USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_roadsideassistance__c_case__c ON replica.roadsideassistance__c USING btree (case__c);
+-- 
+-- CREATE INDEX hc_idx_roadsideassistance__c_systemmodstamp ON replica.roadsideassistance__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_roadsideassistance__c_externalid__c ON replica.roadsideassistance__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_roadsideassistance__c_sfid ON replica.roadsideassistance__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX roadsideassistance__c_pkey ON replica.roadsideassistance__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_if__c_account__c ON replica.salesconsulthistory_if__c USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_if__c_contact__c ON replica.salesconsulthistory_if__c USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_if__c_lead__c ON replica.salesconsulthistory_if__c USING btree (lead__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_if__c_opportunity__c ON replica.salesconsulthistory_if__c USING btree (opportunity__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_if__c_systemmodstamp ON replica.salesconsulthistory_if__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_if__c_external_id__c ON replica.salesconsulthistory_if__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_if__c_sfid ON replica.salesconsulthistory_if__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX salesconsulthistory_if__c_pkey ON replica.salesconsulthistory_if__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_opportunity_bulk_accountid ON replica.opportunity_bulk USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_opportunity_bulk_case__c ON replica.opportunity_bulk USING btree (case__c);
+-- 
+-- CREATE INDEX hc_idx_opportunity_bulk_dealeraccount__c ON replica.opportunity_bulk USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_opportunity_bulk_systemmodstamp ON replica.opportunity_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_opportunity_bulk_sfid ON replica.opportunity_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX opportunity_bulk_pkey ON replica.opportunity_bulk USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX cx_sr_mntsrvc_x__c_pkey ON replica.cx_sr_mntsrvc_x__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_cx_sr_mntsrvc_x__c_systemmodstamp ON replica.cx_sr_mntsrvc_x__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_cx_sr_mntsrvc_x__c_external_id__c ON replica.cx_sr_mntsrvc_x__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_cx_sr_mntsrvc_x__c_sfid ON replica.cx_sr_mntsrvc_x__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX _sf_event_log_pkey ON replica._sf_event_log USING btree (id);
+-- 
+-- CREATE INDEX idx__sf_event_log_comp_key ON replica._sf_event_log USING btree (table_name, synced_at);
+-- 
+-- CREATE INDEX idx__sf_event_log_sfid ON replica._sf_event_log USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_bulk_account__c ON replica.salesconsulthistory_bulk USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_bulk_contact__c ON replica.salesconsulthistory_bulk USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_bulk_opportunity__c ON replica.salesconsulthistory_bulk USING btree (opportunity__c);
+-- 
+-- CREATE INDEX hc_idx_salesconsulthistory_bulk_systemmodstamp ON replica.salesconsulthistory_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_bulk_external_id__c ON replica.salesconsulthistory_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_bulk_sfid ON replica.salesconsulthistory_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX salesconsulthistory_bulk_pkey ON replica.salesconsulthistory_bulk USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX account_business_email_fail_pkey ON replica.account_business_email_fail USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_account_business_email_fail_accparentaccount__c ON replica.account_business_email_fail USING btree (accparentaccount__c);
+-- 
+-- CREATE INDEX hc_idx_account_business_email_fail_lastmodifieddate ON replica.account_business_email_fail USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_account_business_email_fail_systemmodstamp ON replica.account_business_email_fail USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_business_email_fail_external_id__c ON replica.account_business_email_fail USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX case_bulk_pkey ON replica.case_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_accountid ON replica.case_bulk USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_assetid ON replica.case_bulk USING btree (assetid);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_contactid ON replica.case_bulk USING btree (contactid);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_dealer_sold__c ON replica.case_bulk USING btree (dealer_sold__c);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_masterrecordid ON replica.case_bulk USING btree (masterrecordid);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_parentid ON replica.case_bulk USING btree (parentid);
+-- 
+-- CREATE INDEX hc_idx_case_bulk_systemmodstamp ON replica.case_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_case_bulk_external_id__c ON replica.case_bulk USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_case_bulk_sfid ON replica.case_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX dealerservice__c_pkey ON replica.dealerservice__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_dealerservice__c_dealeraccount__c ON replica.dealerservice__c USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_dealerservice__c_lastmodifieddate ON replica.dealerservice__c USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_dealerservice__c_systemmodstamp ON replica.dealerservice__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerservice__c_external_id__c ON replica.dealerservice__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerservice__c_sfid ON replica.dealerservice__c USING btree (sfid);
+-- 
+-- CREATE INDEX _trigger_log_archive_idx_created_at ON replica._trigger_log_archive USING btree (created_at);
+-- 
+-- CREATE INDEX _trigger_log_archive_idx_record_id ON replica._trigger_log_archive USING btree (record_id);
+-- 
+-- CREATE INDEX _trigger_log_archive_idx_state_table_name ON replica._trigger_log_archive USING btree (state, table_name) WHERE ((state)::text = 'FAILED'::text);
+-- 
+-- CREATE UNIQUE INDEX _trigger_log_archive_pkey ON replica._trigger_log_archive USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_bulk_account__c ON replica.quotehistory_bulk USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_bulk_dealeraccount__c ON replica.quotehistory_bulk USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_quotehistory_bulk_systemmodstamp ON replica.quotehistory_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_quotehistory_bulk_externalid__c ON replica.quotehistory_bulk USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_quotehistory_bulk_sfid ON replica.quotehistory_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX quotehistory_bulk_pkey ON replica.quotehistory_bulk USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_bulk_account__c ON replica.testdrivehistory_bulk USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_bulk_contact__c ON replica.testdrivehistory_bulk USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_bulk_dealeraccount__c ON replica.testdrivehistory_bulk USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_bulk_dealercontact__c ON replica.testdrivehistory_bulk USING btree (dealercontact__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_bulk_systemmodstamp ON replica.testdrivehistory_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_testdrivehistory_bulk_externalid__c ON replica.testdrivehistory_bulk USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_testdrivehistory_bulk_sfid ON replica.testdrivehistory_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX testdrivehistory_bulk_pkey ON replica.testdrivehistory_bulk USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX dealerholiday__c_pkey ON replica.dealerholiday__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_dealerholiday__c_dealeraccount__c ON replica.dealerholiday__c USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_dealerholiday__c_lastmodifieddate ON replica.dealerholiday__c USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_dealerholiday__c_systemmodstamp ON replica.dealerholiday__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerholiday__c_external_id__c ON replica.dealerholiday__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_dealerholiday__c_sfid ON replica.dealerholiday__c USING btree (sfid);
+-- 
+-- CREATE INDEX hc_idx_invoiceinfo__c_customer__c ON replica.invoiceinfo__c USING btree (customer__c);
+-- 
+-- CREATE INDEX hc_idx_invoiceinfo__c_dealeraccount__c ON replica.invoiceinfo__c USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_invoiceinfo__c_systemmodstamp ON replica.invoiceinfo__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_invoiceinfo__c_external_id__c ON replica.invoiceinfo__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_invoiceinfo__c_sfid ON replica.invoiceinfo__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX invoiceinfo__c_pkey ON replica.invoiceinfo__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_synergy_action_audit_bulk_case__c ON replica.synergy_action_audit_bulk USING btree (case__c);
+-- 
+-- CREATE INDEX hc_idx_synergy_action_audit_bulk_case__r__external_id__c ON replica.synergy_action_audit_bulk USING btree (case__r__external_id__c);
+-- 
+-- CREATE INDEX hc_idx_synergy_action_audit_bulk_systemmodstamp ON replica.synergy_action_audit_bulk USING btree (systemmodstamp);
+-- 
+-- CREATE INDEX hc_idx_synergy_action_audit_bulk_taskintegrationid__c ON replica.synergy_action_audit_bulk USING btree (taskintegrationid__c);
+-- 
+-- CREATE INDEX hc_idx_synergy_action_audit_bulk_type__c ON replica.synergy_action_audit_bulk USING btree (type__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_synergy_action_audit_bulk_externalid__c ON replica.synergy_action_audit_bulk USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_synergy_action_audit_bulk_sfid ON replica.synergy_action_audit_bulk USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX synergy_action_audit_bulk_pkey ON replica.synergy_action_audit_bulk USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX _hcmeta_pkey ON replica._hcmeta USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_contact__c ON replica.loyaltyprogram__c USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_dealeraccountid__c ON replica.loyaltyprogram__c USING btree (dealeraccountid__c);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_lastmodifieddate ON replica.loyaltyprogram__c USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_personaccountid__c ON replica.loyaltyprogram__c USING btree (personaccountid__c);
+-- 
+-- CREATE INDEX hc_idx_loyaltyprogram__c_systemmodstamp ON replica.loyaltyprogram__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_external_id__c ON replica.loyaltyprogram__c USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_sfid ON replica.loyaltyprogram__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX loyaltyprogram__c_pkey ON replica.loyaltyprogram__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_account__c ON replica.testdrivehistory_if__c USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_contact__c ON replica.testdrivehistory_if__c USING btree (contact__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_dealeraccount__c ON replica.testdrivehistory_if__c USING btree (dealeraccount__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_dealercontact__c ON replica.testdrivehistory_if__c USING btree (dealercontact__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_lead__c ON replica.testdrivehistory_if__c USING btree (lead__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_opportunity__c ON replica.testdrivehistory_if__c USING btree (opportunity__c);
+-- 
+-- CREATE INDEX hc_idx_testdrivehistory_if__c_systemmodstamp ON replica.testdrivehistory_if__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_testdrivehistory_if__c_externalid__c ON replica.testdrivehistory_if__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_testdrivehistory_if__c_sfid ON replica.testdrivehistory_if__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX testdrivehistory_if__c_pkey ON replica.testdrivehistory_if__c USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX account_bulk2_pkey ON replica.account_bulk2 USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_account_bulk2_accparentaccount__c ON replica.account_bulk2 USING btree (accparentaccount__c);
+-- 
+-- CREATE INDEX hc_idx_account_bulk2_lastmodifieddate ON replica.account_bulk2 USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_account_bulk2_systemmodstamp ON replica.account_bulk2 USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_bulk2_external_id__c ON replica.account_bulk2 USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_account_bulk2_sfid ON replica.account_bulk2 USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX accountcontactrelation_pkey ON replica.accountcontactrelation USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_accountcontactrelation_accountid ON replica.accountcontactrelation USING btree (accountid);
+-- 
+-- CREATE INDEX hc_idx_accountcontactrelation_contactid ON replica.accountcontactrelation USING btree (contactid);
+-- 
+-- CREATE INDEX hc_idx_accountcontactrelation_systemmodstamp ON replica.accountcontactrelation USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_accountcontactrelation_external_id__c ON replica.accountcontactrelation USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_accountcontactrelation_sfid ON replica.accountcontactrelation USING btree (sfid);
+-- 
+-- CREATE INDEX replica_contact_sfid ON replica.contact_sfid USING btree (sfid, accountid);
+-- 
+-- CREATE INDEX hc_idx_recordtype_lastmodifieddate ON replica.recordtype USING btree (lastmodifieddate);
+-- 
+-- CREATE INDEX hc_idx_recordtype_systemmodstamp ON replica.recordtype USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_recordtype_sfid ON replica.recordtype USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX recordtype_pkey ON replica.recordtype USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX colorinformation__c_pkey ON replica.colorinformation__c USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_colorinformation__c_systemmodstamp ON replica.colorinformation__c USING btree (systemmodstamp);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_colorinformation__c_externalid__c ON replica.colorinformation__c USING btree (externalid__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_colorinformation__c_sfid ON replica.colorinformation__c USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX customervehicle_bulk2_pkey ON replica.customervehicle_bulk2 USING btree (id);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk2_account__c ON replica.customervehicle_bulk2 USING btree (account__c);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk2_systemmodstamp ON replica.customervehicle_bulk2 USING btree (systemmodstamp);
+-- 
+-- CREATE INDEX hc_idx_customervehicle_bulk2_vehicle__c ON replica.customervehicle_bulk2 USING btree (vehicle__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk2_external_id__c ON replica.customervehicle_bulk2 USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk2_sfid ON replica.customervehicle_bulk2 USING btree (sfid);
+-- 
+-- CREATE UNIQUE INDEX asset_bulk_pkey ON replica.asset_bulk USING btree (id);

@@ -1,0 +1,765 @@
+-- landing.if_account_ws_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_account_ws_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_account_ws_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_action_in_ws_wf_note_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_action_in_ws_wf_note_row_id_seq;
+
+CREATE SEQUENCE landing.if_action_in_ws_wf_note_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_action_in_ws_wf_products_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_action_in_ws_wf_products_row_id_seq;
+
+CREATE SEQUENCE landing.if_action_in_ws_wf_products_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_action_in_ws_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_action_in_ws_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_action_in_ws_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_action_in_ws_wf_synergyactionaudit_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_action_in_ws_wf_synergyactionaudit_row_id_seq;
+
+CREATE SEQUENCE landing.if_action_in_ws_wf_synergyactionaudit_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_amaro_csi_survey_answer_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_amaro_csi_survey_answer_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_amaro_csi_survey_answer_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_amaro_csi_survey_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_amaro_csi_survey_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_amaro_csi_survey_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_asset_contact_upsert_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_asset_contact_upsert_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_asset_contact_upsert_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_bluelink_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_bluelink_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_bluelink_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_rsa_claim_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_rsa_claim_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_rsa_claim_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_rsa_claim_ws_rsaservice_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_rsa_claim_ws_rsaservice_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_rsa_claim_ws_rsaservice_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_ws_wf_account_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_ws_wf_account_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_ws_wf_account_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_ws_wf_contact_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_ws_wf_contact_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_ws_wf_contact_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_auto_vehicle_ws_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_auto_vehicle_ws_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_auto_vehicle_ws_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_channel_partner_inf_wf_businessaddress_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_channel_partner_inf_wf_businessaddress_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_channel_partner_inf_wf_businessaddress_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_channel_partner_inf_wf_dlrcontact_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_channel_partner_inf_wf_dlrcontact_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_channel_partner_inf_wf_dlrcontact_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_channel_partner_inf_wf_position_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_channel_partner_inf_wf_position_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_channel_partner_inf_wf_position_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_channel_partner_inf_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_channel_partner_inf_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_channel_partner_inf_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_channel_partner_inf_wf_type_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_channel_partner_inf_wf_type_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_channel_partner_inf_wf_type_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_color_ws_color_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_color_ws_color_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_color_ws_color_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_color_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_color_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_color_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_app_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_app_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_app_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_car_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_car_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_car_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_hobby_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_hobby_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_hobby_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_soccerteam_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_soccerteam_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_soccerteam_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_contact_inf_wf_socialmedia_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_contact_inf_wf_socialmedia_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_contact_inf_wf_socialmedia_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_rental_car_rq_rs_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_rental_car_rq_rs_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_rental_car_rq_rs_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_repair_order_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_repair_order_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_repair_order_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_repair_order_service_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_repair_order_service_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_repair_order_service_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_in_repair_parts_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_in_repair_parts_row_id_seq;
+
+CREATE SEQUENCE landing.if_in_repair_parts_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_dlr_holiday_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_dlr_holiday_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_dlr_holiday_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_dlr_svc_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_dlr_svc_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_dlr_svc_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_dlr_svc_service_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_dlr_svc_service_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_dlr_svc_service_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_emp_avail_day_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_emp_avail_day_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_emp_avail_day_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_emp_avail_excp_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_emp_avail_excp_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_emp_avail_excp_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_manage_emp_avail_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_manage_emp_avail_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_manage_emp_avail_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_mntsrvc_schedule_maintenance_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_mntsrvc_schedule_maintenance_row_id_seq;
+
+CREATE SEQUENCE landing.if_mntsrvc_schedule_maintenance_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_product_in_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_product_in_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_product_in_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_product_list_in_wf_product_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_product_list_in_wf_product_row_id_seq;
+
+CREATE SEQUENCE landing.if_product_list_in_wf_product_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_product_list_in_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_product_list_in_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_product_list_in_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_reclaimaqui_retrieve_ticket_by_id_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_reclaimaqui_retrieve_ticket_by_id_row_id_seq;
+
+CREATE SEQUENCE landing.if_reclaimaqui_retrieve_ticket_by_id_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_register_in_app_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_register_in_app_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_register_in_app_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_register_loyalty_bnf_used_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_register_loyalty_bnf_used_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_register_loyalty_bnf_used_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_attachment_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_attachment_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_attachment_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_chat_ws_chat_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_chat_ws_chat_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_chat_ws_chat_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_chat_ws_message_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_chat_ws_message_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_chat_ws_message_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_chat_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_chat_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_chat_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_ws_wf_accessory_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_ws_wf_accessory_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_ws_wf_accessory_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_ws_wf_part_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_ws_wf_part_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_ws_wf_part_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_service_request_ws_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_service_request_ws_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_service_request_ws_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_contact_in_wf_hobby_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_contact_in_wf_hobby_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_contact_in_wf_hobby_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_contact_in_wf_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_contact_in_wf_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_contact_in_wf_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_contact_in_wf_soccerteam_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_contact_in_wf_soccerteam_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_contact_in_wf_soccerteam_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_contact_in_wf_socialmedia_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_contact_in_wf_socialmedia_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_contact_in_wf_socialmedia_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_contact_in_wf_vehicle_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_contact_in_wf_vehicle_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_contact_in_wf_vehicle_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_lead_ws_interation_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_lead_ws_interation_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_lead_ws_interation_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_lead_ws_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_lead_ws_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_lead_ws_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- landing.if_update_lead_ws_temperature_row_id_seq definition
+
+-- DROP SEQUENCE landing.if_update_lead_ws_temperature_row_id_seq;
+
+CREATE SEQUENCE landing.if_update_lead_ws_temperature_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;

@@ -1,0 +1,739 @@
+-- CREATE UNIQUE INDEX unique_s_mktg_srvr_tsk ON process.s_mktg_srvr_tsk USING btree (row_id);
+-- 
+-- CREATE INDEX asset_account_row_id__c__c_idx ON process.asset USING btree (account_row_id__c);
+-- 
+-- CREATE INDEX asset_billing_date__c_idx ON process.asset USING btree (billing_date__c);
+-- 
+-- CREATE INDEX asset_carregistrationnumber__c_idx ON process.asset USING btree (carregistrationnumber__c);
+-- 
+-- CREATE INDEX asset_contact_row_id__c_idx ON process.asset USING btree (contact_row_id__c);
+-- 
+-- CREATE INDEX asset_external_id__c_idx ON process.asset USING btree (external_id__c);
+-- 
+-- CREATE INDEX asset_legacy_created_idx ON process.asset USING btree (legacy_created);
+-- 
+-- CREATE INDEX asset_name_idx ON process.asset USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX asset_pk ON process.asset USING btree (row_id);
+-- 
+-- CREATE INDEX asset_product2id_idx ON process.asset USING btree (product2id);
+-- 
+-- CREATE INDEX asset_renavam_code__c_idx ON process.asset USING btree (renavam_code__c);
+-- 
+-- CREATE INDEX asset_row_id_idx ON process.asset USING btree (row_id);
+-- 
+-- CREATE INDEX asset_serialnumber_idx ON process.asset USING btree (serialnumber);
+-- 
+-- CREATE UNIQUE INDEX unique_file_attachment ON process.file_attachment USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_loyalty_retention ON process.loyalty_retention USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX cx_evt_act_xm_pk ON process."CX_EVT_ACT_XM" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_financing_installment ON process.financing_installment USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_srv_req_xm ON process.road_side_assistant_service USING btree (row_id);
+-- 
+-- CREATE INDEX testdrivehistory_account_id__c_idx ON process.testdrivehistory USING btree (account_id__c);
+-- 
+-- CREATE INDEX testdrivehistory_active_row_id_idx ON process.testdrivehistory USING btree (active_row_id);
+-- 
+-- CREATE INDEX testdrivehistory_contact_id__c_idx ON process.testdrivehistory USING btree (contact_id__c);
+-- 
+-- CREATE INDEX testdrivehistory_external_id__c_idx ON process.testdrivehistory USING btree (external_id__c);
+-- 
+-- CREATE INDEX testdrivehistory_legacy_created_idx ON process.testdrivehistory USING btree (legacy_created);
+-- 
+-- CREATE INDEX testdrivehistory_legacy_last_upd_idx ON process.testdrivehistory USING btree (legacy_last_upd);
+-- 
+-- CREATE UNIQUE INDEX testdrivehistory_pk ON process.testdrivehistory USING btree (row_id);
+-- 
+-- CREATE INDEX testdrivehistory_protocolid__c_idx ON process.testdrivehistory USING btree (protocolid__c);
+-- 
+-- CREATE INDEX testdrivehistory_reason__c_idx ON process.testdrivehistory USING btree (reason__c, level1__c, level2__c, level3__c, level4__c);
+-- 
+-- CREATE INDEX testdrivehistory_status__c_idx ON process.testdrivehistory USING btree (status__c);
+-- 
+-- CREATE INDEX account_account_billingcounty_length_personemail_idx ON process.account_billingcounty_length USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE INDEX account_billingcounty_length_corporateregistrationnumber__c_idx ON process.account_billingcounty_length USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_billingcounty_length_cpf__c_idx ON process.account_billingcounty_length USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_billingcounty_length_dealercode__c_idx ON process.account_billingcounty_length USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_billingcounty_length_integrationid_idx ON process.account_billingcounty_length USING btree (integrationid);
+-- 
+-- CREATE INDEX account_billingcounty_length_name_idx ON process.account_billingcounty_length USING btree (name);
+-- 
+-- CREATE INDEX account_billingcounty_length_personemail_idx ON process.account_billingcounty_length USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_billingcounty_length_pk ON process.account_billingcounty_length USING btree (row_id);
+-- 
+-- CREATE INDEX account_billingcounty_length_pr_con_id_idx ON process.account_billingcounty_length USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_billingcounty_length_registrysource__c_idx ON process.account_billingcounty_length USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_billingcounty_length_row_id_idx ON process.account_billingcounty_length USING btree (row_id);
+-- 
+-- CREATE INDEX account_billingcounty_length_type_idx ON process.account_billingcounty_length USING btree (type);
+-- 
+-- CREATE INDEX idx_account_billingcounty_length_external_id ON process.account_billingcounty_length USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_billingcounty_length ON process.account_billingcounty_length USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_activity_att ON process.s_activity_att USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_srv_req_x_pk ON process."S_SRV_REQ_X" USING btree (row_id);
+-- 
+-- CREATE INDEX contact_companyphone__c_idx ON process.contact USING btree (companyphone__c);
+-- 
+-- CREATE INDEX contact_email_idx ON process.contact USING btree (email);
+-- 
+-- CREATE INDEX contact_firstname_idx ON process.contact USING btree (firstname);
+-- 
+-- CREATE INDEX contact_lastname_idx ON process.contact USING btree (lastname);
+-- 
+-- CREATE UNIQUE INDEX contact_pk ON process.contact USING btree (row_id);
+-- 
+-- CREATE INDEX idx_contact__account_row_id ON process.contact USING btree (account_row_id);
+-- 
+-- CREATE INDEX idx_contact__cpf__c ON process.contact USING btree (cpf__c);
+-- 
+-- CREATE INDEX idx_contact__external_id__c ON process.contact USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX unique_click_performance ON process.click_performance USING btree (row_id);
+-- 
+-- CREATE INDEX s_camp_ld_wave_camp_id_idx ON process.s_camp_ld_wave USING btree (camp_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_camp_ld_wave ON process.s_camp_ld_wave USING btree (row_id);
+-- 
+-- CREATE INDEX zhbrsdt1730_dealercode_idx ON process.zhbrsdt1730 USING btree (dealercode);
+-- 
+-- CREATE INDEX zhbrsdt1730_itmnum_idx ON process.zhbrsdt1730 USING btree (itmnum);
+-- 
+-- CREATE UNIQUE INDEX zhbrsdt1730_pk ON process.zhbrsdt1730 USING btree (ro_parts_id);
+-- 
+-- CREATE INDEX zhbrsdt1730_ro_id_idx ON process.zhbrsdt1730 USING btree (ro_id);
+-- 
+-- CREATE INDEX zhbrsdt1730_soid_idx ON process.zhbrsdt1730 USING btree (soid);
+-- 
+-- CREATE INDEX zhbrsdt1730_vincode_idx ON process.zhbrsdt1730 USING btree (vincode);
+-- 
+-- CREATE INDEX s_comm_dtl_hyperlink_name_idx ON process.s_comm_dtl USING btree (hyperlink_name);
+-- 
+-- CREATE UNIQUE INDEX unique_s_comm_dtl ON process.s_comm_dtl USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX idx_quotehistory__c ON process.quotehistory USING btree (row_id);
+-- 
+-- CREATE INDEX quotehistory__c_external_id__c_idx ON process.quotehistory USING btree (external_id__c);
+-- 
+-- CREATE INDEX quotehistory_level1__c_idx ON process.quotehistory USING btree (voctype__c);
+-- 
+-- CREATE INDEX quotehistory_level2__c_idx ON process.quotehistory USING btree (voc_class);
+-- 
+-- CREATE INDEX quotehistory_protocolid__c_idx ON process.quotehistory USING btree (protocolid__c);
+-- 
+-- CREATE INDEX quotehistory_reason__c_idx ON process.quotehistory USING btree (reason__c);
+-- 
+-- CREATE UNIQUE INDEX unique_account_benefit_history ON process.loyalty_program USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_aprovou_levou ON process.aprovou_levou USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_org_ext_pk ON process."S_ORG_EXT" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_campaign_performance_rpt ON process.campaign_performance_rpt USING btree (row_id);
+-- 
+-- CREATE INDEX s_party_per_party_id_idx ON process."S_PARTY_PER" USING btree (party_id);
+-- 
+-- CREATE UNIQUE INDEX s_party_per_person_id_idx ON process."S_PARTY_PER" USING btree (person_id, party_id, conflict_id);
+-- 
+-- CREATE INDEX s_party_per_person_id_idx2 ON process."S_PARTY_PER" USING btree (person_id, party_id);
+-- 
+-- CREATE UNIQUE INDEX s_party_per_pk ON process."S_PARTY_PER" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_evt_act_pk ON process."S_EVT_ACT" USING btree (row_id);
+-- 
+-- CREATE INDEX customer_vehicle_account_id_idx ON process.customer_vehicle USING btree (account_id);
+-- 
+-- CREATE INDEX customer_vehicle_asset_id_idx ON process.customer_vehicle USING btree (asset_id);
+-- 
+-- CREATE INDEX customer_vehicle_cv_type_idx ON process.customer_vehicle USING btree (cv_type);
+-- 
+-- CREATE INDEX customer_vehicle_relation_type_cd_idx ON process.customer_vehicle USING btree (relation_type_cd);
+-- 
+-- CREATE INDEX customer_vehicle_row_id_idx ON process.customer_vehicle USING btree (row_id);
+-- 
+-- CREATE INDEX customer_vehicle_status_cd_idx ON process.customer_vehicle USING btree (status_cd);
+-- 
+-- CREATE INDEX s_asset_x_par_row_id_idx ON process."S_ASSET_X" USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX s_asset_x_pk ON process."S_ASSET_X" USING btree (row_id);
+-- 
+-- CREATE INDEX account_cleansing_apikey__c_idx ON process.account_cleansing USING btree (apikey__c);
+-- 
+-- CREATE INDEX account_cleansing_corporateregistrationnumber__c_idx ON process.account_cleansing USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_cleansing_cpf__c_idx ON process.account_cleansing USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_cleansing_dealercode__c_idx ON process.account_cleansing USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_cleansing_integrationid_idx ON process.account_cleansing USING btree (integrationid);
+-- 
+-- CREATE INDEX account_cleansing_name_idx ON process.account_cleansing USING btree (name);
+-- 
+-- CREATE INDEX account_cleansing_personemail_idx ON process.account_cleansing USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_cleansing_pk ON process.account_cleansing USING btree (row_id);
+-- 
+-- CREATE INDEX account_cleansing_pr_con_id_idx ON process.account_cleansing USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_cleansing_process_account_type_idx ON process.account_cleansing USING btree (process_account_type);
+-- 
+-- CREATE INDEX account_cleansing_registrysource__c_idx ON process.account_cleansing USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_cleansing_row_id_idx ON process.account_cleansing USING btree (row_id);
+-- 
+-- CREATE INDEX account_cleansing_type_idx ON process.account_cleansing USING btree (type);
+-- 
+-- CREATE INDEX idx_account_cleansing_external_id ON process.account_cleansing USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_cleansing ON process.account_cleansing USING btree (row_id);
+-- 
+-- CREATE INDEX color_information_external_id__c_idx ON process.color_information USING btree (external_id__c);
+-- 
+-- CREATE INDEX color_information_lang_id__c_idx ON process.color_information USING btree (lang_id__c);
+-- 
+-- CREATE INDEX color_information_name_code_idx ON process.color_information USING btree (name_code);
+-- 
+-- CREATE INDEX color_information_row_id_idx ON process.color_information USING btree (row_id);
+-- 
+-- CREATE INDEX color_information_type_idx ON process.color_information USING btree (type);
+-- 
+-- CREATE INDEX sales_consult_history_account_row_id__c_idx ON process.sales_consult_history USING btree (account_row_id__c);
+-- 
+-- CREATE INDEX sales_consult_history_contact_row_id__c_idx ON process.sales_consult_history USING btree (contact_row_id__c);
+-- 
+-- CREATE INDEX sales_consult_history_external_id__c_idx ON process.sales_consult_history USING btree (external_id__c);
+-- 
+-- CREATE INDEX sales_consult_history_interactionnumber__c_idx ON process.sales_consult_history USING btree (interactionnumber__c);
+-- 
+-- CREATE INDEX sales_consult_history_protocol__c_idx ON process.sales_consult_history USING btree (protocol__c);
+-- 
+-- CREATE INDEX sales_consult_history_temperaturenumber__c_idx ON process.sales_consult_history USING btree (temperaturenumber__c);
+-- 
+-- CREATE UNIQUE INDEX unique_sales_consult_history ON process.sales_consult_history USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_prod_int_x_pk ON process."S_PROD_INT_X" USING btree (row_id);
+-- 
+-- CREATE INDEX bluelink_asset_id_idx ON process.bluelink USING btree (asset_id);
+-- 
+-- CREATE INDEX bluelink_assetdate__c_idx ON process.bluelink USING btree (assetdate__c);
+-- 
+-- CREATE INDEX bluelink_chassi__c_idx ON process.bluelink USING btree (chassi__c);
+-- 
+-- CREATE INDEX bluelink_eventdate__c_idx ON process.bluelink USING btree (eventdate__c);
+-- 
+-- CREATE INDEX bluelink_latestmileage__c_idx ON process.bluelink USING btree (latestmileage__c);
+-- 
+-- CREATE UNIQUE INDEX bluelink_pk ON process.bluelink USING btree (row_id);
+-- 
+-- CREATE INDEX bluelink_type__c_idx ON process.bluelink USING btree (type__c);
+-- 
+-- CREATE UNIQUE INDEX s_call_lst_pk ON process.s_call_lst USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_call_lst ON process.s_call_lst USING btree (row_id);
+-- 
+-- CREATE INDEX cx_chat_created_by_idx ON process.cx_chat_message USING btree (created_by);
+-- 
+-- CREATE INDEX cx_chat_message_cht_row_id_idx ON process.cx_chat_message USING btree (cht_row_id);
+-- 
+-- CREATE INDEX cx_chat_message_conflict_id_idx ON process.cx_chat_message USING btree (conflict_id);
+-- 
+-- CREATE UNIQUE INDEX cx_chat_message_pk ON process.cx_chat_message USING btree (row_id);
+-- 
+-- CREATE INDEX cx_chat_message_protocol__c_idx ON process.cx_chat_message USING btree (protocol__c);
+-- 
+-- CREATE INDEX account_apikey__c_idx ON process.account USING btree (apikey__c);
+-- 
+-- CREATE INDEX account_companyphone__pc_idx ON process.account USING btree (companyphone__pc);
+-- 
+-- CREATE INDEX account_corporateregistrationnumber__c_idx ON process.account USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_cpf__c_idx ON process.account USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_cust_stat_cd__c_idx ON process.account USING btree (cust_stat_cd__c);
+-- 
+-- CREATE INDEX account_dealercode__c_idx ON process.account USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_integrationid_idx ON process.account USING btree (integrationid);
+-- 
+-- CREATE INDEX account_name_idx ON process.account USING btree (name);
+-- 
+-- CREATE INDEX account_personemail_idx ON process.account USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE INDEX account_personhomephone_idx ON process.account USING btree (personhomephone);
+-- 
+-- CREATE INDEX account_personmobilephone_idx ON process.account USING btree (personmobilephone);
+-- 
+-- CREATE INDEX account_phone_idx ON process.account USING btree (phone, emailaddress);
+-- 
+-- CREATE UNIQUE INDEX account_pk ON process.account USING btree (row_id);
+-- 
+-- CREATE INDEX account_pr_con_id_idx ON process.account USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_registrysource__c_idx ON process.account USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_row_id_idx ON process.account USING btree (row_id);
+-- 
+-- CREATE INDEX account_type_idx ON process.account USING btree (type);
+-- 
+-- CREATE INDEX idx_account_external_id ON process.account USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account ON process.account USING btree (row_id);
+-- 
+-- CREATE INDEX dealer_appointment_history_cpf__c_idx ON process.dealer_appointment_history USING btree (cpf__c);
+-- 
+-- CREATE INDEX dealer_appointment_history_dealercode__c_idx ON process.dealer_appointment_history USING btree (dealercode__c);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_sr_mntsrvc_x ON process.dealer_appointment_history USING btree (row_id);
+-- 
+-- CREATE INDEX amaro_created_idx ON process.amaro USING btree (created);
+-- 
+-- CREATE INDEX amaro_integration_id_idx ON process.amaro USING btree (integration_id);
+-- 
+-- CREATE UNIQUE INDEX amaro_pk ON process.amaro USING btree (amr_row_id);
+-- 
+-- CREATE INDEX amaro_source_idx ON process.amaro USING btree (source);
+-- 
+-- CREATE INDEX amaro_sra_sr_id_idx ON process.amaro USING btree (sra_sr_id);
+-- 
+-- CREATE UNIQUE INDEX synergy_activity_pk ON process.synergy_activity USING btree (row_id);
+-- 
+-- CREATE INDEX synergy_action_audit_external_id__c_idx ON process.synergy_action_audit USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX synergy_action_audit_pk ON process.synergy_action_audit USING btree (row_id);
+-- 
+-- CREATE INDEX synergy_action_audit_taskintegrationid__c_idx ON process.synergy_action_audit USING btree (taskintegrationid__c);
+-- 
+-- CREATE UNIQUE INDEX unique_bounce_performance ON process.bounce_performance USING btree (row_id);
+-- 
+-- CREATE INDEX s_contact_con_cd_idx ON process."S_CONTACT" USING btree (con_cd);
+-- 
+-- CREATE UNIQUE INDEX s_contact_pk ON process."S_CONTACT" USING btree (row_id);
+-- 
+-- CREATE INDEX s_prod_int_name_idx ON process."S_PROD_INT" USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX s_prod_int_pk ON process."S_PROD_INT" USING btree (row_id);
+-- 
+-- CREATE INDEX account_lastname_validation_corporateregistrationnumber__c_idx ON process.account_lastname_validation USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_lastname_validation_cpf__c_idx ON process.account_lastname_validation USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_lastname_validation_dealercode__c_idx ON process.account_lastname_validation USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_lastname_validation_integrationid_idx ON process.account_lastname_validation USING btree (integrationid);
+-- 
+-- CREATE INDEX account_lastname_validation_name_idx ON process.account_lastname_validation USING btree (name);
+-- 
+-- CREATE INDEX account_lastname_validation_personemail_idx ON process.account_lastname_validation USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_lastname_validation_pk ON process.account_lastname_validation USING btree (row_id);
+-- 
+-- CREATE INDEX account_lastname_validation_pr_con_id_idx ON process.account_lastname_validation USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_lastname_validation_registrysource__c_idx ON process.account_lastname_validation USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_lastname_validation_row_id_idx ON process.account_lastname_validation USING btree (row_id);
+-- 
+-- CREATE INDEX account_lastname_validation_type_idx ON process.account_lastname_validation USING btree (type);
+-- 
+-- CREATE INDEX idx_account_lastname_validation_external_id ON process.account_lastname_validation USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_lastname_validation ON process.account_lastname_validation USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_srv_req_xm_pk ON process."S_SRV_REQ_XM" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX dealerservice_pk ON process.dealerservice USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_dealerservice ON process.dealerservice USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_emp_avail_excp_pkey ON process.maintenanceable_availability USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_maintenanceable_availability ON process.maintenanceable_availability USING btree (row_id);
+-- 
+-- CREATE INDEX case_account_row_id__c_idx ON process."case" USING btree (account_row_id__c);
+-- 
+-- CREATE INDEX case_asset_id_idx ON process."case" USING btree (asset_id);
+-- 
+-- CREATE INDEX case_contact_row_id__c_idx ON process."case" USING btree (contact_row_id__c);
+-- 
+-- CREATE INDEX case_external__c_idx ON process."case" USING btree (external__c);
+-- 
+-- CREATE INDEX case_integrationid__c_idx ON process."case" USING btree (integrationid__c);
+-- 
+-- CREATE UNIQUE INDEX case_pk ON process."case" USING btree (row_id);
+-- 
+-- CREATE INDEX case_protocol__c_idx ON process."case" USING btree (protocol__c);
+-- 
+-- CREATE INDEX case_reclame_aqui_external_id__c_idx ON process."case" USING btree (reclame_aqui_external_id__c);
+-- 
+-- CREATE INDEX case_reclame_aqui_id__c_idx ON process."case" USING btree (reclame_aqui_id__c);
+-- 
+-- CREATE INDEX case_serialnumber__c_idx ON process."case" USING btree (serialnumber__c);
+-- 
+-- CREATE INDEX case_voc_class_idx ON process."case" USING btree (voc_class, voctype__c, voc_level_2__c, voc_level_3__c);
+-- 
+-- CREATE INDEX case_voc_level_2__c_idx ON process."case" USING btree (voc_level_2__c);
+-- 
+-- CREATE INDEX case_voc_level_3__c_idx ON process."case" USING btree (voc_level_3__c);
+-- 
+-- CREATE INDEX case_voctype__c_idx ON process."case" USING btree (voctype__c);
+-- 
+-- CREATE INDEX invoiceinfo_person_account_id_idx ON process.invoiceinfo USING btree (person_account_id);
+-- 
+-- CREATE UNIQUE INDEX invoiceinfo_pk ON process.invoiceinfo USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_evt_act_x_pk ON process."S_EVT_ACT_X" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX opportunity_pkey ON process.opportunity USING btree (row_id);
+-- 
+-- CREATE INDEX opportunity_predictive_temp__c_idx ON process.opportunity USING btree (predictive_temp__c);
+-- 
+-- CREATE INDEX opportunity_protocol__c_idx ON process.opportunity USING btree (protocol__c);
+-- 
+-- CREATE INDEX opportunity_testdriveprotocolid__c_idx ON process.opportunity USING btree (testdriveprotocolid__c);
+-- 
+-- CREATE INDEX opportunity_transferredopportunitydate__c_idx ON process.opportunity USING btree (transferredopportunitydate__c);
+-- 
+-- CREATE INDEX s_asset_atx_par_row_id_idx ON process."S_ASSET_ATX" USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX s_asset_atx_pk ON process."S_ASSET_ATX" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX pk_emailsendlog ON process."EmailSendLog" USING btree ("ContactKey", "BatchId", "JobId");
+-- 
+-- CREATE UNIQUE INDEX proc_table_info_pkey ON process.proc_table_info USING btree (id);
+-- 
+-- CREATE UNIQUE INDEX uidx_proc_table_info ON process.proc_table_info USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX s_lst_of_val_pk ON process."S_LST_OF_VAL" USING btree (row_id);
+-- 
+-- CREATE INDEX zhbrsdt1728_account_id_idx ON process.zhbrsdt1728 USING btree (account_id);
+-- 
+-- CREATE INDEX zhbrsdt1728_dealercode_idx ON process.zhbrsdt1728 USING btree (dealercode);
+-- 
+-- CREATE UNIQUE INDEX zhbrsdt1728_pk ON process.zhbrsdt1728 USING btree (ro_id);
+-- 
+-- CREATE INDEX zhbrsdt1728_soid_idx ON process.zhbrsdt1728 USING btree (soid);
+-- 
+-- CREATE INDEX zhbrsdt1728_vincode_idx ON process.zhbrsdt1728 USING btree (vincode);
+-- 
+-- CREATE INDEX service_request_account_row_id__c_idx ON process.service_request USING btree (account_row_id__c);
+-- 
+-- CREATE INDEX service_request_contact_row_id__c_idx ON process.service_request USING btree (contact_row_id__c);
+-- 
+-- CREATE INDEX service_request_external_id__c_idx ON process.service_request USING btree (external_id__c);
+-- 
+-- CREATE INDEX service_request_legacy_last_update__c_idx ON process.service_request USING btree (legacy_last_update__c);
+-- 
+-- CREATE INDEX service_request_legacycreateddate__c_idx ON process.service_request USING btree (legacycreateddate__c);
+-- 
+-- CREATE INDEX service_request_origin_idx ON process.service_request USING btree (origin);
+-- 
+-- CREATE UNIQUE INDEX service_request_pk ON process.service_request USING btree (row_id);
+-- 
+-- CREATE INDEX service_request_predictive_temp__c_idx ON process.service_request USING btree (predictive_temp__c);
+-- 
+-- CREATE INDEX service_request_protocol__c_idx ON process.service_request USING btree (protocol__c);
+-- 
+-- CREATE INDEX service_request_reason__c_idx ON process.service_request USING btree (reason__c, voctype__c, voc_class);
+-- 
+-- CREATE INDEX service_request_serialnumber_idx ON process.service_request USING btree (serialnumber);
+-- 
+-- CREATE INDEX service_request_status_idx ON process.service_request USING btree (status);
+-- 
+-- CREATE INDEX service_request_testdrive_confirmed__c_idx ON process.service_request USING btree (testdrive_confirmed__c);
+-- 
+-- CREATE INDEX service_request_voc_level_2__c_idx ON process.service_request USING btree (voc_level_2__c);
+-- 
+-- CREATE INDEX service_request_voc_level_3__c_idx ON process.service_request USING btree (voc_level_3__c);
+-- 
+-- CREATE INDEX zhbrsdt1729_dealercode_idx ON process.zhbrsdt1729 USING btree (dealercode);
+-- 
+-- CREATE INDEX zhbrsdt1729_itmnum_idx ON process.zhbrsdt1729 USING btree (itmnum);
+-- 
+-- CREATE UNIQUE INDEX zhbrsdt1729_pk ON process.zhbrsdt1729 USING btree (ro_service_id);
+-- 
+-- CREATE INDEX zhbrsdt1729_ro_id_idx ON process.zhbrsdt1729 USING btree (ro_id);
+-- 
+-- CREATE INDEX zhbrsdt1729_soid_idx ON process.zhbrsdt1729 USING btree (soid);
+-- 
+-- CREATE INDEX zhbrsdt1729_vincode_idx ON process.zhbrsdt1729 USING btree (vincode);
+-- 
+-- CREATE UNIQUE INDEX cx_chat_pk ON process.cx_chat USING btree (cht_row_id);
+-- 
+-- CREATE INDEX cx_chat_protocol__c_idx ON process.cx_chat USING btree (protocol__c);
+-- 
+-- CREATE UNIQUE INDEX z_dr_att_data_pk ON process."Z_DR_ATT_DATA" USING btree (dr_row_id);
+-- 
+-- CREATE UNIQUE INDEX s_srv_req_pk ON process."S_SRV_REQ" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_loyx ON process.s_contact_loyx USING btree (row_id);
+-- 
+-- CREATE INDEX task_active_row_id_idx ON process.task USING btree (active_row_id);
+-- 
+-- CREATE INDEX task_external_id__c_idx ON process.task USING btree (external_id__c);
+-- 
+-- CREATE INDEX task_integrationid__c_idx ON process.task USING btree (integrationid__c);
+-- 
+-- CREATE UNIQUE INDEX task_pkey ON process.task USING btree (row_id);
+-- 
+-- CREATE INDEX task_protocol__c_idx ON process.task USING btree (protocol__c);
+-- 
+-- CREATE INDEX product_name_idx ON process.product USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX product_pkey ON process.product USING btree (row_id);
+-- 
+-- CREATE INDEX product_suggested_price__c_idx ON process.product USING btree (suggested_price__c);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_att ON process.s_contact_att USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX pk_smssendlog ON process."SMSSendLog" USING btree ("ContactKey", "AssetID", "MobileMessageTrackingID");
+-- 
+-- CREATE UNIQUE INDEX cx_chat_message_foreignkey_dup_pk ON process.cx_chat_message_foreignkey_dup USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_contact_xm_pk ON process."S_CONTACT_XM" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX dealerholiday_pk ON process.dealerholiday USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_dealerholiday ON process.dealerholiday USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_novo_de_novo ON process.novo_de_novo USING btree (row_id);
+-- 
+-- CREATE INDEX asset_con_asset_id_idx ON process.asset_con USING btree (asset_id);
+-- 
+-- CREATE INDEX asset_con_contact_id_idx ON process.asset_con USING btree (contact_id);
+-- 
+-- CREATE UNIQUE INDEX unique_asset_con ON process.asset_con USING btree (row_id);
+-- 
+-- CREATE INDEX s_communication_dcp_id_idx ON process.s_communication USING btree (dcp_id);
+-- 
+-- CREATE INDEX s_communication_pr_con_id_idx ON process.s_communication USING btree (pr_con_id);
+-- 
+-- CREATE INDEX s_communication_resp_type_cd_id_idx ON process.s_communication USING btree (resp_type_cd);
+-- 
+-- CREATE INDEX s_communicationcamp_con_id_idx ON process.s_communication USING btree (camp_con_id);
+-- 
+-- CREATE INDEX s_communicationcamp_src_id_idx ON process.s_communication USING btree (src_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_communication ON process.s_communication USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_asset_pk ON process."S_ASSET" USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_serial_num_idx ON process."S_ASSET" USING btree (serial_num);
+-- 
+-- CREATE INDEX zipcode_latitude_idx ON process.zipcode USING btree (latitude);
+-- 
+-- CREATE INDEX zipcode_longitude_idx ON process.zipcode USING btree (longitude);
+-- 
+-- CREATE INDEX zipcode_zipcode_idx ON process.zipcode USING btree (zipcode);
+-- 
+-- CREATE UNIQUE INDEX contentdistribution_u1 ON process.contentdistribution USING btree (external_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_note_accnt ON process.s_note_accnt USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_info_pk ON process.if_info USING btree (if_id);
+-- 
+-- CREATE INDEX service_event_act_external_id__c_idx ON process.service_event_act USING btree (external_id__c);
+-- 
+-- CREATE INDEX service_event_act_integration_id_idx ON process.service_event_act USING btree (integrationid__c);
+-- 
+-- CREATE INDEX service_event_act_legacy_created_idx ON process.service_event_act USING btree (legacy_created);
+-- 
+-- CREATE UNIQUE INDEX service_event_act_pk ON process.service_event_act USING btree (row_id);
+-- 
+-- CREATE INDEX service_event_act_protocol__c_idx ON process.service_event_act USING btree (protocol__c);
+-- 
+-- CREATE INDEX service_event_act_service_request_id_idx ON process.service_event_act USING btree (sra_sr_id);
+-- 
+-- CREATE INDEX service_event_act_sra_sr_id_idx ON process.service_event_act USING btree (sra_sr_id);
+-- 
+-- CREATE INDEX service_event_act_status_idx ON process.service_event_act USING btree (status__c);
+-- 
+-- CREATE INDEX service_event_act_type_idx ON process.service_event_act USING btree (type);
+-- 
+-- CREATE UNIQUE INDEX if_info_logs_pk_1 ON process.if_info_logs_backup USING btree (seq_no);
+-- 
+-- CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_cpf_dup_cpf__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_cpf_dup_dealercode__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_cpf_dup_integrationid_idx_1 ON process.account_cpf_dup_wo_old USING btree (integrationid);
+-- 
+-- CREATE INDEX account_cpf_dup_name_idx_1 ON process.account_cpf_dup_wo_old USING btree (name);
+-- 
+-- CREATE INDEX account_cpf_dup_personemail_idx_1 ON process.account_cpf_dup_wo_old USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_cpf_dup_pk_1 ON process.account_cpf_dup_wo_old USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_pr_con_id_idx_1 ON process.account_cpf_dup_wo_old USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_cpf_dup_registrysource__c_idx_1 ON process.account_cpf_dup_wo_old USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_cpf_dup_row_id_idx_1 ON process.account_cpf_dup_wo_old USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_type_idx_1 ON process.account_cpf_dup_wo_old USING btree (type);
+-- 
+-- CREATE INDEX idx_account_cpf_dup_external_id_1 ON process.account_cpf_dup_wo_old USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_cpf_dup_1 ON process.account_cpf_dup_wo_old USING btree (row_id);
+-- 
+-- CREATE INDEX s_camp_con_actl_revn_curcy_cd_idx ON process.s_camp_con USING btree (actl_revn_curcy_cd);
+-- 
+-- CREATE INDEX s_camp_con_created_idx ON process.s_camp_con USING btree (created);
+-- 
+-- CREATE INDEX s_camp_con_msg_bncd_reason_cd_idx ON process.s_camp_con USING btree (msg_bncd_reason_cd);
+-- 
+-- CREATE INDEX s_camp_con_msg_bncd_stat_cd_idx ON process.s_camp_con USING btree (msg_bncd_stat_cd);
+-- 
+-- CREATE INDEX s_camp_con_msg_open_ts_idx ON process.s_camp_con USING btree (msg_open_ts);
+-- 
+-- CREATE UNIQUE INDEX s_camp_con_pk ON process.s_camp_con USING btree (row_id);
+-- 
+-- CREATE INDEX s_camp_con_pr_call_lst_id_idx ON process.s_camp_con USING btree (pr_call_lst_id);
+-- 
+-- CREATE INDEX s_camp_con_src_id_idx ON process.s_camp_con USING btree (src_id);
+-- 
+-- CREATE INDEX s_camp_con_stat_cd_idx ON process.s_camp_con USING btree (stat_cd);
+-- 
+-- CREATE INDEX unique_s_camp_con ON process.s_camp_con USING btree (row_id);
+-- 
+-- CREATE INDEX asset_accnt_accnt_id_idx ON process.asset_accnt USING btree (accnt_id);
+-- 
+-- CREATE INDEX asset_accnt_asset_id_idx ON process.asset_accnt USING btree (asset_id);
+-- 
+-- CREATE UNIQUE INDEX asset_accnt_pk ON process.asset_accnt USING btree (row_id);
+-- 
+-- CREATE INDEX asset_accnt_proc_accnt_id_idx ON process.asset_accnt USING btree (proc_accnt_id, proc_asset_id);
+-- 
+-- CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx_2 ON process.account_cpf_dup_only_old USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_cpf_dup_cpf__c_idx_2 ON process.account_cpf_dup_only_old USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_cpf_dup_dealercode__c_idx_2 ON process.account_cpf_dup_only_old USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_cpf_dup_integrationid_idx_2 ON process.account_cpf_dup_only_old USING btree (integrationid);
+-- 
+-- CREATE INDEX account_cpf_dup_name_idx_2 ON process.account_cpf_dup_only_old USING btree (name);
+-- 
+-- CREATE INDEX account_cpf_dup_personemail_idx_2 ON process.account_cpf_dup_only_old USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_cpf_dup_pk_2 ON process.account_cpf_dup_only_old USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_pr_con_id_idx_2 ON process.account_cpf_dup_only_old USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_cpf_dup_registrysource__c_idx_2 ON process.account_cpf_dup_only_old USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_cpf_dup_row_id_idx_2 ON process.account_cpf_dup_only_old USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_type_idx_2 ON process.account_cpf_dup_only_old USING btree (type);
+-- 
+-- CREATE INDEX idx_account_cpf_dup_external_id_2 ON process.account_cpf_dup_only_old USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_cpf_dup_2 ON process.account_cpf_dup_only_old USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_corporateregistrationnumber__c_idx ON process.account_cpf_dup USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_cpf_dup_cpf__c_idx ON process.account_cpf_dup USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_cpf_dup_dealercode__c_idx ON process.account_cpf_dup USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_cpf_dup_integrationid_idx ON process.account_cpf_dup USING btree (integrationid);
+-- 
+-- CREATE INDEX account_cpf_dup_name_idx ON process.account_cpf_dup USING btree (name);
+-- 
+-- CREATE INDEX account_cpf_dup_personemail_idx ON process.account_cpf_dup USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_cpf_dup_pk ON process.account_cpf_dup USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_pr_con_id_idx ON process.account_cpf_dup USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_cpf_dup_registrysource__c_idx ON process.account_cpf_dup USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_cpf_dup_row_id_idx ON process.account_cpf_dup USING btree (row_id);
+-- 
+-- CREATE INDEX account_cpf_dup_type_idx ON process.account_cpf_dup USING btree (type);
+-- 
+-- CREATE INDEX idx_account_cpf_dup_external_id ON process.account_cpf_dup USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_cpf_dup ON process.account_cpf_dup USING btree (row_id);
+-- 
+-- CREATE INDEX account_firstname_length_corporateregistrationnumber__c_idx ON process.account_firstname_length USING btree (corporateregistrationnumber__c, name);
+-- 
+-- CREATE INDEX account_firstname_length_cpf__c_idx ON process.account_firstname_length USING btree (cpf__c);
+-- 
+-- CREATE INDEX account_firstname_length_dealercode__c_idx ON process.account_firstname_length USING btree (dealercode__c);
+-- 
+-- CREATE INDEX account_firstname_length_integrationid_idx ON process.account_firstname_length USING btree (integrationid);
+-- 
+-- CREATE INDEX account_firstname_length_name_idx ON process.account_firstname_length USING btree (name);
+-- 
+-- CREATE INDEX account_firstname_length_personemail_idx ON process.account_firstname_length USING btree (personemail, firstname, lastname);
+-- 
+-- CREATE UNIQUE INDEX account_firstname_length_pk ON process.account_firstname_length USING btree (row_id);
+-- 
+-- CREATE INDEX account_firstname_length_pr_con_id_idx ON process.account_firstname_length USING btree (pr_con_id);
+-- 
+-- CREATE INDEX account_firstname_length_registrysource__c_idx ON process.account_firstname_length USING btree (registrysource__c);
+-- 
+-- CREATE INDEX account_firstname_length_row_id_idx ON process.account_firstname_length USING btree (row_id);
+-- 
+-- CREATE INDEX account_firstname_length_type_idx ON process.account_firstname_length USING btree (type);
+-- 
+-- CREATE INDEX idx_account_firstname_length_external_id ON process.account_firstname_length USING btree (external_id__c);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_firstname_length ON process.account_firstname_length USING btree (row_id);
+-- 
+-- CREATE INDEX if_info_logs_created_at_idx ON process.if_info_logs USING btree (created_at);
+-- 
+-- CREATE INDEX if_info_logs_if_err_flag_idx ON process.if_info_logs USING btree (if_err_flag);
+-- 
+-- CREATE INDEX if_info_logs_if_id_idx ON process.if_info_logs USING btree (if_id);
+-- 
+-- CREATE UNIQUE INDEX if_info_logs_pk ON process.if_info_logs USING btree (seq_no);
+-- 
+-- CREATE UNIQUE INDEX unique_s_audit_item ON process.s_audit_item USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX account_person_check_pk ON process.account_person_check USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX idx_unique_account_person_check ON process.account_person_check USING btree (row_id);
+-- 
+-- CREATE INDEX amaro_answer_amr_row_id_idx ON process.amaro_answer USING btree (amr_row_id);
+-- 
+-- CREATE INDEX amaro_answer_created_idx ON process.amaro_answer USING btree (created);
+-- 
+-- CREATE INDEX amaro_answer_integration_id_idx ON process.amaro_answer USING btree (integration_id);
+-- 
+-- CREATE UNIQUE INDEX amaro_answer_pk ON process.amaro_answer USING btree (row_id);
+-- 
+-- CREATE INDEX amaro_answer_question_id_idx ON process.amaro_answer USING btree (question_id);
+-- 
+-- CREATE UNIQUE INDEX cx_ap_escl_log_conflict_id_idx ON process."CX_AP_ESCL_LOG" USING btree (conflict_id, par_row_id, name, type);
+-- 
+-- CREATE INDEX cx_ap_escl_log_par_row_id_idx ON process."CX_AP_ESCL_LOG" USING btree (par_row_id, sla_expired_flg, sla_expiration);
+-- 
+-- CREATE UNIQUE INDEX cx_ap_escl_log_pk ON process."CX_AP_ESCL_LOG" USING btree (row_id);
+-- 
+-- CREATE INDEX cx_ap_escl_log_type_idx ON process."CX_AP_ESCL_LOG" USING btree (type, name);
+-- 
+-- CREATE UNIQUE INDEX account_benefit_map_pk ON process.account_benefit_map USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_contact_x_pk ON process."S_CONTACT_X" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX pk_whatsappsendlog ON process."WhatsAppSendLog" USING btree ("ChannelID", "ContactKey", "JobId");
+-- 
+-- CREATE UNIQUE INDEX cx_sr_mntsrvc_x_pk ON process."CX_SR_MNTSRVC_X" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_org_ext_xm_pk ON process."S_ORG_EXT_XM" USING btree (row_id);

@@ -1,0 +1,258 @@
+-- DROP TYPE public.geometry_dump;
+
+CREATE TYPE public.geometry_dump AS (
+	"path" _int4,
+	geom geometry);
+
+COMMENT ON TYPE public.geometry_dump IS 'postgis type: A composite type used to describe the parts of complex geometry.';
+
+-- DROP TYPE public.valid_detail;
+
+CREATE TYPE public.valid_detail AS (
+	"valid" bool,
+	reason varchar,
+	"location" geometry);
+
+-- DROP TYPE public.box2d;
+
+CREATE TYPE public.box2d (
+	INPUT = box2d_in,
+	OUTPUT = box2d_out,
+	INTERNALLENGTH = 65,
+	ALIGNMENT = 4,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+COMMENT ON TYPE public.box2d IS 'postgis type: The type representing a 2-dimensional bounding box.';
+
+-- DROP TYPE public.box2df;
+
+CREATE TYPE public.box2df (
+	INPUT = box2df_in,
+	OUTPUT = box2df_out,
+	INTERNALLENGTH = 16,
+	ALIGNMENT = 8,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+-- DROP TYPE public.box3d;
+
+CREATE TYPE public.box3d (
+	INPUT = box3d_in,
+	OUTPUT = box3d_out,
+	INTERNALLENGTH = 52,
+	ALIGNMENT = 8,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+COMMENT ON TYPE public.box3d IS 'postgis type: The type representing a 3-dimensional bounding box.';
+
+-- DROP TYPE public.geography;
+
+CREATE TYPE public.geography (
+	INPUT = geography_in,
+	OUTPUT = geography_out,
+	RECEIVE = geography_recv,
+	SEND = geography_send,
+	TYPMOD_IN = geography_typmod_in,
+	TYPMOD_OUT = geography_typmod_out,
+	ANALYZE = geography_analyze,
+	ALIGNMENT = 8,
+	STORAGE = compressed,
+	CATEGORY = U,
+	DELIMITER = ':');
+
+COMMENT ON TYPE public.geography IS 'postgis type: The type representing spatial features with geodetic (ellipsoidal) coordinate systems.';
+
+-- DROP TYPE public.geometry;
+
+CREATE TYPE public.geometry (
+	INPUT = geometry_in,
+	OUTPUT = geometry_out,
+	RECEIVE = geometry_recv,
+	SEND = geometry_send,
+	TYPMOD_IN = geometry_typmod_in,
+	TYPMOD_OUT = geometry_typmod_out,
+	ANALYZE = geometry_analyze,
+	ALIGNMENT = 8,
+	STORAGE = compressed,
+	CATEGORY = U,
+	DELIMITER = ':');
+
+COMMENT ON TYPE public.geometry IS 'postgis type: The type representing spatial features with planar coordinate systems.';
+
+-- DROP TYPE public.ghstore;
+
+CREATE TYPE public.ghstore (
+	INPUT = ghstore_in,
+	OUTPUT = ghstore_out,
+	ALIGNMENT = 4,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+-- DROP TYPE public.gidx;
+
+CREATE TYPE public.gidx (
+	INPUT = gidx_in,
+	OUTPUT = gidx_out,
+	ALIGNMENT = 8,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+-- DROP TYPE public."hstore";
+
+CREATE TYPE public."hstore" (
+	INPUT = hstore_in,
+	OUTPUT = hstore_out,
+	RECEIVE = hstore_recv,
+	SEND = hstore_send,
+	ALIGNMENT = 4,
+	STORAGE = any,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+-- DROP TYPE public.spheroid;
+
+CREATE TYPE public.spheroid (
+	INPUT = spheroid_in,
+	OUTPUT = spheroid_out,
+	INTERNALLENGTH = 65,
+	ALIGNMENT = 8,
+	STORAGE = plain,
+	CATEGORY = U,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_box2d";
+
+CREATE TYPE public."_box2d" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 4,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.box2d,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_box2df";
+
+CREATE TYPE public."_box2df" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.box2df,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_box3d";
+
+CREATE TYPE public."_box3d" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.box3d,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_geography";
+
+CREATE TYPE public."_geography" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	TYPMOD_IN = geography_typmod_in,
+	TYPMOD_OUT = geography_typmod_out,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.geography,
+	DELIMITER = ':');
+
+-- DROP TYPE public."_geometry";
+
+CREATE TYPE public."_geometry" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	TYPMOD_IN = geometry_typmod_in,
+	TYPMOD_OUT = geometry_typmod_out,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.geometry,
+	DELIMITER = ':');
+
+-- DROP TYPE public."_ghstore";
+
+CREATE TYPE public."_ghstore" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 4,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.ghstore,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_gidx";
+
+CREATE TYPE public."_gidx" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.gidx,
+	DELIMITER = ',');
+
+-- DROP TYPE public."_hstore";
+
+CREATE TYPE public."_hstore" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 4,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public."hstore",
+	DELIMITER = ',');
+
+-- DROP TYPE public."_spheroid";
+
+CREATE TYPE public."_spheroid" (
+	INPUT = array_in,
+	OUTPUT = array_out,
+	RECEIVE = array_recv,
+	SEND = array_send,
+	ANALYZE = array_typanalyze,
+	ALIGNMENT = 8,
+	STORAGE = any,
+	CATEGORY = A,
+	ELEMENT = public.spheroid,
+	DELIMITER = ',');

@@ -1,0 +1,5086 @@
+-- "replica"."_trigger_log" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."_trigger_log"; ?置段 持失喫?
+
+-- CREATE TABLE "replica"."_trigger_log" (
+-- 	id serial4 NOT NULL,
+-- 	txid int8 NULL,
+-- 	created_at timestamptz NULL DEFAULT now(),
+-- 	updated_at timestamptz NULL DEFAULT now(),
+-- 	processed_at timestamptz NULL,
+-- 	processed_tx int8 NULL,
+-- 	state varchar(8) NULL,
+-- 	"action" varchar(7) NULL,
+-- 	table_name varchar(128) NULL,
+-- 	record_id int4 NULL,
+-- 	sfid varchar(18) NULL,
+-- 	"old" text NULL,
+-- 	"values" text NULL,
+-- 	sf_result int4 NULL,
+-- 	sf_message text NULL,
+-- 	CONSTRAINT "_trigger_log_pkey" PRIMARY KEY (id)
+-- );
+-- CREATE INDEX _trigger_log_idx_created_at ON replica._trigger_log USING btree (created_at);
+-- CREATE INDEX _trigger_log_idx_state_id ON replica._trigger_log USING btree (state, id);
+-- CREATE INDEX _trigger_log_idx_state_table_name ON replica._trigger_log USING btree (state, table_name) WHERE (((state)::text = 'NEW'::text) OR ((state)::text = 'PENDING'::text));
+
+-- Table Triggers
+
+create trigger tlog_insert_trigger after
+insert
+    on
+    replica._trigger_log for each row execute function replica.tlog_notify_trigger();
+
+
+-- "replica"."_trigger_log_archive" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."_trigger_log_archive";
+
+CREATE TABLE "replica"."_trigger_log_archive" (
+	id int4 NOT NULL,
+	txid int8 NULL,
+	created_at timestamptz NULL,
+	updated_at timestamptz NULL,
+	processed_at timestamptz NULL,
+	processed_tx int8 NULL,
+	state varchar(8) NULL,
+	"action" varchar(7) NULL,
+	table_name varchar(128) NULL,
+	record_id int4 NULL,
+	sfid varchar(18) NULL,
+	"old" text NULL,
+	"values" text NULL,
+	sf_result int4 NULL,
+	sf_message text NULL,
+	CONSTRAINT "_trigger_log_archive_pkey" PRIMARY KEY (id)
+);
+CREATE INDEX _trigger_log_archive_idx_created_at ON replica._trigger_log_archive USING btree (created_at);
+CREATE INDEX _trigger_log_archive_idx_record_id ON replica._trigger_log_archive USING btree (record_id);
+CREATE INDEX _trigger_log_archive_idx_state_table_name ON replica._trigger_log_archive USING btree (state, table_name) WHERE ((state)::text = 'FAILED'::text);
+
+
+-- "replica"."_hcmeta" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."_hcmeta";
+
+CREATE TABLE "replica"."_hcmeta" (
+	id serial4 NOT NULL,
+	hcver int4 NULL,
+	org_id varchar(50) NULL,
+	details text NULL,
+	CONSTRAINT "_hcmeta_pkey" PRIMARY KEY (id)
+);
+
+
+-- "replica"."_sf_event_log" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."_sf_event_log";
+
+CREATE TABLE "replica"."_sf_event_log" (
+	id serial4 NOT NULL,
+	table_name varchar(128) NULL,
+	"action" varchar(7) NULL,
+	synced_at timestamptz NULL DEFAULT now(),
+	sf_timestamp timestamptz NULL,
+	sfid varchar(20) NULL,
+	record text NULL,
+	processed bool NULL,
+	CONSTRAINT "_sf_event_log_pkey" PRIMARY KEY (id)
+);
+CREATE INDEX idx__sf_event_log_comp_key ON replica._sf_event_log USING btree (table_name, synced_at);
+CREATE INDEX idx__sf_event_log_sfid ON replica._sf_event_log USING btree (sfid);
+
+
+
+-- "replica".account definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account;
+
+CREATE TABLE "replica".account (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	fleettype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	businesstype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	terminationdate__c date NULL,
+	siebellastname__c varchar(255) NULL,
+	siebelemailaddress__c varchar(255) NULL,
+	siebelfirstname__c varchar(255) NULL,
+	employee__pc bool NULL,
+	pcd__pc varchar(255) NULL,
+	literacy__pc varchar(255) NULL,
+	calledby__pc varchar(255) NULL,
+	longitude__c varchar(255) NULL,
+	latitude__c varchar(255) NULL,
+	hmbsanitizedmainphoneflag__c bool NULL,
+	hmbsanitizedhomephoneflag__c bool NULL,
+	hmbsanitizedurlflag__c bool NULL,
+	hmbsanitizedcellphoneflag__c bool NULL,
+	registrysource__pc varchar(255) NULL,
+	hmbsanitizednameflag__c bool NULL,
+	hmbaddresssanitizedflag__c bool NULL,
+	hmbsanitizedcnpjflag__c bool NULL,
+	hmbsanitizedlastnameflag__c bool NULL,
+	hmbsanitizedworkphoneflag__c bool NULL,
+	hmbsanitizedemailflag__c bool NULL,
+	hmbsanitizedfirstnameflag__c bool NULL,
+	hmbsanitizedcpfflag__c bool NULL,
+	hmbsanitizedbirthdayflag__c bool NULL,
+	sapworkaddress__c varchar(80) NULL,
+	reclame_aqui_id__c varchar(255) NULL,
+	parent__external_id__c varchar(255) NULL,
+	legacylastmodifiedid__c varchar(18) NULL,
+	legacycreatedid__c varchar(18) NULL,
+	legacycreatedid__pc varchar(18) NULL,
+	legacylastmodifiedid__pc varchar(18) NULL,
+	CONSTRAINT account_pkey PRIMARY KEY (id)
+);
+CREATE INDEX account__hc_err_idx ON replica.account USING btree (_hc_err);
+CREATE INDEX account__hc_lastop_idx ON replica.account USING btree (_hc_lastop);
+CREATE INDEX account_cnpj__c_idx ON replica.account USING btree (cnpj__c);
+CREATE INDEX account_corporateregistrationnumber__c_idx ON replica.account USING btree (corporateregistrationnumber__c);
+CREATE INDEX account_name_idx ON replica.account USING btree (name);
+CREATE INDEX account_phone_idx ON replica.account USING btree (phone, emailaddress__c);
+CREATE INDEX hc_idx_account_accparentaccount__c ON replica.account USING btree (accparentaccount__c);
+CREATE INDEX hc_idx_account_lastmodifieddate ON replica.account USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_account_parentid ON replica.account USING btree (parentid);
+CREATE INDEX hc_idx_account_systemmodstamp ON replica.account USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_account_external_id__c ON replica.account USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_account_sfid ON replica.account USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_account_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.account for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_account_logger();
+create trigger hc_account_status_trigger before
+insert
+    or
+update
+    on
+    replica.account for each row execute function replica.hc_account_status();
+
+
+-- "replica".account_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_bulk;
+
+CREATE TABLE "replica".account_bulk (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	sapworkaddress__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	businesstype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	fleettype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	terminationrate__c varchar(255) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	CONSTRAINT account_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_account_bulk_accparentaccount__c ON replica.account_bulk USING btree (accparentaccount__c);
+CREATE INDEX hc_idx_account_bulk_lastmodifieddate ON replica.account_bulk USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_account_bulk_systemmodstamp ON replica.account_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_account_bulk_external_id__c ON replica.account_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_account_bulk_sfid ON replica.account_bulk USING btree (sfid);
+
+
+-- "replica".account_bulk2 definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_bulk2;
+
+CREATE TABLE "replica".account_bulk2 (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	sapworkaddress__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	businesstype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	fleettype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	terminationrate__c date NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	siebellastname__c varchar(255) NULL,
+	siebelemailaddress__c varchar(255) NULL,
+	CONSTRAINT account_bulk2_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_account_bulk2_accparentaccount__c ON replica.account_bulk2 USING btree (accparentaccount__c);
+CREATE INDEX hc_idx_account_bulk2_lastmodifieddate ON replica.account_bulk2 USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_account_bulk2_systemmodstamp ON replica.account_bulk2 USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_account_bulk2_external_id__c ON replica.account_bulk2 USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_account_bulk2_sfid ON replica.account_bulk2 USING btree (sfid);
+
+
+-- "replica".account_business_email_fail definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_business_email_fail;
+
+CREATE TABLE "replica".account_business_email_fail (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	sapworkaddress__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	businesstype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	fleettype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	terminationdate__c date NULL,
+	siebellastname__c varchar(255) NULL,
+	siebelemailaddress__c varchar(255) NULL,
+	CONSTRAINT account_business_email_fail_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_account_business_email_fail_accparentaccount__c ON replica.account_business_email_fail USING btree (accparentaccount__c);
+CREATE INDEX hc_idx_account_business_email_fail_lastmodifieddate ON replica.account_business_email_fail USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_account_business_email_fail_systemmodstamp ON replica.account_business_email_fail USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_account_business_email_fail_external_id__c ON replica.account_business_email_fail USING btree (external_id__c);
+
+
+-- "replica".account_comp_extid definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_comp_extid;
+
+CREATE TABLE "replica".account_comp_extid (
+	external_id__c varchar(50) NULL
+);
+
+
+-- "replica".account_person_check definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_person_check;
+
+CREATE TABLE "replica".account_person_check (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	sapworkaddress__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	businesstype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	fleettype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	terminationdate__c date NULL,
+	siebellastname__c varchar(255) NULL,
+	siebelemailaddress__c varchar(255) NULL,
+	siebelfirstname__c varchar(255) NULL
+);
+
+
+-- "replica".account_person_check2 definition
+
+-- Drop table
+
+-- DROP TABLE "replica".account_person_check2;
+
+CREATE TABLE "replica".account_person_check2 (
+	offergroup__c varchar(255) NULL,
+	blockedemails__c bool NULL,
+	loyaltyexpirationdate__c timestamp NULL,
+	personmailingcountry varchar(80) NULL,
+	personlastcurequestdate timestamp NULL,
+	schedulingphonenumber__c varchar(40) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	ownedvehiclemileage__c float8 NULL,
+	personmailingcity varchar(40) NULL,
+	prtnrflag__c bool NULL,
+	partnertype__c varchar(255) NULL,
+	accparentaccount__c varchar(18) NULL,
+	lastname varchar(80) NULL,
+	personmailinggeocodeaccuracy varchar(255) NULL,
+	personmailinglatitude float8 NULL,
+	serviceflag__c bool NULL,
+	cppd__c bool NULL,
+	sapworkaddress__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	salesmanager__c varchar(255) NULL,
+	customergroup__c varchar(255) NULL,
+	personemailbounceddate timestamp NULL,
+	persontitle varchar(80) NULL,
+	satisficationlevel__c varchar(255) NULL,
+	accparentaccount__r__external_id__c varchar(255) NULL,
+	fleetadministrator__c varchar(255) NULL,
+	personassistantphone varchar(40) NULL,
+	numberofemployees int4 NULL,
+	blockedwhatsapp__c bool NULL,
+	parentid varchar(18) NULL,
+	expirationdate__c timestamp NULL,
+	personcontactid varchar(18) NULL,
+	regionstate__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	cnh__c varchar(255) NULL,
+	billingcity varchar(40) NULL,
+	totalpurchaseamount__c float8 NULL,
+	workphone__c varchar(40) NULL,
+	whatsappphone__c varchar(40) NULL,
+	persondepartment varchar(80) NULL,
+	personemail varchar(80) NULL,
+	vehiclehandovercountinlast10years__c float8 NULL,
+	ccpdmodifydate__c timestamp NULL,
+	addrssname__c varchar(100) NULL,
+	site varchar(80) NULL,
+	dealershopcode__c varchar(255) NULL,
+	billinglatitude float8 NULL,
+	accountsource varchar(255) NULL,
+	vehicleofinterestcode__c varchar(255) NULL,
+	cnhexpirationdate__c date NULL,
+	subsidiarycode__c varchar(255) NULL,
+	salesdistrict__c varchar(255) NULL,
+	businesstype__c varchar(255) NULL,
+	cpf__c varchar(255) NULL,
+	emailaddress__c varchar(80) NULL,
+	pccmodifydate__c date NULL,
+	ceoname__c varchar(255) NULL,
+	loyaltystatus__c varchar(255) NULL,
+	servicemanager__c varchar(255) NULL,
+	"name" varchar(255) NULL,
+	registrysource__c varchar(255) NULL,
+	salesflag__c bool NULL,
+	createdsystem__c varchar(255) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	favoritedealer__c varchar(18) NULL,
+	housebuildingno__c varchar(255) NULL,
+	masterrecordid varchar(18) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	operationdate__c date NULL,
+	currentvehicleownedothers__c varchar(255) NULL,
+	personmailingpostalcode varchar(20) NULL,
+	ispersonaccount bool NULL,
+	region__c varchar(255) NULL,
+	contractrenewaldate__c date NULL,
+	ccpd__c bool NULL,
+	situationstatusreason__c varchar(255) NULL,
+	crmindex__c varchar(255) NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	repurchase__c bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	vehicleretentionperiod__c float8 NULL,
+	salesgroup__c varchar(255) NULL,
+	literacy__c varchar(255) NULL,
+	engagementindex__c varchar(255) NULL,
+	currentvehicleowned__c varchar(4099) NULL,
+	nps__c float8 NULL,
+	pcd__c bool NULL,
+	recommendedvehicle__c varchar(255) NULL,
+	leadmanager__c bool NULL,
+	majorlanguage__c varchar(255) NULL,
+	membershipid__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	servicewhatsappnumber__c varchar(255) NULL,
+	personotherphone varchar(40) NULL,
+	pcc__c bool NULL,
+	billingpostalcode varchar(20) NULL,
+	productofinterest__c varchar(255) NULL,
+	accountnumbertype__c varchar(255) NULL,
+	situationstatus__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	personlastcuupdatedate timestamp NULL,
+	billinglongitude float8 NULL,
+	businesshours__c varchar(255) NULL,
+	fleetsize__c float8 NULL,
+	blockedmobile__c bool NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	nickname__c varchar(255) NULL,
+	neighborhood__c varchar(255) NULL,
+	employee__c bool NULL,
+	integratedid__c varchar(255) NULL,
+	blockedvideocall__c bool NULL,
+	division__c varchar(255) NULL,
+	blockedsms__c bool NULL,
+	lastupdatedate__c timestamp NULL,
+	organizationtype__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	corporaterepresentativename__c varchar(255) NULL,
+	createddate timestamp NULL,
+	billingstate varchar(80) NULL,
+	accountnumber varchar(40) NULL,
+	isleadconverted__c bool NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	personmobilephone varchar(40) NULL,
+	personbirthdate date NULL,
+	salutation varchar(255) NULL,
+	accountcategory__c varchar(255) NULL,
+	receiveproductnewsflag__c bool NULL,
+	loyaltyvalue__c varchar(255) NULL,
+	loyaltyactivationdate__c timestamp NULL,
+	personmailinglongitude float8 NULL,
+	lifecycle__c varchar(255) NULL,
+	personmailingstreet varchar(255) NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	personemailbouncedreason varchar(255) NULL,
+	dms__c varchar(255) NULL,
+	blockedcalls__c bool NULL,
+	businessnumber__c varchar(255) NULL,
+	profilescore__c float8 NULL,
+	dupcheck__c bool NULL,
+	income__c varchar(255) NULL,
+	cppdmodifydate__c timestamp NULL,
+	position__c varchar(100) NULL,
+	"type" varchar(255) NULL,
+	dealershoptype__c varchar(255) NULL,
+	personhomephone varchar(40) NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	website varchar(255) NULL,
+	personmailingstate varchar(80) NULL,
+	billingcountry varchar(80) NULL,
+	salesoffice__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	isrecursive__c bool NULL,
+	fleettype__c varchar(255) NULL,
+	receivenewsletterflag__c bool NULL,
+	totalnumberofownedvehicles__c float8 NULL,
+	corporateregistrationnumber__c varchar(255) NULL,
+	saleswhatsappnumber__c varchar(255) NULL,
+	description text NULL,
+	vehicleofinteresttype__c varchar(255) NULL,
+	billinggeocodeaccuracy varchar(255) NULL,
+	complement__c varchar(255) NULL,
+	maritalstatus__c varchar(255) NULL,
+	annualrevenue float8 NULL,
+	rating varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	duplicateid__c varchar(20) NULL,
+	facebook__c varchar(255) NULL,
+	apikey__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	billingstreet varchar(255) NULL,
+	cnpj__c varchar(255) NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	customersap__c varchar(255) NULL,
+	optinflag__c bool NULL,
+	pointawardingvehiclecountinlast10years__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	external_id__pc varchar(255) NULL,
+	blockedvideocall__pc bool NULL,
+	apppushoptyn__pc bool NULL,
+	lastsmsoptynmodifydate__pc date NULL,
+	legacycreateddate__pc timestamp NULL,
+	lastupdatedate__pc timestamp NULL,
+	blockedsms__pc bool NULL,
+	blockedmobile__pc bool NULL,
+	goodfriendcustomeryn__pc bool NULL,
+	personpronouns varchar(255) NULL,
+	salesmarketingyn__pc bool NULL,
+	smsoptyn__pc bool NULL,
+	workcontact__pc varchar(40) NULL,
+	optinoutnotificationdate__pc date NULL,
+	companyphone__pc varchar(255) NULL,
+	majorlanguage__pc varchar(255) NULL,
+	personhasoptedoutofemail bool NULL,
+	personhasoptedoutoffax bool NULL,
+	sfdcuseryn__pc bool NULL,
+	lastmessengeroptynmodifydate__pc date NULL,
+	personothercity varchar(40) NULL,
+	phoneusabilityyn__pc bool NULL,
+	dealergroupcode__pc varchar(255) NULL,
+	personotherlatitude float8 NULL,
+	ccpd__pc bool NULL,
+	hyundaicustomeryn__pc bool NULL,
+	receiveserviceoffersflag__pc bool NULL,
+	messengeroptyn__pc bool NULL,
+	optinexpirationdate__pc date NULL,
+	legacylastmodifieddate__pc timestamp NULL,
+	managingemployeeworkyn__pc bool NULL,
+	userflag__pc bool NULL,
+	createdsystem__pc varchar(255) NULL,
+	employeenumber__pc varchar(255) NULL,
+	cpf__pc varchar(255) NULL,
+	personleadsource varchar(255) NULL,
+	lastdirectmailoptynmodifydate__pc date NULL,
+	lastoptinoutdate__pc date NULL,
+	subsidiarycode__pc varchar(255) NULL,
+	managingemployeename__pc varchar(18) NULL,
+	ccpdmodifydate__pc timestamp NULL,
+	nationality__pc varchar(255) NULL,
+	lastcalloptynmodifydate__pc date NULL,
+	workphone__pc varchar(40) NULL,
+	expirationdate__pc timestamp NULL,
+	persondonotcall bool NULL,
+	blockedwhatsapp__pc bool NULL,
+	personotherpostalcode varchar(20) NULL,
+	companyofficerstatusyn__pc bool NULL,
+	gender__pc varchar(255) NULL,
+	cppd__pc bool NULL,
+	personassistantname varchar(40) NULL,
+	persongenderidentity varchar(255) NULL,
+	blockedletters__pc bool NULL,
+	personotherlongitude float8 NULL,
+	hpremiumcustomeryn__pc bool NULL,
+	personotherstate varchar(80) NULL,
+	blockedemails__pc bool NULL,
+	preferredcontactchannel__pc varchar(255) NULL,
+	collectingchanneltype__pc varchar(255) NULL,
+	familysize__pc float8 NULL,
+	membershipmarketingyn__pc bool NULL,
+	emailusabilityyn__pc bool NULL,
+	recordtypeid__pc varchar(18) NULL,
+	maritalstatus__pc varchar(255) NULL,
+	duplicateid__pc varchar(20) NULL,
+	dealercode__pc varchar(255) NULL,
+	bluelinkmarketingyn__pc bool NULL,
+	receiveeventsflag__pc bool NULL,
+	directmailoptyn__pc bool NULL,
+	personothercountry varchar(80) NULL,
+	homenumber__pc varchar(40) NULL,
+	receivenewsletterflag__pc bool NULL,
+	isrecursive__pc bool NULL,
+	lastfaxoptynmodifydate__pc date NULL,
+	blockedcalls__pc bool NULL,
+	receiveretailoffersflag__pc bool NULL,
+	personothergeocodeaccuracy varchar(255) NULL,
+	cppdmodifydate__pc timestamp NULL,
+	dupcheck__pc bool NULL,
+	lastemailoptynmodifydate__pc date NULL,
+	calloptyn__pc bool NULL,
+	receiveresearchflag__pc bool NULL,
+	sourcesystem__pc varchar(255) NULL,
+	personotherstreet varchar(255) NULL,
+	faxoptyn__pc bool NULL,
+	occupation__pc varchar(255) NULL,
+	receiveproductnewsflag__pc bool NULL,
+	lastapppushoptynmodifydate__pc date NULL,
+	ismigandinterfaceprocess__pc bool NULL,
+	isleadconverted__pc bool NULL,
+	emailoptyn__pc bool NULL,
+	influentialperson__c varchar(255) NULL,
+	terminationdate__c date NULL,
+	siebellastname__c varchar(255) NULL,
+	siebelemailaddress__c varchar(255) NULL,
+	siebelfirstname__c varchar(255) NULL
+);
+
+
+-- "replica".accountcontactrelation definition
+
+-- Drop table
+
+-- DROP TABLE "replica".accountcontactrelation;
+
+CREATE TABLE "replica".accountcontactrelation (
+	account__external_id__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	external_id__c varchar(255) NULL,
+	contact__external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	contactid varchar(18) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT accountcontactrelation_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_accountcontactrelation_accountid ON replica.accountcontactrelation USING btree (accountid);
+CREATE INDEX hc_idx_accountcontactrelation_contactid ON replica.accountcontactrelation USING btree (contactid);
+CREATE INDEX hc_idx_accountcontactrelation_systemmodstamp ON replica.accountcontactrelation USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_accountcontactrelation_external_id__c ON replica.accountcontactrelation USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_accountcontactrelation_sfid ON replica.accountcontactrelation USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_accountcontactrelation_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.accountcontactrelation for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_accountcontactrelation_logger();
+create trigger hc_accountcontactrelation_status_trigger before
+insert
+    or
+update
+    on
+    replica.accountcontactrelation for each row execute function replica.hc_accountcontactrelation_status();
+
+
+-- "replica".asset definition
+
+-- Drop table
+
+-- DROP TABLE "replica".asset;
+
+CREATE TABLE "replica".asset (
+	latestmileage__c float8 NULL,
+	account__external_id__c varchar(255) NULL,
+	street varchar(255) NULL,
+	assetprovidedbyid varchar(18) NULL,
+	parentid varchar(18) NULL,
+	recordtypeid varchar(18) NULL,
+	enginetype__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	usageenddate date NULL,
+	vin__c varchar(255) NULL,
+	lastvieweddate timestamp NULL,
+	rootassetid varchar(18) NULL,
+	price float8 NULL,
+	vehicleinternalcolor__c varchar(255) NULL,
+	installdate date NULL,
+	stockkeepingunit varchar(180) NULL,
+	quantity float8 NULL,
+	city varchar(40) NULL,
+	"name" varchar(255) NULL,
+	vehiclecolor__c varchar(255) NULL,
+	carregistrationnumber__c varchar(255) NULL,
+	fsc__c varchar(255) NULL,
+	lastmodifieddate timestamp NULL,
+	purchasedate date NULL,
+	dealeraccount__c varchar(18) NULL,
+	modelname__c varchar(255) NULL,
+	isdeleted bool NULL,
+	manufacturedate date NULL,
+	interiorcolor__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	state varchar(80) NULL,
+	assetservicedbyid varchar(18) NULL,
+	status varchar(255) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	salesdealername__c varchar(18) NULL,
+	fueltype__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	assetlevel int4 NULL,
+	vehicledeliverydate__c date NULL,
+	salesdealername__r__external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	country varchar(80) NULL,
+	product2__external_id__c varchar(255) NULL,
+	geocodeaccuracy varchar(255) NULL,
+	enginenumber__c varchar(255) NULL,
+	postalcode varchar(20) NULL,
+	assetaccountrollupkey__c varchar(255) NULL,
+	iscompetitorproduct bool NULL,
+	contactid varchar(18) NULL,
+	purchaseprice__c float8 NULL,
+	productcode varchar(255) NULL,
+	description text NULL,
+	lastreferenceddate timestamp NULL,
+	serialnumber varchar(80) NULL,
+	dealercode__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	product2id varchar(18) NULL,
+	exteriorcolor__c varchar(255) NULL,
+	transmission__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	vehiclelicensenumber__c varchar(255) NULL,
+	manufactureyear__c varchar(255) NULL,
+	renavamcode__c varchar(255) NULL,
+	productdate__c date NULL,
+	negotiationtype__c varchar(255) NULL,
+	fiscalreceipt__c varchar(255) NULL,
+	subscriptiontype__c varchar(255) NULL,
+	urlauthpublication__c date NULL,
+	warrantystartdate__c date NULL,
+	urlphotodate__c date NULL,
+	salesrepid__c varchar(255) NULL,
+	billingdate__c date NULL,
+	wholesaledate__c date NULL,
+	vehiclelicensedate__c date NULL,
+	urlphoto__c varchar(255) NULL,
+	createdbyid varchar(18) NULL,
+	salesman__c varchar(255) NULL,
+	conectcarcss__c varchar(255) NULL,
+	friendlymodel__c varchar(255) NULL,
+	campaigncodeforrecall__c varchar(255) NULL,
+	enginecapacity__c varchar(255) NULL,
+	retailcancelleddate__c date NULL,
+	version__c varchar(255) NULL,
+	tdathome__c bool NULL,
+	ccsflag__c bool NULL,
+	digitalsales__c bool NULL,
+	deliveryathome__c bool NULL,
+	latestmileagelastupdatedate__c date NULL,
+	serviceperformed__c bool NULL,
+	legacylastmodifiedid__c varchar(18) NULL,
+	scrappedvehicleyn__c bool NULL,
+	companycarflag__c bool NULL,
+	trim__c varchar(255) NULL,
+	purchasemethod__c varchar(1000) NULL,
+	contractdate__c date NULL,
+	optioncombinationproductnumber__c varchar(255) NULL,
+	productplantcd__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	legacycreatedid__c varchar(18) NULL,
+	productname__c varchar(255) NULL,
+	salescode__c varchar(255) NULL,
+	digitalassetstatus varchar(255) NULL,
+	salesvehicleproductnumber__c varchar(255) NULL,
+	latitude float8 NULL,
+	recalltargetyn__c bool NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	longitude float8 NULL,
+	promotionvehicleconfirmationyn__c bool NULL,
+	vehicleregistrationdate__c date NULL,
+	dealergroupcode__c varchar(255) NULL,
+	consequenceoffailure varchar(255) NULL,
+	handoverdate__c date NULL,
+	productfamily varchar(255) NULL,
+	vehiclesubjecttoserviceyn__c bool NULL,
+	productcarnumber__c varchar(255) NULL,
+	statusreason varchar(255) NULL,
+	productdescription__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	salesdealeraffiliation__c varchar(200) NULL,
+	keynumber__c varchar(255) NULL,
+	salesspec__c varchar(255) NULL,
+	productiondate__c date NULL,
+	vehicletype__c varchar(255) NULL,
+	CONSTRAINT asset_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_asset_account__external_id__c ON replica.asset USING btree (account__external_id__c);
+CREATE INDEX hc_idx_asset_accountid ON replica.asset USING btree (accountid);
+CREATE INDEX hc_idx_asset_assetprovidedbyid ON replica.asset USING btree (assetprovidedbyid);
+CREATE INDEX hc_idx_asset_assetservicedbyid ON replica.asset USING btree (assetservicedbyid);
+CREATE INDEX hc_idx_asset_contactid ON replica.asset USING btree (contactid);
+CREATE INDEX hc_idx_asset_dealeraccount__c ON replica.asset USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_asset_dealeraccount__r__external_id__c ON replica.asset USING btree (dealeraccount__r__external_id__c);
+CREATE INDEX hc_idx_asset_lastmodifieddate ON replica.asset USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_asset_parentid ON replica.asset USING btree (parentid);
+CREATE INDEX hc_idx_asset_product2__external_id__c ON replica.asset USING btree (product2__external_id__c);
+CREATE INDEX hc_idx_asset_product2id ON replica.asset USING btree (product2id);
+CREATE INDEX hc_idx_asset_rootassetid ON replica.asset USING btree (rootassetid);
+CREATE INDEX hc_idx_asset_salesdealername__c ON replica.asset USING btree (salesdealername__c);
+CREATE INDEX hc_idx_asset_salesdealername__r__external_id__c ON replica.asset USING btree (salesdealername__r__external_id__c);
+CREATE INDEX hc_idx_asset_systemmodstamp ON replica.asset USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_asset_external_id__c ON replica.asset USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_asset_sfid ON replica.asset USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_asset_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.asset for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_asset_logger();
+create trigger hc_asset_status_trigger before
+insert
+    or
+update
+    on
+    replica.asset for each row execute function replica.hc_asset_status();
+
+
+-- "replica".asset_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".asset_bulk;
+
+CREATE TABLE "replica".asset_bulk (
+	latestmileage__c float8 NULL,
+	account__external_id__c varchar(255) NULL,
+	street varchar(255) NULL,
+	assetprovidedbyid varchar(18) NULL,
+	parentid varchar(18) NULL,
+	recordtypeid varchar(18) NULL,
+	enginetype__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	usageenddate date NULL,
+	vin__c varchar(255) NULL,
+	lastvieweddate timestamp NULL,
+	rootassetid varchar(18) NULL,
+	price float8 NULL,
+	vehicleinternalcolor__c varchar(255) NULL,
+	installdate date NULL,
+	stockkeepingunit varchar(180) NULL,
+	quantity float8 NULL,
+	version__c varchar NULL,
+	city varchar(40) NULL,
+	"name" varchar(255) NULL,
+	vehiclecolor__c varchar(255) NULL,
+	carregistrationnumber__c varchar(255) NULL,
+	fsc__c varchar(255) NULL,
+	lastmodifieddate timestamp NULL,
+	purchasedate date NULL,
+	dealeraccount__c varchar(18) NULL,
+	modelname__c varchar(255) NULL,
+	isdeleted bool NULL,
+	manufacturedate date NULL,
+	interiorcolor__c varchar(255) NULL,
+	systemmodstamp timestamp NULL,
+	state varchar(80) NULL,
+	assetservicedbyid varchar(18) NULL,
+	status varchar(255) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	salesdealername__c varchar(18) NULL,
+	fueltype__c varchar(255) NULL,
+	latestmileagelastupdatedate__c timestamp NULL,
+	external_id__c varchar(255) NULL,
+	assetlevel int4 NULL,
+	vehicledeliverydate__c date NULL,
+	salesdealername__r__external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	country varchar(80) NULL,
+	product2__external_id__c varchar(255) NULL,
+	geocodeaccuracy varchar(255) NULL,
+	enginenumber__c varchar(255) NULL,
+	postalcode varchar(20) NULL,
+	assetaccountrollupkey__c varchar(255) NULL,
+	iscompetitorproduct bool NULL,
+	contactid varchar(18) NULL,
+	purchaseprice__c float8 NULL,
+	productcode varchar(255) NULL,
+	description text NULL,
+	lastreferenceddate timestamp NULL,
+	serialnumber varchar(80) NULL,
+	dealercode__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	product2id varchar(18) NULL,
+	exteriorcolor__c varchar(255) NULL,
+	transmission__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	vehiclelicensenumber__c varchar(255) NULL,
+	manufactureyear__c varchar(255) NULL,
+	renavamcode__c varchar(255) NULL,
+	tdathome__c varchar(1) NULL,
+	ccsflag__c varchar(1) NULL,
+	productdate__c date NULL,
+	negotiationtype__c varchar(255) NULL,
+	fiscalreceipt__c varchar(255) NULL,
+	subscriptiontype__c varchar(255) NULL,
+	urlauthpublication__c date NULL,
+	digitalsales__c varchar(1) NULL,
+	warrantystartdate__c date NULL,
+	urlphotodate__c date NULL,
+	salesrepid__c varchar(255) NULL,
+	billingdate__c date NULL,
+	deliveryathome__c varchar(1) NULL,
+	wholesaledate__c date NULL,
+	vehiclelicensedate__c date NULL,
+	urlphoto__c varchar(255) NULL,
+	createdbyid varchar(18) NULL,
+	salesman__c varchar(255) NULL,
+	conectcarcss__c varchar(255) NULL,
+	friendlymodel__c varchar(255) NULL,
+	campaigncodeforrecall__c varchar(255) NULL,
+	enginecapacity__c varchar(255) NULL,
+	retailcancelleddate__c date NULL,
+	serviceperformed__c bool NULL,
+	CONSTRAINT asset_bulk_pkey PRIMARY KEY (id)
+);
+
+
+-- "replica".bluelink__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".bluelink__c;
+
+CREATE TABLE "replica".bluelink__c (
+	latestmileage__c float8 NULL,
+	type__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	assetnum__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	asset__c varchar(18) NULL,
+	integrationid__c varchar(30) NULL,
+	createddate timestamp NULL,
+	asset__r__external_id__c varchar(255) NULL,
+	externalid__c varchar(255) NULL,
+	firstactivation__c varchar(1) NULL,
+	activationdate__c timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	assetdate__c date NULL,
+	eventdate__c timestamp NULL,
+	CONSTRAINT bluelink__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_bluelink__c_activationdate__c ON replica.bluelink__c USING btree (activationdate__c);
+CREATE INDEX hc_idx_bluelink__c_asset__c ON replica.bluelink__c USING btree (asset__c);
+CREATE INDEX hc_idx_bluelink__c_systemmodstamp ON replica.bluelink__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_bluelink__c_externalid__c ON replica.bluelink__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_bluelink__c_sfid ON replica.bluelink__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_bluelink__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.bluelink__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_bluelink__c_logger();
+create trigger hc_bluelink__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.bluelink__c for each row execute function replica.hc_bluelink__c_status();
+
+
+-- "replica".bluelink_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".bluelink_bulk;
+
+CREATE TABLE "replica".bluelink_bulk (
+	latestmileage__c float8 NULL,
+	assetdate__c timestamp NULL,
+	type__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	assetnum__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	asset__c varchar(18) NULL,
+	integrationid__c varchar(30) NULL,
+	chassi__c varchar(100) NULL,
+	createddate timestamp NULL,
+	asset__r__external_id__c varchar(255) NULL,
+	eventdate__c date NULL,
+	externalid__c varchar(255) NULL,
+	firstactivation__c varchar(1) NULL,
+	activationdate__c varchar(30) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT bluelink_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_bluelink_bulk_asset__c ON replica.bluelink_bulk USING btree (asset__c);
+CREATE INDEX hc_idx_bluelink_bulk_systemmodstamp ON replica.bluelink_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_bluelink_bulk_externalid__c ON replica.bluelink_bulk USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_bluelink_bulk_sfid ON replica.bluelink_bulk USING btree (sfid);
+
+
+-- "replica".bounce_performance_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".bounce_performance_bulk;
+
+CREATE TABLE "replica".bounce_performance_bulk (
+	bounced__c float8 NULL,
+	contacttype__c varchar(255) NULL,
+	bouncereasoncode__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	treatmenttype__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	bouncestatuscode__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT bounce_performance_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_bounce_performance_bulk_systemmodstamp ON replica.bounce_performance_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_bounce_performance_bulk_external_id__c ON replica.bounce_performance_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_bounce_performance_bulk_sfid ON replica.bounce_performance_bulk USING btree (sfid);
+
+
+-- "replica".campaign_performance_rpt_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".campaign_performance_rpt_bulk;
+
+CREATE TABLE "replica".campaign_performance_rpt_bulk (
+	numberofbounced__c float8 NULL,
+	ratioofsent__c varchar(255) NULL,
+	ratioofbounced__c varchar(255) NULL,
+	contacttype__c varchar(255) NULL,
+	numberofsent__c float8 NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	treatmenttype__c varchar(255) NULL,
+	numberoftargeted__c float8 NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	ratioofopened__c varchar(255) NULL,
+	numberofopened__c float8 NULL,
+	ratioofdeployed__c varchar(255) NULL,
+	numberofclicked__c float8 NULL,
+	numberofdeployed__c float8 NULL,
+	ratioofclicked__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT campaign_performance_rpt_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_campaign_performance_rpt_bulk_systemmodstamp ON replica.campaign_performance_rpt_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_campaign_performance_rpt_bulk_external_id__c ON replica.campaign_performance_rpt_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_campaign_performance_rpt_bulk_sfid ON replica.campaign_performance_rpt_bulk USING btree (sfid);
+
+
+-- "replica"."case" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."case";
+
+CREATE TABLE "replica"."case" (
+	voc_level_3__c varchar(255) NULL,
+	account__external_id__c varchar(255) NULL,
+	protocol_id__c varchar(30) NULL,
+	voc_level_2__c varchar(255) NULL,
+	contactmobile varchar(40) NULL,
+	gender__c varchar(255) NULL,
+	responsiblename__c varchar(18) NULL,
+	priority varchar(255) NULL,
+	reason varchar(255) NULL,
+	vocclassdetail__c varchar(255) NULL,
+	parentid varchar(18) NULL,
+	severity__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	origin varchar(255) NULL,
+	istransferred__c bool NULL,
+	masterrecord__external_id__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	isescalated bool NULL,
+	source__c varchar(255) NULL,
+	responsetype__c varchar(255) NULL,
+	suppliedname varchar(80) NULL,
+	dealer_sold__c varchar(18) NULL,
+	businesshoursid varchar(18) NULL,
+	qty_recurrence__c float8 NULL,
+	assetid varchar(18) NULL,
+	subject varchar(255) NULL,
+	dealer_sold__r__external_id__c varchar(255) NULL,
+	unit_value__c float8 NULL,
+	personinfluent__c bool NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	contactphone varchar(40) NULL,
+	masterrecordid varchar(18) NULL,
+	channeldetail__c varchar(255) NULL,
+	customersatisfied__c varchar(255) NULL,
+	duration__c float8 NULL,
+	isdeleted bool NULL,
+	recentcontactdate__c timestamp NULL,
+	systemmodstamp timestamp NULL,
+	suppliedphone varchar(40) NULL,
+	status varchar(255) NULL,
+	recurrence__c bool NULL,
+	integrationid__c varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	"comments" varchar(4000) NULL,
+	vocclass__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	sourceid varchar(18) NULL,
+	isclosed bool NULL,
+	resolution__c varchar(255) NULL,
+	"language" varchar(255) NULL,
+	casenumber varchar(30) NULL,
+	partsnumber_parts__c varchar(18) NULL,
+	"type" varchar(255) NULL,
+	opened__c timestamp NULL,
+	closeddate timestamp NULL,
+	termsigned__c bool NULL,
+	contactid varchar(18) NULL,
+	contactemail varchar(80) NULL,
+	description text NULL,
+	contactfax varchar(40) NULL,
+	tendency__c varchar(255) NULL,
+	escalatedtodealer__c bool NULL,
+	suppliedemail varchar(80) NULL,
+	parent__external_id__c varchar(255) NULL,
+	suppliedcompany varchar(80) NULL,
+	voctype__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	contact__external_id__c varchar(255) NULL,
+	asset__external_id__c varchar(255) NULL,
+	servicingdealer__c varchar(18) NULL,
+	servicingdealer__r__external_id__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	ra_file_attachment_link__c varchar(255) NULL,
+	isomni__c bool NULL,
+	ra_consumer_consideration__c varchar(1500) NULL,
+	sentpublicmessageresult__c bool NULL,
+	ra_moderation_response_date__c timestamp NULL,
+	sendsurvey__c bool NULL,
+	ra_active_complaint__c bool NULL,
+	milestonestatus varchar(30) NULL,
+	isstopped bool NULL,
+	escalateddate__c timestamp NULL,
+	ra_rating_date__c date NULL,
+	diagonistic_difficulty__c varchar(1) NULL,
+	related_dealer_employee__c varchar(18) NULL,
+	pwa_opened_date__c date NULL,
+	critical__c bool NULL,
+	isconvertedtolead__c bool NULL,
+	ra_backdoing_business__c varchar(8) NULL,
+	component__c varchar(255) NULL,
+	related_dealer_employee__r__external_id__c varchar(255) NULL,
+	issentpublicmessage__c bool NULL,
+	dealercasestatus__c varchar(255) NULL,
+	slastartdate timestamp NULL,
+	ra_moderation_status__c varchar(50) NULL,
+	transferredtodealer__c bool NULL,
+	sales_invoice__c varchar(18) NULL,
+	waitingtime__c float8 NULL,
+	productid varchar(18) NULL,
+	claim_withdrawal__c varchar(1) NULL,
+	lastcontactdate__c date NULL,
+	reclame_aqui_external_id__c varchar(30) NULL,
+	lastmodifieddate timestamp NULL,
+	stopstartdate timestamp NULL,
+	ra_file_attachment_name__c varchar(100) NULL,
+	ra_complaint_response_contents__c varchar(1000) NULL,
+	reclame_aqui_id__c varchar(20) NULL,
+	dealercloseddate__c timestamp NULL,
+	ra_moderation_response_message__c varchar(1000) NULL,
+	durationperconsultation__c float8 NULL,
+	pwa_flag__c varchar(1) NULL,
+	majorlanguage__c varchar(255) NULL,
+	requestclaimaqui__c bool NULL,
+	lastfollowupdate__c bool NULL,
+	ra_frozen__c bool NULL,
+	slaexitdate timestamp NULL,
+	closestreservationfixeddate__c timestamp NULL,
+	system__c varchar(255) NULL,
+	customervehicle__c varchar(18) NULL,
+	ra_moderation_request_message__c varchar(255) NULL,
+	ra_issue_resolved__c varchar(20) NULL,
+	pwa_number__c varchar(11) NULL,
+	servicedealeremail__c varchar(80) NULL,
+	ispendingcondition__c bool NULL,
+	ra_rating__c float8 NULL,
+	ra_moderation_reason__c varchar(255) NULL,
+	customervehicle__r__external_id__c varchar(255) NULL,
+	reclame_aqui_status__c varchar(30) NULL,
+	lastcontactmethod__c varchar(255) NULL,
+	ra_customer_feeling__c varchar(50) NULL,
+	hotline_flag__c varchar(1) NULL,
+	legacy_sr_row_id__c varchar(30) NULL,
+	dailypendingcheck__c bool NULL,
+	ra_consumer_consideration_date__c timestamp NULL,
+	nba_check_3__c date NULL,
+	ra_moderation_response__c varchar(800) NULL,
+	urgency__c varchar(255) NULL,
+	nba_check_2__c date NULL,
+	ra_complaint_response_date__c timestamp NULL,
+	nba_check_1__c date NULL,
+	ra_complaint_reason__c varchar(50) NULL,
+	ra_moderation_request_date__c timestamp NULL,
+	hotline_number__c varchar(30) NULL,
+	emailnotificationwhencaseisclosed__c bool NULL,
+	legacycasekey__c varchar(18) NULL,
+	stiffcustomer__c bool NULL,
+	ra_moderation_request__c bool NULL,
+	hotline_opened_date__c date NULL,
+	moderationrequestresult__c bool NULL,
+	vocclassetc__c varchar(255) NULL,
+	dmscasekey__c varchar(18) NULL,
+	ivr__c varchar(255) NULL,
+	ra_customer_id__c varchar(25) NULL,
+	ownerid varchar(18) NULL,
+	CONSTRAINT case_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_case_accountid ON replica."case" USING btree (accountid);
+CREATE INDEX hc_idx_case_assetid ON replica."case" USING btree (assetid);
+CREATE INDEX hc_idx_case_contactid ON replica."case" USING btree (contactid);
+CREATE INDEX hc_idx_case_customervehicle__c ON replica."case" USING btree (customervehicle__c);
+CREATE INDEX hc_idx_case_dealer_sold__c ON replica."case" USING btree (dealer_sold__c);
+CREATE INDEX hc_idx_case_lastmodifieddate ON replica."case" USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_case_masterrecordid ON replica."case" USING btree (masterrecordid);
+CREATE INDEX hc_idx_case_parentid ON replica."case" USING btree (parentid);
+CREATE INDEX hc_idx_case_related_dealer_employee__c ON replica."case" USING btree (related_dealer_employee__c);
+CREATE INDEX hc_idx_case_servicingdealer__c ON replica."case" USING btree (servicingdealer__c);
+CREATE INDEX hc_idx_case_systemmodstamp ON replica."case" USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_case_external_id__c ON replica."case" USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_case_sfid ON replica."case" USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_case_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica."case" for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_case_logger();
+create trigger hc_case_status_trigger before
+insert
+    or
+update
+    on
+    replica."case" for each row execute function replica.hc_case_status();
+
+
+-- "replica".case_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".case_bulk;
+
+CREATE TABLE "replica".case_bulk (
+	voc_level_3__c varchar(255) NULL,
+	account__external_id__c varchar(255) NULL,
+	protocol_id__c varchar(30) NULL,
+	voc_level_2__c varchar(255) NULL,
+	contactmobile varchar(40) NULL,
+	gender__c varchar(255) NULL,
+	responsiblename__c varchar(18) NULL,
+	priority varchar(255) NULL,
+	reason varchar(255) NULL,
+	vocclassdetail__c varchar(255) NULL,
+	parentid varchar(18) NULL,
+	severity__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	origin varchar(255) NULL,
+	istransferred__c bool NULL,
+	masterrecord__external_id__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	isescalated bool NULL,
+	source__c varchar(255) NULL,
+	responsetype__c varchar(255) NULL,
+	suppliedname varchar(80) NULL,
+	dealer_sold__c varchar(18) NULL,
+	businesshoursid varchar(18) NULL,
+	qty_recurrence__c float8 NULL,
+	assetid varchar(18) NULL,
+	subject varchar(255) NULL,
+	dealer_sold__r__external_id__c varchar(255) NULL,
+	unit_value__c float8 NULL,
+	personinfluent__c bool NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	contactphone varchar(40) NULL,
+	masterrecordid varchar(18) NULL,
+	channeldetail__c varchar(255) NULL,
+	customersatisfied__c varchar(255) NULL,
+	duration__c float8 NULL,
+	isdeleted bool NULL,
+	recentcontactdate__c timestamp NULL,
+	systemmodstamp timestamp NULL,
+	suppliedphone varchar(40) NULL,
+	status varchar(255) NULL,
+	recurrence__c bool NULL,
+	integrationid__c varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	"comments" varchar(4000) NULL,
+	vocclass__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	sourceid varchar(18) NULL,
+	isclosed bool NULL,
+	resolution__c varchar(255) NULL,
+	"language" varchar(255) NULL,
+	casenumber varchar(30) NULL,
+	partsnumber_parts__c varchar(18) NULL,
+	"type" varchar(255) NULL,
+	opened__c timestamp NULL,
+	closeddate timestamp NULL,
+	termsigned__c bool NULL,
+	contactid varchar(18) NULL,
+	contactemail varchar(80) NULL,
+	description text NULL,
+	contactfax varchar(40) NULL,
+	tendency__c varchar(255) NULL,
+	escalatedtodealer__c bool NULL,
+	suppliedemail varchar(80) NULL,
+	parent__external_id__c varchar(255) NULL,
+	suppliedcompany varchar(80) NULL,
+	voctype__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	contact__external_id__c varchar(255) NULL,
+	asset__external_id__c varchar(255) NULL,
+	servicingdealer__c varchar(18) NULL,
+	servicingdealer__r__external_id__c varchar(255) NULL,
+	CONSTRAINT case_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_case_bulk_accountid ON replica.case_bulk USING btree (accountid);
+CREATE INDEX hc_idx_case_bulk_assetid ON replica.case_bulk USING btree (assetid);
+CREATE INDEX hc_idx_case_bulk_contactid ON replica.case_bulk USING btree (contactid);
+CREATE INDEX hc_idx_case_bulk_dealer_sold__c ON replica.case_bulk USING btree (dealer_sold__c);
+CREATE INDEX hc_idx_case_bulk_masterrecordid ON replica.case_bulk USING btree (masterrecordid);
+CREATE INDEX hc_idx_case_bulk_parentid ON replica.case_bulk USING btree (parentid);
+CREATE INDEX hc_idx_case_bulk_systemmodstamp ON replica.case_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_case_bulk_external_id__c ON replica.case_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_case_bulk_sfid ON replica.case_bulk USING btree (sfid);
+
+
+-- "replica".click_performance_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".click_performance_bulk;
+
+CREATE TABLE "replica".click_performance_bulk (
+	contacttype__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	responses__c float8 NULL,
+	treatmenttype__c varchar(255) NULL,
+	hyperlinkname__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT click_performance_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_click_performance_bulk_systemmodstamp ON replica.click_performance_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_click_performance_bulk_external_id__c ON replica.click_performance_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_click_performance_bulk_sfid ON replica.click_performance_bulk USING btree (sfid);
+
+
+-- "replica".codenum definition
+
+-- Drop table
+
+-- DROP TABLE "replica".codenum;
+
+CREATE TABLE "replica".codenum (
+	count int8 NULL
+);
+
+
+-- "replica".colorinformation__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".colorinformation__c;
+
+CREATE TABLE "replica".colorinformation__c (
+	high__c varchar(100) NULL,
+	val__c varchar(30) NULL,
+	translateflag__c bool NULL,
+	type__c varchar(30) NULL,
+	namecode__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	low__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	createddate timestamp NULL,
+	langid__c varchar(15) NULL,
+	intergrationid__c varchar(30) NULL,
+	externalid__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT colorinformation__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_colorinformation__c_systemmodstamp ON replica.colorinformation__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_colorinformation__c_externalid__c ON replica.colorinformation__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_colorinformation__c_sfid ON replica.colorinformation__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_colorinformation__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.colorinformation__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_colorinformation__c_logger();
+create trigger hc_colorinformation__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.colorinformation__c for each row execute function replica.hc_colorinformation__c_status();
+
+
+-- "replica".contact definition
+
+-- Drop table
+
+-- DROP TABLE "replica".contact;
+
+CREATE TABLE "replica".contact (
+	blockedemails__c bool NULL,
+	middlename varchar(40) NULL,
+	mig_date__c date NULL,
+	account__external_id__c varchar(255) NULL,
+	lastname varchar(80) NULL,
+	fatiguelimitexceed3m__c bool NULL,
+	hpremiumcustomeryn__c bool NULL,
+	otherstate varchar(80) NULL,
+	cppd__c bool NULL,
+	gender__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	companyofficerstatusyn__c bool NULL,
+	mailingpostalcode varchar(20) NULL,
+	emailbouncedreason varchar(255) NULL,
+	mailinglongitude float8 NULL,
+	age__c float8 NULL,
+	fleetadministrator__c varchar(255) NULL,
+	blockedwhatsapp__c bool NULL,
+	expirationdate__c timestamp NULL,
+	donotcall bool NULL,
+	mailingstate varchar(80) NULL,
+	recordtypeid varchar(18) NULL,
+	othercountry varchar(80) NULL,
+	workphone__c varchar(40) NULL,
+	lastcalloptynmodifydate__c date NULL,
+	nationality__c varchar(255) NULL,
+	ccpdmodifydate__c timestamp NULL,
+	accountid varchar(18) NULL,
+	otherpostalcode varchar(20) NULL,
+	genesiscustomeryn__c bool NULL,
+	subsidiarycode__c varchar(255) NULL,
+	assistantname varchar(40) NULL,
+	lastoptinoutdate__c date NULL,
+	lastdirectmailoptynmodifydate__c date NULL,
+	cpf__c varchar(255) NULL,
+	isemailbounced bool NULL,
+	mig_sys__c varchar(20) NULL,
+	mailingcountry varchar(80) NULL,
+	"name" varchar(121) NULL,
+	registrysource__c varchar(255) NULL,
+	employeenumber__c varchar(255) NULL,
+	identificationnumber__c varchar(20) NULL,
+	mobilephone varchar(40) NULL,
+	createdsystem__c varchar(255) NULL,
+	userflag__c bool NULL,
+	birthdate date NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	optinexpirationdate__c date NULL,
+	phone varchar(40) NULL,
+	messengeroptyn__c bool NULL,
+	mailingstreet varchar(255) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	hyundaicustomeryn__c bool NULL,
+	emailbounceddate timestamp NULL,
+	ispersonaccount bool NULL,
+	ccpd__c bool NULL,
+	hasoptedoutofemail bool NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	homephone varchar(40) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	phoneusabilityyn__c bool NULL,
+	assistantphone varchar(40) NULL,
+	systemmodstamp timestamp NULL,
+	literacy__c varchar(255) NULL,
+	hasoptedoutoffax bool NULL,
+	lastmessengeroptynmodifydate__c date NULL,
+	sendtomarketingcloud__c bool NULL,
+	note__c varchar(200) NULL,
+	pcd__c varchar(255) NULL,
+	majorlanguage__c varchar(255) NULL,
+	department varchar(80) NULL,
+	identificationnumbertype__c varchar(255) NULL,
+	companyphone__c varchar(255) NULL,
+	legacy_type__c varchar(255) NULL,
+	otherstreet varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	integrationid__c varchar(30) NULL,
+	optinoutnotificationdate__c date NULL,
+	workcontact__c varchar(40) NULL,
+	smsoptyn__c bool NULL,
+	salesmarketingyn__c bool NULL,
+	lastcurequestdate timestamp NULL,
+	blockedmobile__c bool NULL,
+	goodfriendcustomeryn__c bool NULL,
+	employee__c bool NULL,
+	fatiguelimitexceed1w__c bool NULL,
+	apppushoptyn__c bool NULL,
+	blockedvideocall__c bool NULL,
+	partytypecode__c varchar(30) NULL,
+	blockedsms__c bool NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	mailingcity varchar(40) NULL,
+	fatiguelimitexceed2w__c bool NULL,
+	lastsmsoptynmodifydate__c date NULL,
+	mailinglatitude float8 NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	emailoptyn__c bool NULL,
+	fatiguelimitexceed3w__c bool NULL,
+	leadsource varchar(255) NULL,
+	statusdealer__c varchar(30) NULL,
+	faxoptyn__c bool NULL,
+	lastapppushoptynmodifydate__c date NULL,
+	salutation varchar(255) NULL,
+	title varchar(128) NULL,
+	receiveproductnewsflag__c bool NULL,
+	occupation__c varchar(255) NULL,
+	lastemailoptynmodifydate__c date NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	calloptyn__c bool NULL,
+	blockedcalls__c bool NULL,
+	lastfaxoptynmodifydate__c date NULL,
+	mig_yn__c bool NULL,
+	cppdmodifydate__c timestamp NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	othercity varchar(40) NULL,
+	firstname varchar(40) NULL,
+	receivenewsletterflag__c bool NULL,
+	homenumber__c varchar(40) NULL,
+	influentialperson__c varchar(255) NULL,
+	directmailoptyn__c bool NULL,
+	bluelinkmarketingyn__c bool NULL,
+	otherlatitude float8 NULL,
+	email varchar(80) NULL,
+	description text NULL,
+	maritalstatus__c varchar(255) NULL,
+	photourl varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	otherphone varchar(40) NULL,
+	familysize__c float8 NULL,
+	collectingchanneltype__c varchar(255) NULL,
+	mig_desc__c varchar(255) NULL,
+	emailusabilityyn__c bool NULL,
+	otherlongitude float8 NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	genderidentity varchar(255) NULL,
+	fatiguelimitexceed12m__c bool NULL,
+	fatiguelimitexceed1m__c bool NULL,
+	lastcuupdatedate timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT contact_pkey PRIMARY KEY (id)
+);
+CREATE INDEX contact__hc_err_idx ON replica.contact USING btree (_hc_err);
+CREATE INDEX contact__hc_lastop_idx ON replica.contact USING btree (_hc_lastop);
+CREATE INDEX contact_account__external_id__c_idx ON replica.contact USING btree (account__external_id__c);
+CREATE INDEX contact_companyphone__c_idx ON replica.contact USING btree (companyphone__c);
+CREATE INDEX contact_cpf__c_idx ON replica.contact USING btree (cpf__c);
+CREATE INDEX contact_email_idx ON replica.contact USING btree (email);
+CREATE INDEX contact_firstname_idx ON replica.contact USING btree (firstname, lastname);
+CREATE INDEX hc_idx_contact_accountid ON replica.contact USING btree (accountid);
+CREATE INDEX hc_idx_contact_systemmodstamp ON replica.contact USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_contact_external_id__c ON replica.contact USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_contact_sfid ON replica.contact USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_contact_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.contact for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_contact_logger();
+create trigger hc_contact_status_trigger before
+insert
+    or
+update
+    on
+    replica.contact for each row execute function replica.hc_contact_status();
+
+
+-- "replica".contact_dealer_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".contact_dealer_bulk;
+
+CREATE TABLE "replica".contact_dealer_bulk (
+	blockedemails__c bool NULL,
+	middlename varchar(40) NULL,
+	mig_date__c date NULL,
+	account__external_id__c varchar(255) NULL,
+	lastname varchar(80) NULL,
+	fatiguelimitexceed3m__c bool NULL,
+	hpremiumcustomeryn__c bool NULL,
+	otherstate varchar(80) NULL,
+	cppd__c bool NULL,
+	gender__c varchar(255) NULL,
+	blockedletters__c bool NULL,
+	companyofficerstatusyn__c bool NULL,
+	mailingpostalcode varchar(20) NULL,
+	emailbouncedreason varchar(255) NULL,
+	mailinglongitude float8 NULL,
+	age__c float8 NULL,
+	fleetadministrator__c varchar(255) NULL,
+	blockedwhatsapp__c bool NULL,
+	expirationdate__c timestamp NULL,
+	donotcall bool NULL,
+	mailingstate varchar(80) NULL,
+	recordtypeid varchar(18) NULL,
+	othercountry varchar(80) NULL,
+	workphone__c varchar(40) NULL,
+	lastcalloptynmodifydate__c date NULL,
+	nationality__c varchar(255) NULL,
+	ccpdmodifydate__c timestamp NULL,
+	accountid varchar(18) NULL,
+	otherpostalcode varchar(20) NULL,
+	genesiscustomeryn__c bool NULL,
+	subsidiarycode__c varchar(255) NULL,
+	assistantname varchar(40) NULL,
+	lastoptinoutdate__c date NULL,
+	lastdirectmailoptynmodifydate__c date NULL,
+	cpf__c varchar(255) NULL,
+	isemailbounced bool NULL,
+	mig_sys__c varchar(20) NULL,
+	mailingcountry varchar(80) NULL,
+	"name" varchar(121) NULL,
+	registrysource__c varchar(255) NULL,
+	employeenumber__c varchar(255) NULL,
+	identificationnumber__c varchar(20) NULL,
+	mobilephone varchar(40) NULL,
+	createdsystem__c varchar(255) NULL,
+	userflag__c bool NULL,
+	birthdate date NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	optinexpirationdate__c date NULL,
+	phone varchar(40) NULL,
+	messengeroptyn__c bool NULL,
+	mailingstreet varchar(255) NULL,
+	receiveserviceoffersflag__c bool NULL,
+	hyundaicustomeryn__c bool NULL,
+	emailbounceddate timestamp NULL,
+	ispersonaccount bool NULL,
+	ccpd__c bool NULL,
+	hasoptedoutofemail bool NULL,
+	calledby__c varchar(255) NULL,
+	isdeleted bool NULL,
+	homephone varchar(40) NULL,
+	dealergroupcode__c varchar(255) NULL,
+	phoneusabilityyn__c bool NULL,
+	assistantphone varchar(40) NULL,
+	systemmodstamp timestamp NULL,
+	literacy__c varchar(255) NULL,
+	hasoptedoutoffax bool NULL,
+	lastmessengeroptynmodifydate__c date NULL,
+	sendtomarketingcloud__c bool NULL,
+	note__c varchar(200) NULL,
+	suffix varchar(40) NULL,
+	pcd__c varchar(255) NULL,
+	majorlanguage__c varchar(255) NULL,
+	department varchar(80) NULL,
+	identificationnumbertype__c varchar(255) NULL,
+	companyphone__c varchar(255) NULL,
+	legacy_type__c varchar(255) NULL,
+	otherstreet varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	integrationid__c varchar(30) NULL,
+	optinoutnotificationdate__c date NULL,
+	workcontact__c varchar(40) NULL,
+	smsoptyn__c bool NULL,
+	salesmarketingyn__c bool NULL,
+	lastcurequestdate timestamp NULL,
+	blockedmobile__c bool NULL,
+	goodfriendcustomeryn__c bool NULL,
+	employee__c bool NULL,
+	fatiguelimitexceed1w__c bool NULL,
+	apppushoptyn__c bool NULL,
+	blockedvideocall__c bool NULL,
+	partytypecode__c varchar(30) NULL,
+	blockedsms__c bool NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	mailingcity varchar(40) NULL,
+	fatiguelimitexceed2w__c bool NULL,
+	lastsmsoptynmodifydate__c date NULL,
+	mailinglatitude float8 NULL,
+	ismigandinterfaceprocess__c bool NULL,
+	emailoptyn__c bool NULL,
+	fatiguelimitexceed3w__c bool NULL,
+	leadsource varchar(255) NULL,
+	statusdealer__c varchar(30) NULL,
+	faxoptyn__c bool NULL,
+	lastapppushoptynmodifydate__c date NULL,
+	salutation varchar(255) NULL,
+	title varchar(128) NULL,
+	receiveproductnewsflag__c bool NULL,
+	occupation__c varchar(255) NULL,
+	lastemailoptynmodifydate__c date NULL,
+	sourcesystem__c varchar(255) NULL,
+	receiveresearchflag__c bool NULL,
+	calloptyn__c bool NULL,
+	blockedcalls__c bool NULL,
+	lastfaxoptynmodifydate__c date NULL,
+	mig_yn__c bool NULL,
+	cppdmodifydate__c timestamp NULL,
+	receiveretailoffersflag__c bool NULL,
+	receiveeventsflag__c bool NULL,
+	othercity varchar(40) NULL,
+	firstname varchar(40) NULL,
+	receivenewsletterflag__c bool NULL,
+	homenumber__c varchar(40) NULL,
+	influentialperson__c varchar(255) NULL,
+	directmailoptyn__c bool NULL,
+	bluelinkmarketingyn__c bool NULL,
+	otherlatitude float8 NULL,
+	email varchar(80) NULL,
+	description text NULL,
+	maritalstatus__c varchar(255) NULL,
+	photourl varchar(255) NULL,
+	fax varchar(40) NULL,
+	dealercode__c varchar(255) NULL,
+	otherphone varchar(40) NULL,
+	familysize__c float8 NULL,
+	collectingchanneltype__c varchar(255) NULL,
+	mig_desc__c varchar(255) NULL,
+	emailusabilityyn__c bool NULL,
+	otherlongitude float8 NULL,
+	preferredcontactchannel__c varchar(255) NULL,
+	genderidentity varchar(255) NULL,
+	fatiguelimitexceed12m__c bool NULL,
+	fatiguelimitexceed1m__c bool NULL,
+	lastcuupdatedate timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL
+);
+
+
+-- "replica".contact_sfid definition
+
+-- Drop table
+
+-- DROP TABLE "replica".contact_sfid;
+
+CREATE TABLE "replica".contact_sfid (
+	sfid varchar NULL,
+	accountid varchar NULL
+);
+CREATE INDEX replica_contact_sfid ON replica.contact_sfid USING btree (sfid, accountid);
+
+
+-- "replica".customervehicle__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".customervehicle__c;
+
+CREATE TABLE "replica".customervehicle__c (
+	mig_date__c date NULL,
+	legacylastupdby__c varchar(15) NULL,
+	contact__c varchar(18) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	type__c varchar(30) NULL,
+	rentleaseuseduration__c varchar(100) NULL,
+	mig_sys__c varchar(20) NULL,
+	"name" varchar(80) NULL,
+	relationship__c varchar(255) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	isdeleted bool NULL,
+	dealergroupcode__c varchar(255) NULL,
+	employeeflg__c bool NULL,
+	systemmodstamp timestamp NULL,
+	statuscd__c varchar(30) NULL,
+	status__c varchar(255) NULL,
+	relationshipenddate__c timestamp NULL,
+	external_id__c varchar(255) NULL,
+	customer_vehicle_id__c varchar(30) NULL,
+	vehicleownyn__c bool NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	vehicle__c varchar(18) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	vehicle__r__external_id__c varchar(255) NULL,
+	mig_yn__c bool NULL,
+	sourcechannel__c varchar(255) NULL,
+	vehicleownershipconfirmationdate__c date NULL,
+	dealercode__c varchar(255) NULL,
+	mig_desc__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	retaildate__c date NULL,
+	CONSTRAINT customervehicle__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX customervehicle__c_account__r__external_id__c_idx ON replica.customervehicle__c USING btree (account__r__external_id__c);
+CREATE INDEX customervehicle__c_status__c_idx ON replica.customervehicle__c USING btree (status__c);
+CREATE INDEX customervehicle__c_type__c_idx ON replica.customervehicle__c USING btree (type__c);
+CREATE INDEX hc_idx_customervehicle__c_account__c ON replica.customervehicle__c USING btree (account__c);
+CREATE INDEX hc_idx_customervehicle__c_contact__c ON replica.customervehicle__c USING btree (contact__c);
+CREATE INDEX hc_idx_customervehicle__c_customer_vehicle_id__c ON replica.customervehicle__c USING btree (customer_vehicle_id__c);
+CREATE INDEX hc_idx_customervehicle__c_dealercode__c ON replica.customervehicle__c USING btree (dealercode__c);
+CREATE INDEX hc_idx_customervehicle__c_isdeleted ON replica.customervehicle__c USING btree (isdeleted);
+CREATE INDEX hc_idx_customervehicle__c_relationship__c ON replica.customervehicle__c USING btree (relationship__c);
+CREATE INDEX hc_idx_customervehicle__c_status__c ON replica.customervehicle__c USING btree (status__c);
+CREATE INDEX hc_idx_customervehicle__c_systemmodstamp ON replica.customervehicle__c USING btree (systemmodstamp);
+CREATE INDEX hc_idx_customervehicle__c_type__c ON replica.customervehicle__c USING btree (type__c);
+CREATE INDEX hc_idx_customervehicle__c_vehicle__c ON replica.customervehicle__c USING btree (vehicle__c);
+CREATE INDEX hc_idx_customervehicle__c_vehicle__r__external_id__c ON replica.customervehicle__c USING btree (vehicle__r__external_id__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle__c_external_id__c ON replica.customervehicle__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle__c_sfid ON replica.customervehicle__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_customervehicle__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.customervehicle__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_customervehicle__c_logger();
+create trigger hc_customervehicle__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.customervehicle__c for each row execute function replica.hc_customervehicle__c_status();
+
+
+-- "replica".customervehicle_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".customervehicle_bulk;
+
+CREATE TABLE "replica".customervehicle_bulk (
+	legacylastupdby__c varchar(15) NULL,
+	type__c varchar(30) NULL,
+	"name" varchar(80) NULL,
+	relationship__c varchar(255) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	isdeleted bool NULL,
+	employeeflg__c bool NULL,
+	systemmodstamp timestamp NULL,
+	status__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	vehicle__c varchar(18) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	vehicle__r__external_id__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT customervehicle_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_customervehicle_bulk_account__c ON replica.customervehicle_bulk USING btree (account__c);
+CREATE INDEX hc_idx_customervehicle_bulk_systemmodstamp ON replica.customervehicle_bulk USING btree (systemmodstamp);
+CREATE INDEX hc_idx_customervehicle_bulk_vehicle__c ON replica.customervehicle_bulk USING btree (vehicle__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk_external_id__c ON replica.customervehicle_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk_sfid ON replica.customervehicle_bulk USING btree (sfid);
+
+
+-- "replica".customervehicle_bulk2 definition
+
+-- Drop table
+
+-- DROP TABLE "replica".customervehicle_bulk2;
+
+CREATE TABLE "replica".customervehicle_bulk2 (
+	legacylastupdby__c varchar(15) NULL,
+	type__c varchar(30) NULL,
+	"name" varchar(80) NULL,
+	relationship__c varchar(255) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	legacylastmodifieddate__c timestamp NULL,
+	isdeleted bool NULL,
+	employeeflg__c bool NULL,
+	systemmodstamp timestamp NULL,
+	status__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	legacycreateddate__c timestamp NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	vehicle__c varchar(18) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	vehicle__r__external_id__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT customervehicle_bulk2_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_customervehicle_bulk2_account__c ON replica.customervehicle_bulk2 USING btree (account__c);
+CREATE INDEX hc_idx_customervehicle_bulk2_systemmodstamp ON replica.customervehicle_bulk2 USING btree (systemmodstamp);
+CREATE INDEX hc_idx_customervehicle_bulk2_vehicle__c ON replica.customervehicle_bulk2 USING btree (vehicle__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk2_external_id__c ON replica.customervehicle_bulk2 USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_customervehicle_bulk2_sfid ON replica.customervehicle_bulk2 USING btree (sfid);
+
+
+-- "replica".customervehicle_bulk3 definition
+
+-- Drop table
+
+-- DROP TABLE "replica".customervehicle_bulk3;
+
+CREATE TABLE "replica".customervehicle_bulk3 (
+	vehicle__r__external_id__c varchar(30) NULL,
+	sfid varchar(30) NULL
+);
+
+
+-- "replica".cx_sr_mntsrvc_x__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".cx_sr_mntsrvc_x__c;
+
+CREATE TABLE "replica".cx_sr_mntsrvc_x__c (
+	srvc_technician_id__c varchar(15) NULL,
+	modification_num__c float8 NULL,
+	srvc_start_date__c date NULL,
+	srvc_status_cd__c varchar(30) NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	srvc_type__c varchar(30) NULL,
+	srvc_consultant_id__c varchar(15) NULL,
+	conflict_id__c varchar(15) NULL,
+	srvc_arrival_date__c date NULL,
+	srvc_duration__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT cx_sr_mntsrvc_x__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_cx_sr_mntsrvc_x__c_systemmodstamp ON replica.cx_sr_mntsrvc_x__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_cx_sr_mntsrvc_x__c_external_id__c ON replica.cx_sr_mntsrvc_x__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_cx_sr_mntsrvc_x__c_sfid ON replica.cx_sr_mntsrvc_x__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_cx_sr_mntsrvc_x__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.cx_sr_mntsrvc_x__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_cx_sr_mntsrvc_x__c_logger();
+create trigger hc_cx_sr_mntsrvc_x__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.cx_sr_mntsrvc_x__c for each row execute function replica.hc_cx_sr_mntsrvc_x__c_status();
+
+
+-- "replica".dealerappointmenthistory__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".dealerappointmenthistory__c;
+
+CREATE TABLE "replica".dealerappointmenthistory__c (
+	srvcconsultantid__c varchar(15) NULL,
+	srvcduration__c float8 NULL,
+	legacy_last_upd_by__c varchar(15) NULL,
+	srvcstatuscd__c varchar(30) NULL,
+	customeremail__c varchar(80) NULL,
+	cpf__c varchar(255) NULL,
+	legacy_modification_num__c float8 NULL,
+	"name" varchar(80) NULL,
+	parrowid__c varchar(15) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	legacy_conflict_id__c varchar(15) NULL,
+	createddate timestamp NULL,
+	srvc_type__c varchar(255) NULL,
+	srvctechnicianid__c varchar(15) NULL,
+	customername__c varchar(255) NULL,
+	externalid__c varchar(255) NULL,
+	dealercode__c varchar(30) NULL,
+	legacy_created_by__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	srvcarrivaldate__c timestamp NULL,
+	legacy_last_upd__c timestamp NULL,
+	legacy_created__c timestamp NULL,
+	srvcdeliverydate__c timestamp NULL,
+	srvcstartdate__c timestamp NULL,
+	accountid__c varchar(18) NULL,
+	accountid__r__external_id__c varchar(255) NULL,
+	CONSTRAINT dealerappointmenthistory__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_dealerappointmenthistory__c_accountid__c ON replica.dealerappointmenthistory__c USING btree (accountid__c);
+CREATE INDEX hc_idx_dealerappointmenthistory__c_systemmodstamp ON replica.dealerappointmenthistory__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_dealerappointmenthistory__c_externalid__c ON replica.dealerappointmenthistory__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_dealerappointmenthistory__c_sfid ON replica.dealerappointmenthistory__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_dealerappointmenthistory__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.dealerappointmenthistory__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_dealerappointmenthistory__c_logger();
+create trigger hc_dealerappointmenthistory__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.dealerappointmenthistory__c for each row execute function replica.hc_dealerappointmenthistory__c_status();
+
+
+-- "replica".dealerholiday__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".dealerholiday__c;
+
+CREATE TABLE "replica".dealerholiday__c (
+	type__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	lastmodifieddate timestamp NULL,
+	holiday_date__c date NULL,
+	holiday_day__c varchar(30) NULL,
+	dealeraccount__c varchar(18) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	holiday_name__c varchar(100) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT dealerholiday__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_dealerholiday__c_dealeraccount__c ON replica.dealerholiday__c USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_dealerholiday__c_lastmodifieddate ON replica.dealerholiday__c USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_dealerholiday__c_systemmodstamp ON replica.dealerholiday__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_dealerholiday__c_external_id__c ON replica.dealerholiday__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_dealerholiday__c_sfid ON replica.dealerholiday__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_dealerholiday__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.dealerholiday__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_dealerholiday__c_logger();
+create trigger hc_dealerholiday__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.dealerholiday__c for each row execute function replica.hc_dealerholiday__c_status();
+
+
+-- "replica".dealerservice__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".dealerservice__c;
+
+CREATE TABLE "replica".dealerservice__c (
+	type__c varchar(30) NULL,
+	dlr_srvc_type__c varchar(30) NULL,
+	"name" varchar(80) NULL,
+	dlr_srvc_len__c float8 NULL,
+	lastmodifieddate timestamp NULL,
+	dealeraccount__c varchar(18) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT dealerservice__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_dealerservice__c_dealeraccount__c ON replica.dealerservice__c USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_dealerservice__c_lastmodifieddate ON replica.dealerservice__c USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_dealerservice__c_systemmodstamp ON replica.dealerservice__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_dealerservice__c_external_id__c ON replica.dealerservice__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_dealerservice__c_sfid ON replica.dealerservice__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_dealerservice__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.dealerservice__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_dealerservice__c_logger();
+create trigger hc_dealerservice__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.dealerservice__c for each row execute function replica.hc_dealerservice__c_status();
+
+
+-- "replica".em_check definition
+
+-- Drop table
+
+-- DROP TABLE "replica".em_check;
+
+CREATE TABLE "replica".em_check (
+	val varchar(30) NULL
+);
+
+
+-- "replica".invoiceinfo__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".invoiceinfo__c;
+
+CREATE TABLE "replica".invoiceinfo__c (
+	vehiclelicensedate__c date NULL,
+	urlphoto__c varchar(255) NULL,
+	salespersonlastname__c varchar(255) NULL,
+	ccsflag__c bool NULL,
+	vehiclelicensenumber__c varchar(255) NULL,
+	manufactureyear__c varchar(255) NULL,
+	customer__c varchar(18) NULL,
+	salespersonid__c varchar(255) NULL,
+	negotiationtype__c varchar(255) NULL,
+	customer__r__external_id__c varchar(255) NULL,
+	salespersonfirstname__c varchar(255) NULL,
+	fiscalreceipt__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	subscriptiontype__c varchar(255) NULL,
+	urlauthopublication__c varchar(255) NULL,
+	digitalsales__c bool NULL,
+	dealeraccount__c varchar(18) NULL,
+	warrantystartdate__c date NULL,
+	modelname__c varchar(255) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	internalcolorcode__c varchar(255) NULL,
+	status__c varchar(255) NULL,
+	fsc_ocn__c varchar(255) NULL,
+	urlphotodate__c date NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	fueltype__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	salestodealerdate__c date NULL,
+	createddate timestamp NULL,
+	delivertocustomerdate__c date NULL,
+	enginenumber__c varchar(255) NULL,
+	testdriveathome__c bool NULL,
+	mileage__c float8 NULL,
+	renavamcode__c varchar(255) NULL,
+	billingdate__c date NULL,
+	purchaseprice__c float8 NULL,
+	deliveryathome__c bool NULL,
+	dealercode__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	externalcolorcode__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	deliverydate__c date NULL,
+	canceldate__c date NULL,
+	cpf__c varchar(11) NULL,
+	CONSTRAINT invoiceinfo__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_invoiceinfo__c_customer__c ON replica.invoiceinfo__c USING btree (customer__c);
+CREATE INDEX hc_idx_invoiceinfo__c_dealeraccount__c ON replica.invoiceinfo__c USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_invoiceinfo__c_systemmodstamp ON replica.invoiceinfo__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_invoiceinfo__c_external_id__c ON replica.invoiceinfo__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_invoiceinfo__c_sfid ON replica.invoiceinfo__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_invoiceinfo__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.invoiceinfo__c for each row execute function replica.hc_invoiceinfo__c_status();
+create trigger hc_invoiceinfo__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.invoiceinfo__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_invoiceinfo__c_logger();
+
+
+-- "replica".landing_code definition
+
+-- Drop table
+
+-- DROP TABLE "replica".landing_code;
+
+CREATE TABLE "replica".landing_code (
+	name_code varchar(50) NULL
+);
+
+
+-- "replica"."lead" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."lead";
+
+CREATE TABLE "replica"."lead" (
+	converteddate date NULL,
+	channel__c varchar(255) NULL,
+	middlename varchar(40) NULL,
+	countrycode__c varchar(255) NULL,
+	testdrivevehichlemodel__c varchar(255) NULL,
+	cicheck__c bool NULL,
+	lastname varchar(80) NULL,
+	cppd__c bool NULL,
+	street varchar(255) NULL,
+	validemail__c varchar(80) NULL,
+	smsoptin__c bool NULL,
+	numberofemployees int4 NULL,
+	dealercnpj__c varchar(255) NULL,
+	campaigncode__c varchar(255) NULL,
+	apppushoptin__c bool NULL,
+	dealercidade__c varchar(255) NULL,
+	requestdate__c date NULL,
+	consultenddate__c timestamp NULL,
+	recordtypeid varchar(18) NULL,
+	lastsmsoptinmodifydate__c date NULL,
+	marca__c varchar(255) NULL,
+	emailoptin__c bool NULL,
+	dealerregiao__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	testdriverequestfeedback__c varchar(255) NULL,
+	productcode__c varchar(255) NULL,
+	collecanduseofpersonalinformation__c bool NULL,
+	faxoptin__c bool NULL,
+	concessionario__c varchar(255) NULL,
+	lastapppushoptinmodifydate__c date NULL,
+	dtultmavenda__c varchar(255) NULL,
+	sourcechannelitem__c varchar(255) NULL,
+	isconverted bool NULL,
+	convertedcontactid varchar(18) NULL,
+	reservationdate__c timestamp NULL,
+	lastemailoptinmodifydate__c date NULL,
+	ocn__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	calloptin__c bool NULL,
+	cpf__c varchar(255) NULL,
+	lastfaxoptinmodifydate__c date NULL,
+	additionalnote__c varchar(255) NULL,
+	produto__c varchar(255) NULL,
+	dealer__c varchar(255) NULL,
+	parcela__c varchar(255) NULL,
+	lastmessengeroptinmodify_date__c date NULL,
+	customertype__c varchar(255) NULL,
+	city varchar(40) NULL,
+	"name" varchar(121) NULL,
+	directmailoptin__c bool NULL,
+	latitude float8 NULL,
+	pronouns varchar(255) NULL,
+	testdriverequest__c varchar(255) NULL,
+	mobilephone varchar(40) NULL,
+	entrada__c varchar(255) NULL,
+	quoteowner__c varchar(255) NULL,
+	anofabricacao__c varchar(255) NULL,
+	testdrivestarttime__c timestamp NULL,
+	consultfixeddate__c timestamp NULL,
+	leadtype__c varchar(255) NULL,
+	lastmodifieddate timestamp NULL,
+	phone varchar(40) NULL,
+	testdriveresult__c varchar(255) NULL,
+	lastupdatedsystem__c varchar(255) NULL,
+	region__c varchar(255) NULL,
+	predictive_temp__c varchar(255) NULL,
+	longitude float8 NULL,
+	ccpd__c bool NULL,
+	prazo__c varchar(255) NULL,
+	dealeraccount__c varchar(18) NULL,
+	convertedaccount__external_id__c varchar(255) NULL,
+	hasoptedoutofemail bool NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	hasoptedoutoffax bool NULL,
+	state varchar(80) NULL,
+	leadscorecheck__c bool NULL,
+	status varchar(255) NULL,
+	oferta__c varchar(255) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	majorlanguage__c varchar(255) NULL,
+	fueltype__c varchar(255) NULL,
+	dealergrupo__c varchar(255) NULL,
+	lastactivitydate date NULL,
+	campaign__c varchar(255) NULL,
+	datavalidade__c varchar(255) NULL,
+	productofinterest__c varchar(255) NULL,
+	testdriveendtime__c timestamp NULL,
+	level3__c varchar(255) NULL,
+	individualid varchar(18) NULL,
+	veiculo__c varchar(255) NULL,
+	quotestatus__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	fleet__c bool NULL,
+	accountno__c varchar(30) NULL,
+	level1__c varchar(255) NULL,
+	birthdate__c date NULL,
+	chassi__c varchar(255) NULL,
+	numberofactivities__c float8 NULL,
+	createddate timestamp NULL,
+	consultno__c varchar(255) NULL,
+	convertedaccountid varchar(18) NULL,
+	country varchar(80) NULL,
+	lastcalloptinmodifydate__c date NULL,
+	leadsource varchar(255) NULL,
+	geocodeaccuracy varchar(255) NULL,
+	subject__c varchar(255) NULL,
+	companionsalesname__c varchar(255) NULL,
+	postalcode varchar(20) NULL,
+	sourcecampaign__c varchar(18) NULL,
+	salutation varchar(255) NULL,
+	title varchar(128) NULL,
+	occupation__c varchar(255) NULL,
+	clienterecompra__c varchar(255) NULL,
+	quotedate__c date NULL,
+	massivedealercode__c varchar(255) NULL,
+	fim__c date NULL,
+	hyundaiuniquekeycustomer__c varchar(255) NULL,
+	testdrivestatus__c varchar(255) NULL,
+	testdrivedatelasttestdrivedate__c timestamp NULL,
+	lastdirectmailoptinmodifydate__c date NULL,
+	profilescore__c float8 NULL,
+	companionsalesnumber__c varchar(255) NULL,
+	website varchar(255) NULL,
+	anomodelo__c varchar(255) NULL,
+	firstname varchar(40) NULL,
+	decisionmaker__c bool NULL,
+	hyundaiuniquekeylead__c varchar(255) NULL,
+	frase__c text NULL,
+	dealernickname__c varchar(255) NULL,
+	completedate__c date NULL,
+	convertedopportunityid varchar(18) NULL,
+	email varchar(80) NULL,
+	description text NULL,
+	modelo__c varchar(255) NULL,
+	company varchar(255) NULL,
+	annualrevenue float8 NULL,
+	sourcechannelcategory__c varchar(255) NULL,
+	rating varchar(255) NULL,
+	photourl varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	quotenumber__c varchar(255) NULL,
+	industry varchar(255) NULL,
+	messengeroptin__c bool NULL,
+	budget__c varchar(255) NULL,
+	inicio__c date NULL,
+	testdriverequestvehichlemodel__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	genderidentity varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	convertedcontact__external_id__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	gender__c varchar(255) NULL,
+	sourcetag__c varchar(255) NULL,
+	personhomephone__c varchar(40) NULL,
+	level4__c varchar(255) NULL,
+	testdriveprotocolid__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	fax varchar(40) NULL,
+	mediumtag__c varchar(255) NULL,
+	CONSTRAINT lead_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_lead_convertedaccountid ON replica.lead USING btree (convertedaccountid);
+CREATE INDEX hc_idx_lead_convertedcontactid ON replica.lead USING btree (convertedcontactid);
+CREATE INDEX hc_idx_lead_dealeraccount__c ON replica.lead USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_lead_lastmodifieddate ON replica.lead USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_lead_systemmodstamp ON replica.lead USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_lead_hyundaiuniquekeylead__c ON replica.lead USING btree (hyundaiuniquekeylead__c);
+CREATE UNIQUE INDEX hcu_idx_lead_sfid ON replica.lead USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_lead_status_trigger before
+insert
+    or
+update
+    on
+    replica.lead for each row execute function replica.hc_lead_status();
+create trigger hc_lead_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.lead for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_lead_logger();
+
+
+-- "replica".loyaltyprogram__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".loyaltyprogram__c;
+
+CREATE TABLE "replica".loyaltyprogram__c (
+	legacylastupdby__c varchar(15) NULL,
+	legacymodificationnum__c float8 NULL,
+	x_benefit_url__c text NULL,
+	x_src_app__c varchar(30) NULL,
+	legacycreated__c date NULL,
+	x_benefit_name__c varchar(250) NULL,
+	type__c varchar(30) NULL,
+	x_benefit_use__c date NULL,
+	"name" varchar(80) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	lastmodifieddate timestamp NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	personaccountid__c varchar(18) NULL,
+	personaccountid__r__external_id__c varchar(255) NULL,
+	dealeraccountid__c varchar(18) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	dealeraccountid__r__external_id__c varchar(255) NULL,
+	name__c varchar(100) NULL,
+	legacylastupd__c date NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	contact__c varchar(18) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	CONSTRAINT loyaltyprogram__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_loyaltyprogram__c_contact__c ON replica.loyaltyprogram__c USING btree (contact__c);
+CREATE INDEX hc_idx_loyaltyprogram__c_dealeraccountid__c ON replica.loyaltyprogram__c USING btree (dealeraccountid__c);
+CREATE INDEX hc_idx_loyaltyprogram__c_lastmodifieddate ON replica.loyaltyprogram__c USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_loyaltyprogram__c_personaccountid__c ON replica.loyaltyprogram__c USING btree (personaccountid__c);
+CREATE INDEX hc_idx_loyaltyprogram__c_systemmodstamp ON replica.loyaltyprogram__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_external_id__c ON replica.loyaltyprogram__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_sfid ON replica.loyaltyprogram__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_loyaltyprogram__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.loyaltyprogram__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_loyaltyprogram__c_logger();
+create trigger hc_loyaltyprogram__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.loyaltyprogram__c for each row execute function replica.hc_loyaltyprogram__c_status();
+
+
+-- "replica".loyaltyprogram_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".loyaltyprogram_bulk;
+
+CREATE TABLE "replica".loyaltyprogram_bulk (
+	legacylastupdby__c varchar(15) NULL,
+	legacymodificationnum__c float8 NULL,
+	x_benefit_url__c text NULL,
+	x_src_app__c varchar(30) NULL,
+	legacycreated__c date NULL,
+	x_benefit_name__c varchar(250) NULL,
+	type__c varchar(30) NULL,
+	x_benefit_use__c date NULL,
+	"name" varchar(80) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	lastmodifieddate timestamp NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	personaccountid__c varchar(18) NULL,
+	personaccountid__r__external_id__c varchar(255) NULL,
+	dealeraccountid__c varchar(18) NULL,
+	external_id__c varchar(255) NULL,
+	createddate timestamp NULL,
+	dealeraccountid__r__external_id__c varchar(255) NULL,
+	name__c varchar(100) NULL,
+	legacylastupd__c date NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	contact__c varchar(18) NULL,
+	CONSTRAINT loyaltyprogram__c_pkey_1 PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_loyaltyprogram__c_dealeraccountid__c_1 ON replica.loyaltyprogram_bulk USING btree (dealeraccountid__c);
+CREATE INDEX hc_idx_loyaltyprogram__c_lastmodifieddate_1 ON replica.loyaltyprogram_bulk USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_loyaltyprogram__c_personaccountid__c_1 ON replica.loyaltyprogram_bulk USING btree (personaccountid__c);
+CREATE INDEX hc_idx_loyaltyprogram__c_systemmodstamp_1 ON replica.loyaltyprogram_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_external_id__c_1 ON replica.loyaltyprogram_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_loyaltyprogram__c_sfid_1 ON replica.loyaltyprogram_bulk USING btree (sfid);
+
+
+-- "replica".opportunity definition
+
+-- Drop table
+
+-- DROP TABLE "replica".opportunity;
+
+CREATE TABLE "replica".opportunity (
+	account__external_id__c varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	loss_reason__c varchar(255) NULL,
+	salesqualifieddate__c timestamp NULL,
+	salesstatus__c varchar(255) NULL,
+	closedate date NULL,
+	consultenddate__c timestamp NULL,
+	autonumberforname__c varchar(10) NULL,
+	bodytype__c varchar(255) NULL,
+	lost_reason_description__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	transferredopportunitydate__c timestamp NULL,
+	additionalnote__c text NULL,
+	dealer__c varchar(255) NULL,
+	"name" varchar(120) NULL,
+	consultfixeddate__c timestamp NULL,
+	accepteddate__c timestamp NULL,
+	predictive_temp__c varchar(255) NULL,
+	dealeraccount__c varchar(18) NULL,
+	dmsopportunityname__c varchar(255) NULL,
+	salesopportunitycode__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	case__c varchar(18) NULL,
+	level3__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	contactdate__c timestamp NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	consultno__c varchar(255) NULL,
+	transferredopportunity__c bool NULL,
+	case__r__external_id__c varchar(255) NULL,
+	companionsalesname__c varchar(255) NULL,
+	testdriveprotocolid__c varchar(255) NULL,
+	closestatus__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	companionsalesnumber__c varchar(255) NULL,
+	lostreason__c varchar(255) NULL,
+	completedate__c timestamp NULL,
+	description text NULL,
+	dcxtopportunitykey__c varchar(18) NULL,
+	mediumtag__c varchar(255) NULL,
+	budget__c varchar(200) NULL,
+	budget_confirmed__c bool NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	sourcetag__c varchar(255) NULL,
+	stagename varchar(255) NULL,
+	opportunitytype__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	ownerid varchar(18) NULL,
+	contact__c varchar(18) NULL,
+	contactid varchar(18) NULL,
+	pcd__c bool NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	CONSTRAINT opportunity_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_opportunity_accountid ON replica.opportunity USING btree (accountid);
+CREATE INDEX hc_idx_opportunity_case__c ON replica.opportunity USING btree (case__c);
+CREATE INDEX hc_idx_opportunity_dealeraccount__c ON replica.opportunity USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_opportunity_systemmodstamp ON replica.opportunity USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_opportunity_external_id__c ON replica.opportunity USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_opportunity_sfid ON replica.opportunity USING btree (sfid);
+CREATE INDEX opportunity_testdriveprotocolid__c_idx ON replica.opportunity USING btree (testdriveprotocolid__c);
+
+-- Table Triggers
+
+create trigger hc_opportunity_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.opportunity for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_opportunity_logger();
+create trigger hc_opportunity_status_trigger before
+insert
+    or
+update
+    on
+    replica.opportunity for each row execute function replica.hc_opportunity_status();
+
+
+-- "replica".opportunity_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".opportunity_bulk;
+
+CREATE TABLE "replica".opportunity_bulk (
+	account__external_id__c varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	loss_reason__c varchar(255) NULL,
+	salesqualifieddate__c timestamp NULL,
+	salesstatus__c varchar(255) NULL,
+	closedate date NULL,
+	consultenddate__c timestamp NULL,
+	autonumberforname__c varchar(10) NULL,
+	bodytype__c varchar(255) NULL,
+	lost_reason_description__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	transferredopportunitydate__c timestamp NULL,
+	additionalnote__c text NULL,
+	dealer__c varchar(255) NULL,
+	"name" varchar(120) NULL,
+	consultfixeddate__c timestamp NULL,
+	accepteddate__c timestamp NULL,
+	predictive_temp__c varchar(255) NULL,
+	dealeraccount__c varchar(18) NULL,
+	dmsopportunityname__c varchar(255) NULL,
+	salesopportunitycode__c varchar(100) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	case__c varchar(18) NULL,
+	level3__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	contactdate__c timestamp NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	consultno__c varchar(255) NULL,
+	transferredopportunity__c bool NULL,
+	case__r__external_id__c varchar(255) NULL,
+	companionsalesname__c varchar(255) NULL,
+	testdriveprotocolid__c varchar(255) NULL,
+	closestatus__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	companionsalesnumber__c varchar(255) NULL,
+	lostreason__c varchar(255) NULL,
+	completedate__c timestamp NULL,
+	description text NULL,
+	dcxtopportunitykey__c varchar(18) NULL,
+	mediumtag__c varchar(255) NULL,
+	budget__c varchar(200) NULL,
+	budget_confirmed__c bool NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	sourcetag__c varchar(255) NULL,
+	stagename varchar(255) NULL,
+	opportunitytype__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	external_id__c varchar(255) NULL,
+	ownerid varchar(18) NULL,
+	contactid varchar(18) NULL,
+	contact__c varchar(18) NULL,
+	pcd__c bool NULL,
+	CONSTRAINT opportunity_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_opportunity_bulk_accountid ON replica.opportunity_bulk USING btree (accountid);
+CREATE INDEX hc_idx_opportunity_bulk_case__c ON replica.opportunity_bulk USING btree (case__c);
+CREATE INDEX hc_idx_opportunity_bulk_dealeraccount__c ON replica.opportunity_bulk USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_opportunity_bulk_systemmodstamp ON replica.opportunity_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_opportunity_bulk_sfid ON replica.opportunity_bulk USING btree (sfid);
+
+
+-- "replica".opportunity_sfid definition
+
+-- Drop table
+
+-- DROP TABLE "replica".opportunity_sfid;
+
+CREATE TABLE "replica".opportunity_sfid (
+	testdriveprotocolid__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	external_id__c varchar(255) NULL
+);
+CREATE UNIQUE INDEX hcu_idx_opportunity_sfid_sfid ON replica.opportunity_sfid USING btree (sfid);
+
+
+-- "replica".product2 definition
+
+-- Drop table
+
+-- DROP TABLE "replica".product2;
+
+CREATE TABLE "replica".product2 (
+	engine__c varchar(30) NULL,
+	hmb_cylinder_capacity__c varchar(50) NULL,
+	"family" varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	stockkeepingunit varchar(180) NULL,
+	"name" varchar(255) NULL,
+	version_desc__c varchar(50) NULL,
+	chassi_model__c varchar(50) NULL,
+	displayurl varchar(1000) NULL,
+	fuel__c varchar(30) NULL,
+	lastmodifieddate timestamp NULL,
+	body_style__c varchar(30) NULL,
+	isdeleted bool NULL,
+	source_system__c varchar(30) NULL,
+	isactive bool NULL,
+	systemmodstamp timestamp NULL,
+	part__c varchar(50) NULL,
+	model_year__c float8 NULL,
+	doors_amount__c varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	advanced_desc__c varchar(2000) NULL,
+	engine_desc__c varchar(50) NULL,
+	suggested_price__c float8 NULL,
+	createddate timestamp NULL,
+	transmission_desc__c varchar(50) NULL,
+	quantityunitofmeasure varchar(255) NULL,
+	product_type__c varchar(255) NULL,
+	productcode varchar(255) NULL,
+	description varchar(4000) NULL,
+	transmission__c varchar(30) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT product2_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_product2_lastmodifieddate ON replica.product2 USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_product2_systemmodstamp ON replica.product2 USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_product2_external_id__c ON replica.product2 USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_product2_sfid ON replica.product2 USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_product2_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.product2 for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_product2_logger();
+create trigger hc_product2_status_trigger before
+insert
+    or
+update
+    on
+    replica.product2 for each row execute function replica.hc_product2_status();
+
+
+-- "replica".quotehistory_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".quotehistory_bulk;
+
+CREATE TABLE "replica".quotehistory_bulk (
+	channel__c varchar(255) NULL,
+	usedmaxprice__c varchar(255) NULL,
+	trim__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	usedkm__c varchar(255) NULL,
+	sourcetag__c varchar(255) NULL,
+	relatedmodel__c varchar(255) NULL,
+	enginecapacity__c varchar(255) NULL,
+	enginetype__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	description__c text NULL,
+	lead__c varchar(18) NULL,
+	productcode__c varchar(255) NULL,
+	usedversion__c varchar(255) NULL,
+	usedmedprice__c varchar(255) NULL,
+	usedyear__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	usedplate__c varchar(255) NULL,
+	paymentstatus__c varchar(255) NULL,
+	version__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	quoteowner__c varchar(255) NULL,
+	paymentdate__c timestamp NULL,
+	dealeraccount__c varchar(18) NULL,
+	usedminprice__c varchar(255) NULL,
+	isdeleted bool NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	protocolid__c varchar(255) NULL,
+	pcd__c bool NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	fueltype__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	level3__c varchar(255) NULL,
+	usedcarpayment__c bool NULL,
+	quotestatus__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	endprice__c varchar(255) NULL,
+	accountno__c varchar(255) NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	usedmodel__c varchar(255) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	usedchassi__c varchar(255) NULL,
+	usedbrand__c varchar(255) NULL,
+	loantype__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	legacy_created_datetime__c timestamp NULL,
+	externalid__c varchar(255) NULL,
+	usedcolor__c varchar(255) NULL,
+	enginetransmission__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	colorprice__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	carversionprice__c varchar(255) NULL,
+	quotenumber__c varchar(255) NULL,
+	mediumtag__c varchar(255) NULL,
+	reservationamount__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	recordtypeid varchar(18) NULL,
+	prioridade__c varchar(255) NULL,
+	color__c varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	financing__c bool NULL,
+	methodofpayment__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	dateopened__c date NULL,
+	motor__c varchar(255) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	CONSTRAINT quotehistory_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_quotehistory_bulk_account__c ON replica.quotehistory_bulk USING btree (account__c);
+CREATE INDEX hc_idx_quotehistory_bulk_dealeraccount__c ON replica.quotehistory_bulk USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_quotehistory_bulk_systemmodstamp ON replica.quotehistory_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_quotehistory_bulk_externalid__c ON replica.quotehistory_bulk USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_quotehistory_bulk_sfid ON replica.quotehistory_bulk USING btree (sfid);
+
+
+-- "replica".quotehistory_if__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".quotehistory_if__c;
+
+CREATE TABLE "replica".quotehistory_if__c (
+	channel__c varchar(255) NULL,
+	color__c varchar(255) NULL,
+	closedby__c varchar(255) NULL,
+	usedmaxprice__c varchar(255) NULL,
+	trim__c varchar(255) NULL,
+	currencyisocode varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	currencyisocode__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	usedkm__c varchar(255) NULL,
+	sourcetag__c varchar(255) NULL,
+	lead__r__hyundaiuniquekeylead__c varchar(255) NULL,
+	relatedmodel__c varchar(255) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	prioridade__c varchar(255) NULL,
+	enginecapacity__c varchar(255) NULL,
+	enginetype__c varchar(255) NULL,
+	bodytype__c varchar(255) NULL,
+	description__c text NULL,
+	lead__c varchar(18) NULL,
+	productcode__c varchar(255) NULL,
+	usedversion__c varchar(255) NULL,
+	usedmedprice__c varchar(255) NULL,
+	usedyear__c varchar(255) NULL,
+	usedcarvalue__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	dateclosed__c date NULL,
+	usedplate__c varchar(255) NULL,
+	paymentstatus__c varchar(255) NULL,
+	version__c varchar(255) NULL,
+	"name" varchar(80) NULL,
+	vehiclename__c varchar(255) NULL,
+	financing__c bool NULL,
+	dateopened__c date NULL,
+	quoteowner__c varchar(255) NULL,
+	alreadycustomer__c varchar(255) NULL,
+	motor__c varchar(255) NULL,
+	paymentdate__c timestamp NULL,
+	dealeraccount__c varchar(18) NULL,
+	usedminprice__c varchar(255) NULL,
+	isdeleted bool NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	protocolid__c varchar(255) NULL,
+	pcd__c bool NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	fueltype__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	opportunity__r__external_id__c varchar(255) NULL,
+	level3__c varchar(255) NULL,
+	isdeleted__c bool NULL,
+	usedcarpayment__c bool NULL,
+	quotestatus__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	endprice__c varchar(255) NULL,
+	accountno__c varchar(255) NULL,
+	methodofpayment__c varchar(255) NULL,
+	carreplacementintention__c varchar(255) NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	usedmodel__c varchar(255) NULL,
+	dealerstatus__c varchar(255) NULL,
+	quotedate__c date NULL,
+	account__r__external_id__c varchar(255) NULL,
+	usedchassi__c varchar(255) NULL,
+	usedbrand__c varchar(255) NULL,
+	loantype__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	mig_yn__c bool NULL,
+	legacy_created_datetime__c timestamp NULL,
+	clientehyundai__c bool NULL,
+	externalid__c varchar(255) NULL,
+	usedcolor__c varchar(255) NULL,
+	enginetransmission__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	colorprice__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	modelyear__c varchar(255) NULL,
+	carversionprice__c varchar(255) NULL,
+	quotenumber__c varchar(255) NULL,
+	mediumtag__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	reservationamount__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	transmission__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT quotehistory_if__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_quotehistory_if__c_account__c ON replica.quotehistory_if__c USING btree (account__c);
+CREATE INDEX hc_idx_quotehistory_if__c_contact__c ON replica.quotehistory_if__c USING btree (contact__c);
+CREATE INDEX hc_idx_quotehistory_if__c_dealeraccount__c ON replica.quotehistory_if__c USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_quotehistory_if__c_lead__c ON replica.quotehistory_if__c USING btree (lead__c);
+CREATE INDEX hc_idx_quotehistory_if__c_opportunity__c ON replica.quotehistory_if__c USING btree (opportunity__c);
+CREATE INDEX hc_idx_quotehistory_if__c_systemmodstamp ON replica.quotehistory_if__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_quotehistory_if__c_externalid__c ON replica.quotehistory_if__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_quotehistory_if__c_sfid ON replica.quotehistory_if__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_quotehistory_if__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.quotehistory_if__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_quotehistory_if__c_logger();
+create trigger hc_quotehistory_if__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.quotehistory_if__c for each row execute function replica.hc_quotehistory_if__c_status();
+
+
+-- "replica".recordtype definition
+
+-- Drop table
+
+-- DROP TABLE "replica".recordtype;
+
+CREATE TABLE "replica".recordtype (
+	"name" varchar(80) NULL,
+	sobjecttype varchar(255) NULL,
+	namespaceprefix varchar(15) NULL,
+	lastmodifieddate timestamp NULL,
+	isactive bool NULL,
+	systemmodstamp timestamp NULL,
+	developername varchar(80) NULL,
+	createddate timestamp NULL,
+	ispersontype bool NULL,
+	description varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT recordtype_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_recordtype_lastmodifieddate ON replica.recordtype USING btree (lastmodifieddate);
+CREATE INDEX hc_idx_recordtype_systemmodstamp ON replica.recordtype USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_recordtype_sfid ON replica.recordtype USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_recordtype_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.recordtype for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_recordtype_logger();
+create trigger hc_recordtype_status_trigger before
+insert
+    or
+update
+    on
+    replica.recordtype for each row execute function replica.hc_recordtype_status();
+
+
+-- "replica".rental__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".rental__c;
+
+CREATE TABLE "replica".rental__c (
+	deltaprotocolnumber__c varchar(100) NULL,
+	"name" varchar(80) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	external_id__c varchar(255) NULL,
+	confirmedmodelofrentalcar__c varchar(100) NULL,
+	confirmedrentalstartdate__c date NULL,
+	rental_status__c varchar(255) NULL,
+	createddate timestamp NULL,
+	confirmedrentalenddate__c date NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT rental__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_rental__c_systemmodstamp ON replica.rental__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_rental__c_external_id__c ON replica.rental__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_rental__c_sfid ON replica.rental__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_rental__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.rental__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_rental__c_logger();
+create trigger hc_rental__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.rental__c for each row execute function replica.hc_rental__c_status();
+
+
+-- "replica".roadsideassistance__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".roadsideassistance__c;
+
+CREATE TABLE "replica".roadsideassistance__c (
+	legacylastupdby__c varchar(15) NULL,
+	legacymodificationnum__c float8 NULL,
+	brkdwn_cd__c varchar(100) NULL,
+	claimreason__c varchar(50) NULL,
+	legacycreated__c date NULL,
+	reqlastname__c varchar(50) NULL,
+	reqfirstname__c varchar(50) NULL,
+	reqdocument__c varchar(15) NULL,
+	legacydblastupdsrc__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	parrowid__c varchar(255) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	statuscd__c varchar(30) NULL,
+	brkdwndesc__c text NULL,
+	exchangedate__c date NULL,
+	integrationid__c varchar(50) NULL,
+	createddate timestamp NULL,
+	legacydblastupd__c date NULL,
+	effstartdate__c date NULL,
+	reqvehiclerel__c varchar(30) NULL,
+	legacylastupd__c date NULL,
+	claimdate__c date NULL,
+	mileage__c float8 NULL,
+	externalid__c varchar(255) NULL,
+	brkdwn_nature__c varchar(100) NULL,
+	effenddate__c date NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	case__c varchar(18) NULL,
+	case__r__external_id__c varchar(255) NULL,
+	account__c varchar(18) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	CONSTRAINT roadsideassistance__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_roadsideassistance__c_account__c ON replica.roadsideassistance__c USING btree (account__c);
+CREATE INDEX hc_idx_roadsideassistance__c_case__c ON replica.roadsideassistance__c USING btree (case__c);
+CREATE INDEX hc_idx_roadsideassistance__c_systemmodstamp ON replica.roadsideassistance__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_roadsideassistance__c_externalid__c ON replica.roadsideassistance__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_roadsideassistance__c_sfid ON replica.roadsideassistance__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_roadsideassistance__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.roadsideassistance__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_roadsideassistance__c_logger();
+create trigger hc_roadsideassistance__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.roadsideassistance__c for each row execute function replica.hc_roadsideassistance__c_status();
+
+
+-- "replica".roadsideassistanceservice__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".roadsideassistanceservice__c;
+
+CREATE TABLE "replica".roadsideassistanceservice__c (
+	important__c text NULL,
+	servicecode__c varchar(50) NULL,
+	legacylastupdby__c varchar(15) NULL,
+	requeststatus__c varchar(50) NULL,
+	legacymodificationnum__c float8 NULL,
+	legacycreated__c date NULL,
+	addressname__c varchar(255) NULL,
+	specialty__c varchar(50) NULL,
+	addressnumber__c varchar(30) NULL,
+	problemdescription__c text NULL,
+	addresscomplement__c varchar(100) NULL,
+	expense__c varchar(30) NULL,
+	legacydblastupdsrc__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	legacycreatedby__c varchar(15) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	vehicleproblem__c varchar(50) NULL,
+	provider__c varchar(255) NULL,
+	state__c varchar(50) NULL,
+	longitude__c float8 NULL,
+	tmcpredicted__c float8 NULL,
+	zipcode__c varchar(30) NULL,
+	roadsideassistanceid__r__externalid__c varchar(255) NULL,
+	createddate timestamp NULL,
+	latitude__c float8 NULL,
+	legacydblastupd__c date NULL,
+	reference__c varchar(255) NULL,
+	name__c varchar(100) NULL,
+	city__c varchar(100) NULL,
+	createdate__c date NULL,
+	legacylastupd__c date NULL,
+	county__c varchar(100) NULL,
+	roadsideassistanceid__c varchar(18) NULL,
+	dealernickname__c varchar(100) NULL,
+	externalid__c varchar(255) NULL,
+	actuationstatus__c varchar(50) NULL,
+	dealername__c varchar(100) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT roadsideassistanceservice__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_roadsideassistanceservice__c_roadsideassistanceid__c ON replica.roadsideassistanceservice__c USING btree (roadsideassistanceid__c);
+CREATE INDEX hc_idx_roadsideassistanceservice__c_systemmodstamp ON replica.roadsideassistanceservice__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_roadsideassistanceservice__c_externalid__c ON replica.roadsideassistanceservice__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_roadsideassistanceservice__c_sfid ON replica.roadsideassistanceservice__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_roadsideassistanceservice__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.roadsideassistanceservice__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_roadsideassistanceservice__c_logger();
+create trigger hc_roadsideassistanceservice__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.roadsideassistanceservice__c for each row execute function replica.hc_roadsideassistanceservice__c_status();
+
+
+-- "replica".salesconsulthistory_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".salesconsulthistory_bulk;
+
+CREATE TABLE "replica".salesconsulthistory_bulk (
+	salesstatus__c varchar(255) NULL,
+	contactcustomer__c bool NULL,
+	opportunity__r__autonumberforname__c varchar(10) NULL,
+	visitstatus__c varchar(255) NULL,
+	result__c varchar(255) NULL,
+	source__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	visitdate__c timestamp NULL,
+	"name" varchar(80) NULL,
+	descriptioninteraction__c varchar(1500) NULL,
+	isdeleted bool NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	pcd__c bool NULL,
+	firstinteractiondate__c timestamp NULL,
+	external_id__c varchar(255) NULL,
+	salescpf__c varchar(255) NULL,
+	createddate timestamp NULL,
+	scheduledvisitdate__c timestamp NULL,
+	contact_flag__c bool NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	interactiondate__c timestamp NULL,
+	temperaturenumber__c varchar(255) NULL,
+	interactionnumber__c varchar(255) NULL,
+	predictivetemp__c varchar(255) NULL,
+	protocolid__c varchar(255) NULL,
+	status__c varchar(255) NULL,
+	enddate__c timestamp NULL,
+	lostreason__c varchar(255) NULL,
+	dealerreceiveddate__c timestamp NULL,
+	integrationid__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	account__c varchar(18) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	dealerresponsetime__c float8 NULL,
+	CONSTRAINT salesconsulthistory_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_salesconsulthistory_bulk_account__c ON replica.salesconsulthistory_bulk USING btree (account__c);
+CREATE INDEX hc_idx_salesconsulthistory_bulk_contact__c ON replica.salesconsulthistory_bulk USING btree (contact__c);
+CREATE INDEX hc_idx_salesconsulthistory_bulk_opportunity__c ON replica.salesconsulthistory_bulk USING btree (opportunity__c);
+CREATE INDEX hc_idx_salesconsulthistory_bulk_systemmodstamp ON replica.salesconsulthistory_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_bulk_external_id__c ON replica.salesconsulthistory_bulk USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_bulk_sfid ON replica.salesconsulthistory_bulk USING btree (sfid);
+
+
+-- "replica".salesconsulthistory_if__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".salesconsulthistory_if__c;
+
+CREATE TABLE "replica".salesconsulthistory_if__c (
+	currencyisocode varchar(255) NULL,
+	currencyisocode__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	interactiondate__c timestamp NULL,
+	salesstatus__c varchar(255) NULL,
+	contactcustomer__c bool NULL,
+	temperaturenumber__c varchar(255) NULL,
+	visitstatus__c varchar(255) NULL,
+	result__c varchar(255) NULL,
+	lead__c varchar(18) NULL,
+	source__c varchar(255) NULL,
+	interactionnumber__c varchar(255) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	visitdate__c timestamp NULL,
+	"name" varchar(80) NULL,
+	descriptioninteraction__c varchar(1500) NULL,
+	isdeleted bool NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	predictivetemp__c varchar(255) NULL,
+	protocolid__c varchar(255) NULL,
+	status__c varchar(255) NULL,
+	pcd__c bool NULL,
+	firstinteractiondate__c timestamp NULL,
+	external_id__c varchar(255) NULL,
+	integrationid__c varchar(255) NULL,
+	isdeleted__c bool NULL,
+	accountno__c varchar(255) NULL,
+	date__c timestamp NULL,
+	salescpf__c varchar(255) NULL,
+	createddate timestamp NULL,
+	account__c varchar(18) NULL,
+	scheduledvisitdate__c timestamp NULL,
+	contact_flag__c bool NULL,
+	enddate__c timestamp NULL,
+	mig_yn__c bool NULL,
+	lostreason__c varchar(255) NULL,
+	dealerreceiveddate__c timestamp NULL,
+	dealerresponsetime__c float8 NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	opportunity__r__external_id__c varchar(255) NULL,
+	CONSTRAINT salesconsulthistory_if__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_salesconsulthistory_if__c_account__c ON replica.salesconsulthistory_if__c USING btree (account__c);
+CREATE INDEX hc_idx_salesconsulthistory_if__c_contact__c ON replica.salesconsulthistory_if__c USING btree (contact__c);
+CREATE INDEX hc_idx_salesconsulthistory_if__c_lead__c ON replica.salesconsulthistory_if__c USING btree (lead__c);
+CREATE INDEX hc_idx_salesconsulthistory_if__c_opportunity__c ON replica.salesconsulthistory_if__c USING btree (opportunity__c);
+CREATE INDEX hc_idx_salesconsulthistory_if__c_systemmodstamp ON replica.salesconsulthistory_if__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_if__c_external_id__c ON replica.salesconsulthistory_if__c USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_salesconsulthistory_if__c_sfid ON replica.salesconsulthistory_if__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_salesconsulthistory_if__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.salesconsulthistory_if__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_salesconsulthistory_if__c_logger();
+create trigger hc_salesconsulthistory_if__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.salesconsulthistory_if__c for each row execute function replica.hc_salesconsulthistory_if__c_status();
+
+
+-- "replica".synergy_action_audit_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".synergy_action_audit_bulk;
+
+CREATE TABLE "replica".synergy_action_audit_bulk (
+	answer__c varchar NULL,
+	type__c varchar(50) NULL,
+	"name" varchar(80) NULL,
+	srrowid__c varchar(30) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	protocolid__c varchar(30) NULL,
+	case__c varchar(18) NULL,
+	createddate timestamp NULL,
+	case__r__external_id__c varchar(255) NULL,
+	taskintegrationid__c varchar(255) NULL,
+	externalid__c varchar(255) NULL,
+	question__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT synergy_action_audit_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_synergy_action_audit_bulk_case__c ON replica.synergy_action_audit_bulk USING btree (case__c);
+CREATE INDEX hc_idx_synergy_action_audit_bulk_case__r__external_id__c ON replica.synergy_action_audit_bulk USING btree (case__r__external_id__c);
+CREATE INDEX hc_idx_synergy_action_audit_bulk_systemmodstamp ON replica.synergy_action_audit_bulk USING btree (systemmodstamp);
+CREATE INDEX hc_idx_synergy_action_audit_bulk_taskintegrationid__c ON replica.synergy_action_audit_bulk USING btree (taskintegrationid__c);
+CREATE INDEX hc_idx_synergy_action_audit_bulk_type__c ON replica.synergy_action_audit_bulk USING btree (type__c);
+CREATE UNIQUE INDEX hcu_idx_synergy_action_audit_bulk_externalid__c ON replica.synergy_action_audit_bulk USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_synergy_action_audit_bulk_sfid ON replica.synergy_action_audit_bulk USING btree (sfid);
+
+
+-- "replica".task definition
+
+-- Drop table
+
+-- DROP TABLE "replica".task;
+
+CREATE TABLE "replica".task (
+	account__external_id__c varchar(255) NULL,
+	protocol_id__c varchar(30) NULL,
+	priority varchar(255) NULL,
+	startdatetime__c timestamp NULL,
+	completeddatetime timestamp NULL,
+	description__c varchar(255) NULL,
+	accountid varchar(18) NULL,
+	subject varchar(255) NULL,
+	isdeleted bool NULL,
+	systemmodstamp timestamp NULL,
+	status varchar(255) NULL,
+	integrationid__c varchar(30) NULL,
+	external_id__c varchar(255) NULL,
+	employee__c varchar(255) NULL,
+	createddate timestamp NULL,
+	calldisposition varchar(255) NULL,
+	"type" varchar(255) NULL,
+	description text NULL,
+	activitydate date NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT task_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_task_accountid ON replica.task USING btree (accountid);
+CREATE INDEX hc_idx_task_systemmodstamp ON replica.task USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_task_external_id__c ON replica.task USING btree (external_id__c);
+CREATE UNIQUE INDEX hcu_idx_task_sfid ON replica.task USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_task_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.task for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_task_logger();
+create trigger hc_task_status_trigger before
+insert
+    or
+update
+    on
+    replica.task for each row execute function replica.hc_task_status();
+
+
+-- "replica".temp_case_owner_id definition
+
+-- Drop table
+
+-- DROP TABLE "replica".temp_case_owner_id;
+
+CREATE TABLE "replica".temp_case_owner_id (
+	external_id varchar(20) NULL,
+	sfid varchar(30) NULL
+);
+
+
+-- "replica".testdrivehistory_bulk definition
+
+-- Drop table
+
+-- DROP TABLE "replica".testdrivehistory_bulk;
+
+CREATE TABLE "replica".testdrivehistory_bulk (
+	currencyisocode varchar(255) NULL,
+	contenttag__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	resultdescription__c varchar(255) NULL,
+	testdrivecanceltime__c timestamp NULL,
+	sourcetag__c varchar(255) NULL,
+	serialnumber__c varchar(255) NULL,
+	lead__c varchar(18) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	testdrivecompletionfeedback__c varchar(255) NULL,
+	testdriveno__c varchar(255) NULL,
+	resultcreatedtime__c timestamp NULL,
+	"name" varchar(80) NULL,
+	testdrivestarttime__c timestamp NULL,
+	dealerportalcontactid__c varchar(255) NULL,
+	dealerportaltdno__c varchar(255) NULL,
+	ownerid varchar(18) NULL,
+	dealeraccount__c varchar(18) NULL,
+	isdeleted bool NULL,
+	testdriverequestvehiclemodel__c varchar(255) NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	protocolid__c varchar(255) NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	status__c varchar(255) NULL,
+	testdrivetype__c varchar(255) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	testdriveendtime__c timestamp NULL,
+	level3__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	salespersoncode__c varchar(255) NULL,
+	accountno__c varchar(255) NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	requestdescription__c varchar(255) NULL,
+	account__c varchar(18) NULL,
+	testdriverequestcenter__c varchar(255) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	testdriveconfirmed__c bool NULL,
+	dealercontact__c varchar(18) NULL,
+	externalid__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	testdriverequestdate__c date NULL,
+	mediumtag__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	testdriverequesttime__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	dealercontact__r__external_id__c varchar(255) NULL,
+	recordtypeid varchar(18) NULL,
+	CONSTRAINT testdrivehistory_bulk_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_testdrivehistory_bulk_account__c ON replica.testdrivehistory_bulk USING btree (account__c);
+CREATE INDEX hc_idx_testdrivehistory_bulk_contact__c ON replica.testdrivehistory_bulk USING btree (contact__c);
+CREATE INDEX hc_idx_testdrivehistory_bulk_dealeraccount__c ON replica.testdrivehistory_bulk USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_testdrivehistory_bulk_dealercontact__c ON replica.testdrivehistory_bulk USING btree (dealercontact__c);
+CREATE INDEX hc_idx_testdrivehistory_bulk_systemmodstamp ON replica.testdrivehistory_bulk USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_testdrivehistory_bulk_externalid__c ON replica.testdrivehistory_bulk USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_testdrivehistory_bulk_sfid ON replica.testdrivehistory_bulk USING btree (sfid);
+
+
+-- "replica".testdrivehistory_if__c definition
+
+-- Drop table
+
+-- DROP TABLE "replica".testdrivehistory_if__c;
+
+CREATE TABLE "replica".testdrivehistory_if__c (
+	contenttag__c varchar(255) NULL,
+	contact__c varchar(18) NULL,
+	resultdescription__c varchar(255) NULL,
+	testdrivecanceltime__c timestamp NULL,
+	sourcetag__c varchar(255) NULL,
+	lead__r__hyundaiuniquekeylead__c varchar(255) NULL,
+	contact__r__external_id__c varchar(255) NULL,
+	serialnumber__c varchar(255) NULL,
+	prioridade__c varchar(255) NULL,
+	lead__c varchar(18) NULL,
+	subsidiarycode__c varchar(255) NULL,
+	testdrivecompletionfeedback__c varchar(255) NULL,
+	testdriveno__c varchar(255) NULL,
+	resultcreatedtime__c timestamp NULL,
+	"name" varchar(80) NULL,
+	testdrivestarttime__c timestamp NULL,
+	dealerportalcontactid__c varchar(255) NULL,
+	dealerportaltdno__c varchar(255) NULL,
+	recordinsertupdatecheck__c varchar(255) NULL,
+	dealeraccount__c varchar(18) NULL,
+	isdeleted bool NULL,
+	testdriverequestvehiclemodel__c varchar(255) NULL,
+	opportunity__c varchar(18) NULL,
+	systemmodstamp timestamp NULL,
+	protocolid__c varchar(255) NULL,
+	testdriverequestdatetime__c timestamp NULL,
+	status__c varchar(255) NULL,
+	testdrivetype__c varchar(255) NULL,
+	dealeraccount__r__external_id__c varchar(255) NULL,
+	sapowner__c varchar(255) NULL,
+	level4__c varchar(255) NULL,
+	opportunity__r__external_id__c varchar(255) NULL,
+	testdriveendtime__c timestamp NULL,
+	level3__c varchar(255) NULL,
+	level2__c varchar(255) NULL,
+	salespersoncode__c varchar(255) NULL,
+	accountno__c varchar(255) NULL,
+	level1__c varchar(255) NULL,
+	createddate timestamp NULL,
+	requestdescription__c varchar(255) NULL,
+	account__c varchar(18) NULL,
+	testdriverequestcenter__c varchar(255) NULL,
+	account__r__external_id__c varchar(255) NULL,
+	campaigntag__c varchar(255) NULL,
+	mig_yn__c bool NULL,
+	legacy_created_datetime__c timestamp NULL,
+	clientehyundai__c bool NULL,
+	testdriveconfirmed__c bool NULL,
+	dealercontact__c varchar(18) NULL,
+	externalid__c varchar(255) NULL,
+	dealercode__c varchar(255) NULL,
+	origin__c varchar(255) NULL,
+	testdriverequestdate__c date NULL,
+	mediumtag__c varchar(255) NULL,
+	form__c varchar(255) NULL,
+	dealercontact__r__external_id__c varchar(255) NULL,
+	testdriverequesttime__c varchar(255) NULL,
+	reason__c varchar(255) NULL,
+	sfid varchar(18) NULL COLLATE "ucs_basic",
+	id serial4 NOT NULL,
+	"_hc_lastop" varchar(32) NULL,
+	"_hc_err" text NULL,
+	CONSTRAINT testdrivehistory_if__c_pkey PRIMARY KEY (id)
+);
+CREATE INDEX hc_idx_testdrivehistory_if__c_account__c ON replica.testdrivehistory_if__c USING btree (account__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_contact__c ON replica.testdrivehistory_if__c USING btree (contact__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_dealeraccount__c ON replica.testdrivehistory_if__c USING btree (dealeraccount__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_dealercontact__c ON replica.testdrivehistory_if__c USING btree (dealercontact__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_lead__c ON replica.testdrivehistory_if__c USING btree (lead__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_opportunity__c ON replica.testdrivehistory_if__c USING btree (opportunity__c);
+CREATE INDEX hc_idx_testdrivehistory_if__c_systemmodstamp ON replica.testdrivehistory_if__c USING btree (systemmodstamp);
+CREATE UNIQUE INDEX hcu_idx_testdrivehistory_if__c_externalid__c ON replica.testdrivehistory_if__c USING btree (externalid__c);
+CREATE UNIQUE INDEX hcu_idx_testdrivehistory_if__c_sfid ON replica.testdrivehistory_if__c USING btree (sfid);
+
+-- Table Triggers
+
+create trigger hc_testdrivehistory_if__c_logtrigger after
+insert
+    or
+delete
+    or
+update
+    on
+    replica.testdrivehistory_if__c for each row
+    when (((get_xmlbinary())::text = 'base64'::text)) execute function replica.hc_testdrivehistory_if__c_logger();
+create trigger hc_testdrivehistory_if__c_status_trigger before
+insert
+    or
+update
+    on
+    replica.testdrivehistory_if__c for each row execute function replica.hc_testdrivehistory_if__c_status();

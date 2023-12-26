@@ -1,0 +1,19 @@
+1.Test Result fail 정보 Excel에 정보저장
+  - Test Result의 (select box)AIT ALL 선택
+  - 날짜 sort 최신으로
+  - Test Result sort Fail
+  - Status 없거나 In Progress 확인
+    -- 테스트후
+2.Test Result 화면의 Result Number별 Test Case 확인
+3.Test Case 별 Test Scenario 확인
+ - Notes & Attachments 내용 다운로드
+ - Desciption 의 인터페이스 Desciption 확인
+ - swagger request처리 후 에러 확인
+5.소스확인
+ - interface mapping 정보 확인(interface spec excel문서와 테스트 request 정보 비교)
+ - 소스상 인터페이스 확인
+ -- Controller 
+ -- ServiceImpl
+ -- Mapper
+-----------
+

@@ -1,0 +1,23 @@
+Name	Inputs	Output type	Function	Comment
+st_3dextent	[geometry]	box3d	st_3dextent	args: geomfield - Aggregate function that returns the 3D bounding box of geometries.
+st_asflatgeobuf	[anyelement]	bytea	st_asflatgeobuf	[NULL]
+st_asflatgeobuf	[anyelement, bool]	bytea	st_asflatgeobuf	[NULL]
+st_asflatgeobuf	[anyelement, bool, text]	bytea	st_asflatgeobuf	[NULL]
+st_asgeobuf	[anyelement, text]	bytea	st_asgeobuf	[NULL]
+st_asgeobuf	[anyelement]	bytea	st_asgeobuf	[NULL]
+st_asmvt	[anyelement, text, int4, text, text]	bytea	st_asmvt	[NULL]
+st_asmvt	[anyelement, text]	bytea	st_asmvt	[NULL]
+st_asmvt	[anyelement]	bytea	st_asmvt	[NULL]
+st_asmvt	[anyelement, text, int4]	bytea	st_asmvt	[NULL]
+st_asmvt	[anyelement, text, int4, text]	bytea	st_asmvt	[NULL]
+st_clusterintersecting	[geometry]	_geometry	st_clusterintersecting	args: g - Aggregate function that clusters input geometries into connected sets.
+st_clusterwithin	[geometry, float8]	_geometry	st_clusterwithin	args: g, distance - Aggregate function that clusters geometries by separation distance.
+st_collect	[geometry]	geometry	st_collect	args: g1field - Creates a GeometryCollection or Multi* geometry from a set of geometries.
+st_coverageunion	[geometry]	geometry	st_coverageunion	args: geom - Computes the union of a set of polygons forming a coverage by removing shared edges.
+st_extent	[geometry]	box2d	st_extent	args: geomfield - Aggregate function that returns the bounding box of geometries.
+st_makeline	[geometry]	geometry	st_makeline	args: geoms - Creates a LineString from Point, MultiPoint, or LineString geometries.
+st_memcollect	[geometry]	geometry	st_memcollect	[NULL]
+st_memunion	[geometry]	geometry	st_memunion	args: geomfield - Aggregate function which unions geometries in a memory-efficent but slower way
+st_polygonize	[geometry]	geometry	st_polygonize	args: geomfield - Computes a collection of polygons formed from the linework of a set of geometries.
+st_union	[geometry, float8]	geometry	st_union	args: g1field, gridSize - Computes a geometry representing the point-set union of the input geometries.
+st_union	[geometry]	geometry	st_union	args: g1field - Computes a geometry representing the point-set union of the input geometries.

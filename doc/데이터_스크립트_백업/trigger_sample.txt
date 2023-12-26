@@ -1,0 +1,59 @@
+CREATE OR REPLACE FUNCTION replica.sample_trigger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+  DECLARE
+       trigger_row "replica".account;
+   
+    begin
+        trigger_row = ROW();
+    
+        IF (TG_OP = 'DELETE') then
+        ELSEIF (TG_OP = 'INSERT') then
+            update process.account  set nickname__c = 'INSERT sample2' where row_id = NEW.external_id__c;
+        ELSEIF (TG_OP = 'UPDATE') then
+            update process.account  set nickname__c = 'update sample2' where row_id = NEW.external_id__c;
+        END IF;
+        
+    --       INSERT INTO process.account VALUES (trigger_row.*);
+        RETURN NEW;
+    END;
+ $function$
+ 
+ 
+ ----------
+ CREATE TRIGGER sample_trigger BEFORE INSERT OR UPDATE ON replica.account 
+    FOR EACH ROW EXECUTE FUNCTION replica.sample_trigger();
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////// 참고
+트리거 함수의 반환값
+트리거 함수의 반환 값(RETURN VALUE)은
+NULL 또는 트리거 함수를 호출한 테이블의 레코드와 정확히 똑같은 구조의 레코드를 반환해야합니다.
+
+규칙
+
+BEFORE 트리거가 호출한 함수의 반환값이 NULL 인 경우 일련의 작업이 모두 취소되고 EVENT도 수행되지 않습니다. 트리거를 호출한 테이블의 행이 등록, 수정, 삭제되지 않습니다.
+INSERT, UPDATE EVENT가 호출한 BEFORE 트리거일 경우 RETURN 하는 레코드 데이터가 트리거를 호출한 테이블에 반영됩니다. (해당 이벤트에 트리거 함수가 하나만 존재할 경우)
+트리거 함수가 2개 이상 존재할 경우, 알파뱃 순서대로 트리거 함수가 호출되며 이전의 트리거 함수의 RETURN 레코드가 후속 트리거 함수의 NEW에 삽입됩니다.
+
+DELETE EVENT가 호출한 BEFORE 트리거의 경우 RETURN 값의 데이터가 특별히 어떠한 영향을 끼치지 않지만 트리거 함수가 2개 이상 존재할 경우, 후속 작업을 수행하기 위해선 반드시 NULL이 아닌 값을 RETURN 해야합니다. **DELETE EVENT 의 트리거일 경우 NEW 값이 NULL 인 것을 잊지마세요 !
+실행시점이 AFTER인 트리거나 실행범위가 STATEMENT(한번만)인 트리거는 RETURN 값이 무엇이든지 무시합니다.
+트리거 함수의 특수 변수들
+선언한 함수가 트리거에게 호출될 때 특수한 변수들이 자동으로 만들어집니다. 다음은 자주 사용하는 변수들 입니다.
+
+NEW ( record ) EACH ROW(각 행) INSERT, UPDATE 상황에서 새롭게 입력되거나 변경되는 레코드 정보
+OLD ( record ) EACH ROW(각 행) UPDATE, DELETE 상황에서 변경되거나, 삭제되는 레코드 정보
+-----------------------------------------------------------------------------
+구분		NEW		OLD
+INSERT		신규 RECORD	NULL
+UPDATE		변경이후 RECORD	변경이전 RECORD
+DELETE		NULL		삭제되는 RECORD
+-----------------------------------------------------------------------------
+TG_OP ( text ) 함수를 호출하게된 트리거 이벤트의 문자열 ( “INSERT”, “UPDATE” 등 )
+TG_TABLE_NAME ( text ) 함수의 호출을 야기한 테이블 이름의 문자열
+TG_NARGS ( integer ) 전달된 파라미터의 수
+TG_ARGV ( text[] ) 전달된 파라미터 문자열의 배열
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 삭제
+DROP TRIGGER sample_trigger ON replica.account ;
+drop function replica.sample_trigger();

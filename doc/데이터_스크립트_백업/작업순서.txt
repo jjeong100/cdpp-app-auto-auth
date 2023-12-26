@@ -1,0 +1,83 @@
+■ 생성순서
+
+1.sequences 부터 생성
+ - landing_sequences_DDL.txt
+ - process_sequences_DDL.txt
+ - replica_sequences_DDL.txt
+2.
+2.PostGIS 설치 (https://download.osgeo.org/postgis/windows/)
+3.쿼리 실행 CREATE EXTENSION postgis;
+         CREATE EXTENSION hstore;
+4.public Data types 생성
+5.public_table_DDL.txt public Table 생성 (geometry 관련 테이블 은 자동 생성되는듯?)
+6.public_view_DDL.txt 실행 (geometry 관련 테이블 은 자동 생성되는듯?)
+7.landing_table_DDL.txt
+8.landing_indexes_DDL.txt (대부분 만들어져 있음?)
+9.process_table_DDL.txt
+10.process_indexes_DDL.txt (대부분 만들어져 있음?)
+11.process_procedure_DDL.txt
+12.replica_table_trigger_log_DDL.txt (생성먼저)
+13.replica_functions_DDL.txt
+14.replica_table_DDL.txt
+15.replica_indexes_DDL.txt (대부분 만들어져 있음?)
+16.
+
+
+
+
+
+
+
+
+///////////////////////// process.if_info( 데이터 필수)
+IF001	HMB Get Contact WF	CDPP	SNS/Hyundai Portal/SMARTERS	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBGetContactWF	
+IF003	HMB Inbound Contact Interface Workflow	SNS/Hyundai Portal/SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBInboundContactInterfaceWorkflow	
+IF093	Delta Global - Inbound Rental Car Request Results	Delta Global	CDPP		
+IF005	HMB Product Inbound WF	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBProductInboundWF	
+IF094	Reclaim Aqui - Request Ticket Moderation I/F	CDPP	Reclame Aqui		
+IF006	HMB Get Lead WS	CDPP	DMS	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBGetLeadWS	
+IF007	HMB Account Webservice WF	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBAccountWebserviceWF	
+IF008	HMB Action Inbound Webservice WF	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBActionInboundWebserviceWF	
+IF009	HMB Asset Contact Upsert Webservice WS	SNS/Hyundai Portal	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBAssetContactUpsertWS	
+IF010	HMB Auto Vehicle RSA Claim WS	SNS/Hyundai Portal	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBAutoVehicleRSAClaimWS	
+IF011	HMB Auto Vehicle Webservice WF	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBAutoVehicleUpsertWS	
+IF013	HMB Channel Partner Get Webservice Inbound WF	CDPP	SNS/Hyundai Portal	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBChannelPartnerGetWebserviceInboundWF	
+IF014	HMB Inbound Channel Partner Interface Workflow	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBInboundChannelPartnerInterfaceWorkflow	
+IF015	HMB Inbound Color	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBInboundColor	
+IF018	HMB MNTSRVC Customer Schedule	CDPP	SNS/Hyundai Portal	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCCustomerSchedule	
+IF019	HMB MNTSRVC Dealer Calendar	CDPP	SNS/Hyundai Portal	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCDealerCalendar	
+IF022	HMB MNTSRVC Maintenance Service	CDPP	SNS/Hyundai Portal	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/getHMBMNTSRVCMaintenanceService	
+IF023	HMB MNTSRVC Manage Dealer Holiday	SNS/Hyundai Portal	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCManageDealerHoliday	
+IF027	HMB MNTSRVC Manage Employee Availability Excp	SNS/Hyundai Portal/SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCManageEmployeeAvailabilityExcp	
+IF025	HMB MNTSRVC Manage Employee Availability	SNS/Hyundai Portal/SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCManageEmployeeAvailability	
+IF029	HMB MNTSRVC Schedule Maintenance	SNS/Hyundai Portal/SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCScheduleMaintenance	
+IF031	HMB Product List Inbound WF	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBProductListInboundWF	
+IF032	HMB Register In Application WS	SNS/Hyundai Portal	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBRegisterInApplicationWS
+	
+IF033	HMB Register Loyalty Benefit Used WS	SNS/Hyundai Portal	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBRegisterLoyaltyBenefitUsedWS	
+IF034	HMB Search Service Request TD Webservice WF	CDPP	SNS/Hyundai Portal/SAP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBSearchServiceRequestTDWebserviceWF	
+IF036	HMB Search TD Webservice WF	CDPP	SNS/Hyundai Portal/SAP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBSearchTDWebserviceWF	
+IF038	HMB Get Vehicle WF	CDPP	SNS/Hyundai Portal/SAP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBGetVehicleWF	
+IF040	HMB Service Request Webservice WF	SNS/Hyundai Portal/SAP/Webmotors Cockpit/SMARTERS	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBServiceRequestWebserviceWF	
+IF044	HMB Service Request Attachment	SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBServiceRequestAttachment	
+IF045	HMB Service Request Chat WS	SMARTERS	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBServiceRequestChatWS	
+IF046	HMB Update Contact IN WF	CDPP	SNS/Hyundai Portal/SMARTERS	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBUpdateContactINWF	
+IF048	HMB Update Lead WS	Webmotors Cockpit/DMS/Q Expert	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBUpdateLeadWS	
+IF054	WebMotors_LeadScore_WebService_Entrance	CDPP	Webmotors Cockpit/DMS/Q Expert	https://apitest.hyundai-brasil.com:8065/integration/q-expert/leadscore/v1.0/score-lead	
+IF057	HMB MNTSRVC Manage Dealer Service	SNS/Hyundai Portal/SAP	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBMNTSRVCManageDealerService	
+IF059	Reclaim Aqui - Retrieve all Tickets I/F	Reclame Aqui	CDPP		
+IF060	Reclaim Aqui - Send Public Message I/F	CDPP	Reclame Aqui		
+IF063	HMB Auto Vehicle Bluelink WS	Bluelink	CDPP		
+IF079	HMB Inbound Repair Order	SAP EAI	CDPP		
+IF096	Reclaim Aqui - Retrieve the ticket by id I/F	Reclame Aqui	CDPP		
+IF081	HMB Inbound Customer Interface	B2B Sales System	CDPP		
+IF083	HMB Get Total Leads WF	SelfBI	CDPP		
+IF084	HMB Get VIN Sales WF	SelfBI	CDPP	https://cdpp-api-8ae3a0dd5032.herokuapp.com/api/v1/HMBGetVINSalesWF	
+IF085	HMB Closest Dealer WS	CDPP	CSU		
+IF086	HMB Search IVR Contact	CDPP	CSU		
+IF087	HMBSearchContactWF	CDPP	CSU		
+IF088	HMB Amaro CSI Survey WS	INNOCEAN/SAP/Smarters/CSU/Route	CDPP		
+IF089	HMB Satisfaction Survey WS	CDPP	INNOCEAN		
+IF091	HMB Get BLK WF	CDPP	Bluelink		
+IF092	Delta Global - Outbound Rental Car Request	CDPP	Delta Global		
+IF097	Reclaim Aqui - Attachment link I/F	Reclame Aqui	CDPP		

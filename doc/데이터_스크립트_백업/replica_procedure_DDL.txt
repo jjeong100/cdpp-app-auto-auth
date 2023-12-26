@@ -1,0 +1,6260 @@
+-- DROP PROCEDURE "replica".bulk_repli_proc_customervehicle();
+
+CREATE OR REPLACE PROCEDURE replica.bulk_repli_proc_customervehicle()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.customervehicle_bulk2 (
+			external_id__c, 
+			vehicle__r__external_Id__c, 
+			employeeflg__c, 
+			relationship__c, 
+			status__c, 
+			legacycreateddate__c, 
+			legacycreatedby__c, 
+			legacylastmodifieddate__c, 
+			legacylastupdby__c, 
+			account__r__external_id__c, 
+			type__c 
+--			subsidiarycode__c,
+--			recordtypeid
+		)
+		select 
+			external_id__c, 
+			vehicle__r__external_Id__c, 
+			employeeflg__c, 
+			relationship__c, 
+			status__c, 
+			legacycreateddate__c, 
+			legacycreatedby__c, 
+			legacylastmodifieddate__c, 
+			legacylastupdby__c, 
+			account__r__external_id__c, 
+			type__c 
+--			'HMB',
+--			(select sfid from "replica".recordtype where sobjecttype = 'CustomerVehicle__c' and developername = 'HMB_Customer_Vehicle')				
+			from
+				"replica".customervehicle_bulk  
+			where external_id__c not in(
+				select cc.external_id__c 
+				from "replica".customervehicle__c cc 
+			)
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".bulk_repli_proc_person_acc();
+
+CREATE OR REPLACE PROCEDURE replica.bulk_repli_proc_person_acc()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.account_bulk2(
+				external_id__c, 
+				registrysource__c,
+--				registrysource__pc,
+				personmailingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				personmailingcity, 
+				personmailingstate, 
+				personmailingpostalcode, 
+				personmailinglatitude, 
+				personmailinglongitude, 
+				type, 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				workphone__c,
+				workphone__pc,
+				personmobilephone, 
+				occupation__pc, 
+				gender__pc, 
+				pcd__c,
+--				pcd__pc,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+--				literacy__pc,
+				calledby__c,
+--				calledby__pc,
+				employee__c,
+--				employee__pc,
+				dealercode__c,
+				dealercode__pc,
+				crmindex__c, 
+				engagementIndex__c, 
+				optinflag__c, 
+				satisficationlevel__c, 
+				loyaltyexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__pc,
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__pc,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__pc,
+				receiveserviceoffersflag__c, 
+				receiveserviceoffersflag__pc,
+				receivenewsletterflag__c,
+				receivenewsletterflag__pc,
+				receiveeventsflag__c,
+				receiveeventsflag__pc,
+				receiveresearchflag__c,
+				receiveresearchflag__pc,
+				blockedmobile__c,
+				blockedmobile__pc,
+				blockedvideocall__c,
+				blockedvideocall__pc,
+				preferredcontactchannel__c,
+				preferredcontactchannel__pc,
+				maritalstatus__c,
+				maritalstatus__pc,
+				blockedcalls__c,
+				blockedcalls__pc,
+				blockedletters__c,
+				blockedletters__pc,
+				blockedemails__c,
+				blockedemails__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__pc,
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				external_id__c, 
+				registrysource__c,
+--				registrysource__pc,
+				personmailingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				personmailingcity, 
+				personmailingstate, 
+				personmailingpostalcode, 
+				personmailinglatitude, 
+				personmailinglongitude, 
+				type, 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				workphone__c,
+				workphone__pc,
+				personmobilephone, 
+				occupation__pc, 
+				gender__pc, 
+				pcd__c,
+--				pcd__pc,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+--				literacy__pc,
+				calledby__c,
+--				calledby__pc,
+				employee__c,
+--				employee__pc,
+				dealercode__c,
+				dealercode__pc,
+				crmindex__c, 
+				engagementIndex__c, 
+				optinflag__c, 
+				satisficationlevel__c, 
+				loyaltyexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__pc,
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__pc,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__pc,
+				receiveserviceoffersflag__c, 
+				receiveserviceoffersflag__pc,
+				receivenewsletterflag__c,
+				receivenewsletterflag__pc,
+				receiveeventsflag__c,
+				receiveeventsflag__pc,
+				receiveresearchflag__c,
+				receiveresearchflag__pc,
+				blockedmobile__c,
+				blockedmobile__pc,
+				blockedvideocall__c,
+				blockedvideocall__pc,
+				preferredcontactchannel__c,
+				preferredcontactchannel__pc,
+				maritalstatus__c,
+				maritalstatus__pc,
+				blockedcalls__c,
+				blockedcalls__pc,
+				blockedletters__c,
+				blockedletters__pc,
+				blockedemails__c,
+				blockedemails__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__pc,
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid		
+		from "replica".account_bulk
+		where external_id__c  not in (
+			select external_id__c
+			from "replica".account_comp_extid ade 
+		)
+	;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_account_ws_wf(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_account_ws_wf(IN proc_acc_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+
+   begin
+        
+        
+        if checkcu = 'insert' then
+            insert into "replica".account  
+            (
+                external_id__c
+                , integratedid__c            
+                , cnpj__c  
+                , "name" 
+--                 , corporaterepresentativename__c : nickname => corporaterepresentativename__c => nickname__c
+                , nickname__c
+--                 , dealergroupcode__c : agencyCode => ori_cd__c => AccountCategory__c
+                , AccountCategory__c
+--                 , organizationtype__c : fleetAccontType => fleettype__c => BusinessType__c
+                , BusinessType__c
+                , industry 
+                , numberofemployees  
+--                 , fleetsize__c : totalFleetSize => x_tot_flt_size__c => FleetSize__c
+                , FleetSize__c
+                , registrysource__c  
+--                 , businesstype__c : organizationType => businesstype__c => organizationType__c
+                , organizationType__c
+                , phone 
+                , fax 
+                , emailaddress__c 
+                , website
+                , billingstreet 
+--                , billingcountry 
+                , neighborhood__c
+                , billingcity 
+                , billingstate 
+                , billingpostalcode 
+                , description 
+                , subsidiarycode__c
+                , recordtypeid
+                , contractrenewaldate__c
+                , parent__external_id__c
+            )
+            select
+                pa.row_id  
+                , pa.integrationid
+                , pa.corporateregistrationnumber__c 
+                , pa."name" 
+                , pa.corporaterepresentativename__c 
+                , pa.ori_cd__c 
+                , pa.fleettype__c 
+                , pa.industry
+                , cast(nullif(pa.numberofemployees,'') as Integer)
+                , cast(nullif(pa.x_tot_flt_size__c,'') as float8)
+                --, pa.x_contracted_since__c 
+                , pa.registrysource__c
+                , pa.businesstype__c
+                , pa.phone
+                , pa.fax
+                , pa.emailaddress__c
+                , pa.website                
+                , concat(pa.billingstreet || pa.billingstreet_2__c || pa.billingstreet_3__c)
+                , pa.billingcountry
+                , pa.billingcity
+                , pa.billingstate
+                , pa.billingpostalcode  
+                , pa.description 
+                , 'HMB'
+                , (select sfid from "replica".recordtype where sobjecttype = 'Account' and ispersontype = false and developername = 'HMB_Business_Account')
+                , pa.x_contracted_since__c
+                , pa.parentid
+            from 
+                process.account pa
+            where 
+                pa.row_id  = proc_acc_id;
+            
+        end if;
+    
+        if checkcu = 'update' then
+        
+            /** LOG TEST **/
+      -- PERFORM process.setProcLog('replica.if_account_ws_wf',(select count(*) from process.account where row_id = proc_acc_id)::varchar);
+
+            update "replica".account ra set                 
+                corporateregistrationnumber__c   = case when pa.corporateregistrationnumber__c isnull then ra.corporateregistrationnumber__c else pa.corporateregistrationnumber__c end 
+                , "name"                         = case when pa."name" isnull then ra."name" else pa."name" end 
+--                 , corporaterepresentativename__c = case when pa.corporaterepresentativename__c isnull then ra.corporaterepresentativename__c else pa.corporaterepresentativename__c end 
+                , nickname__c                    = case when pa.corporaterepresentativename__c isnull then ra.nickname__c else pa.corporaterepresentativename__c end 
+--                 , dealergroupcode__c             = case when pa.ori_cd__c isnull then ra.dealergroupcode__c else pa.ori_cd__c end
+                , AccountCategory__c             = case when pa.ori_cd__c isnull then ra.AccountCategory__c else pa.ori_cd__c end
+                , fleettype__c                   = case when pa.fleettype__c isnull then ra.fleettype__c  else pa.fleettype__c end
+                , industry                       = case when pa.industry isnull then ra.industry else pa.industry end  
+                , numberofemployees              = case when cast(nullif(pa.numberofemployees,'') as Integer) isnull then ra.numberofemployees else cast(nullif(pa.numberofemployees,'') as Integer) end 
+--                 , organizationtype__c            = case when cast(nullif(pa.x_tot_flt_size__c,'') as float8) isnull then ra.fleetsize__c else cast(nullif(pa.x_tot_flt_size__c,'') as float8) end
+                , BusinessType__c                = case when pa.fleettype__c isnull then ra.BusinessType__c else pa.fleettype__c end
+--                , fleetsize__c                   = case when cast(nullif(pa.x_tot_flt_size__c,'') as float8) isnull then ra.fleetsize__c else cast(nullif(pa.x_tot_flt_size__c,'') as float8) end
+                , FleetSize__c                   = case when cast(nullif(pa.x_tot_flt_size__c,'') as float8) isnull then ra.FleetSize__c else cast(nullif(pa.x_tot_flt_size__c,'') as float8) end
+                --, x_contracted_since__c = ?
+                , registrysource__c              = case when pa.registrysource__c isnull then ra.registrysource__c else pa.registrysource__c end 
+--                 , businesstype__c                = case when pa.businesstype__c isnull then ra.businesstype__c else pa.businesstype__c end 
+                , organizationType__c            = case when pa.businesstype__c isnull then ra.organizationType__c else pa.businesstype__c end 
+                , phone                          = case when pa.phone isnull then ra.phone else pa.phone end 
+                , fax                            = case when pa.fax isnull then ra.fax else pa.fax end 
+                , emailaddress__c                = case when pa.emailaddress__c isnull then ra.emailaddress__c else pa.emailaddress__c end
+                , website                        = case when pa.website isnull then ra.website else pa.website end
+                , billingstreet                  = case when concat(pa.billingstreet || pa.billingstreet_2__c || pa.billingstreet_3__c) isnull then ra.billingstreet else concat(pa.billingstreet || pa.billingstreet_2__c || pa.billingstreet_3__c) end 
+--                , billingcountry                 = case when pa.billingcountry isnull then ra.billingcountry else pa.billingcountry end 
+                , neighborhood__c                = case when pa.billingcountry isnull then ra.billingcountry else pa.billingcountry end 
+                , billingcity                    = case when pa.billingcity isnull then ra.billingcity else pa.billingcity end 
+                , billingstate                   = case when pa.billingstate isnull then ra.billingstate else pa.billingstate end 
+                , billingpostalcode              = case when pa.billingpostalcode isnull then ra.billingpostalcode else pa.billingpostalcode end     
+                , description                    = case when pa.description isnull then ra.description else pa.description end
+                , contractrenewaldate__c         = case when pa.x_contracted_since__c isnull then ra.contractrenewaldate__c else pa.x_contracted_since__c end
+                , parent__external_id__c         = case when pa.parentid isnull then ra.parent__external_id__c else pa.parentid end
+            from 
+                process.account pa 
+            where
+                ra.external_id__c = proc_acc_id
+            and
+                pa.row_id = proc_acc_id;    
+            
+        end if;
+    END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_action_in_ws_wf(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_action_in_ws_wf(IN param_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare type_td varchar(30);
+	declare protocol_sr varchar(64);
+	declare protocol_num_td int;	
+	declare protocol_num_qh int;
+	declare protocol_num_case int;
+	declare integrationid_num_tk int;
+	BEGIN
+		
+		select
+			type_cd, protocolid__c  into type_td, protocol_sr
+		from 
+			process.testdrivehistory tdh
+		where 
+			active_row_id = param_id;
+		
+		-- Service Request Number 값(testdrivehistory__c) 확인
+		select
+			count(*) into protocol_num_td
+		from 
+			process.testdrivehistory tdh
+		join 
+			"replica".testdrivehistory_if__c rdh
+			--"replica".testdrivehistory__c rdh
+		on
+			tdh.protocolid__c = rdh.protocolid__c
+		where
+			tdh.active_row_id = param_id;
+		
+		-- Service Request Number 값(case) 확인
+		select
+			count(*) into protocol_num_case
+		from 
+			process.task tk
+		join 
+			"replica"."case" rs
+		on
+			tk.protocol__c = rs.protocol_id__c 
+		where
+			tk.active_row_id = param_id;
+		
+		-- IntegrationId 값(Task) 확인
+		select
+			count(*) into integrationid_num_tk
+		from 
+			process.task tk
+		join 
+			"replica".task rk
+		on
+			tk.integrationid__c = rk.integrationid__c
+		and
+			tk.protocol__c = rk.protocol_id__c
+		where
+			tk.active_row_id = param_id;
+		
+		-- Test Drive
+		if type_td = 'Test drive - update' then
+			-- update
+			if protocol_num_td > 0 then
+				--update "replica".testdrivehistory__c rdh set
+				insert into "replica".testdrivehistory_if__c( 
+					protocolid__c
+					, status__c
+					, testdrivetype__c
+					--, externalid__c 
+					, recordinsertupdatecheck__c
+				)select
+					tdh.protocolid__c
+					, tdh.status__c
+					, tdh.type_cd
+					--, tdh.row_id
+					, 'update'
+				from 
+					process.testdrivehistory tdh
+				where
+					tdh.active_row_id = param_id;
+			end if;
+		
+		elseif type_td = 'Test drive - add' then
+			if protocol_num_td > 0 then
+				-- update  
+				--update "replica".testdrivehistory__c rdh set
+				insert into "replica".testdrivehistory_if__c( 
+					protocolid__c
+					, status__c 
+					, testdrivetype__c
+					, requestdescription__c
+					--, externalid__c 
+					, recordinsertupdatecheck__c
+				)
+				select
+					tdh.protocolid__c
+					, tdh.status__c
+					, tdh.type_cd
+					, tdh."RequestDescription__c"
+					--, tdh.row_id
+					, 'update'
+				from
+					process.testdrivehistory tdh
+				where
+					tdh.active_row_id = param_id;
+			end if;
+		-- Case 
+		else
+			if protocol_num_case > 0 then
+				if integrationid_num_tk = 0 then
+					-- insert 
+					insert into "replica".task
+					(
+						external_id__c
+						, "type"
+						, startdatetime__c
+						, status
+						, protocol_id__c
+						--, result__c
+						--, answer__c
+						--, serialnumber__c
+						--, dpuser__c
+						--, integrationid__c
+						--, hotlineid__c
+						--, hotlinecreation__c
+						--, pwaid__c
+						--, pwacreation__c
+						--, roid__c
+						--, rocreation__c
+						--, mobisid__c
+						--, mobisstatus__c
+						--, expecteddelivery__c
+						--, purchasepurposeid__c
+						--, contactid
+						--, dealercode__c
+						--, creationdt__c
+						--, ordernum__c
+						--, stock__c
+						, priority
+						, description__c
+						, integrationid__c
+					)
+					select
+						row_id
+						, "type"
+						, planneddt__c
+						, status
+						, protocol__c
+						--, result__c
+						--, answer__c
+						--, serialnumber__c
+						--, dpuser__c
+						--, integrationid__c
+						--, hotlineid__c
+						--, hotlinecreation__c
+						--, pwaid__c
+						--, pwacreation__c
+						--, roid__c
+						--, rocreation__c
+						--, mobisid__c
+						--, mobisstatus__c
+						--, expecteddelivery__c
+						--, purchasepurposeid__c
+						--, contactid
+						--, dealercode__c
+						--, creationdt__c
+						--, ordernum__c
+						--, stock__c
+						, priority
+						, description
+						, integrationid__c
+					from 
+						process.task tk
+					where 
+						tk.active_row_id = param_id;
+				else
+					-- update 
+					update "replica".task as rtk set 
+						"type" = case when ptk."type" isnull then rtk."type" else ptk."type" end
+						, startdatetime__c = case when ptk.planneddt__c isnull then rtk.startdatetime__c else ptk.planneddt__c end 
+						, status = case when ptk.status isnull then rtk.status else ptk.status end
+						--, result__c = case when ptk.result__c isnull then rtk.result__c else ptk.result__c end
+						--, answer__c = case when ptk.answer__c isnull then rtk.answer__c else ptk.answer__c end
+						--, dpuser__c = case when ptk.dpuser__c isnull then rtk.dpuser__c else ptk.dpuser__c end
+						--, hotlinecreation__c = case when ptk.hotlinecreation__c isnull then rtk.hotlinecreation__c else ptk.hotlinecreation__c end
+						--, pwacreation__c = case when ptk.pwacreation__c isnull then rtk.pwacreation__c else ptk.pwacreation__c end
+						--, rocreation__c = case when ptk.rocreation__c isnull then rtk.rocreation__c else ptk.rocreation__c end
+						--, mobisstatus__c = case when ptk.mobisstatus__c isnull then rtk.mobisstatus__c else ptk.mobisstatus__c end
+						--, expecteddelivery__c = case when ptk.expecteddelivery__c isnull then rtk.expecteddelivery__c else ptk.expecteddelivery__c end
+						--, purchasepurposeid__c = case when ptk.purchasepurposeid__c isnull then rtk.purchasepurposeid__c else ptk.purchasepurposeid__c end
+						--, dealercode__c = case when ptk.dealercode__c isnull then rtk.dealercode__c else ptk.dealercode__c end
+						--, creationdt__c = case when ptk.creationdt__c isnull then rtk.creationdt__c else ptk.creationdt__c end
+						--, ordernum__c = case when ptk.ordernum__c isnull then rtk.ordernum__c else ptk.ordernum__c end
+						--, stock__c = case when ptk.stock__c isnull then rtk.stock__c else ptk.stock__c end
+						, priority = case when ptk.priority isnull then rtk.priority else ptk.priority end
+						, description__c = case when ptk.description isnull then rtk.description__c else ptk.description end
+					from
+						process.task ptk 
+					where 
+						rtk.integrationid__c = ptk.integrationid__c
+					and
+						rtk.protocol_id__c = ptk.protocol__c
+					and 
+						ptk.active_row_id = param_id;
+				
+				end if;
+			else
+			end if;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_asset_contact_upsert_ws(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_asset_contact_upsert_ws(IN proc_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$	
+	declare fo_count integer;
+	begin
+		
+		-- Check 'First Owner' 유무
+		select 
+			count(*) into fo_count
+		from 
+			"replica".customervehicle__c rc
+		join
+			process.customer_vehicle pc
+		on
+			rc.vehicle__r__external_id__c = pc.asset_id 
+		where
+			lower(rc.relationship__c) = 'first owner'
+		and 
+			lower(rc.type__c) = 'person'
+		and
+			pc.row_id = proc_id;
+		
+		if fo_count = 0 then 
+		
+			update "replica".customervehicle__c as rc set 
+				relationship__c = 'First Owner'
+				, status__c = 'Inactive'
+			from 
+				process.customer_vehicle pc
+			where
+				pc.row_id = proc_id
+			and
+				rc.vehicle__r__external_id__c = pc.asset_id 
+			and
+				lower(rc.type__c) = 'person'
+			and 
+				lower(rc.status__c) = 'active';
+			
+		else
+			update "replica".customervehicle__c as rc set 
+				status__c = 'Inactive'
+			from 
+				process.customer_vehicle pc
+			where
+				pc.row_id = proc_id
+			and
+				rc.vehicle__r__external_id__c = pc.asset_id 
+			and
+				lower(rc.type__c) = 'person'
+			and 
+				lower(rc.status__c) = 'active';
+		
+		
+		end if;
+		
+		
+		if checkcu = 'insert' then
+			insert into replica.customervehicle__c
+			(
+				external_id__c
+				, vehicle__r__external_id__c
+				, account__r__external_id__c
+				, relationship__c 
+				, retaildate__c 
+				, type__c 
+				, status__c 
+			)
+			select
+				pcv.row_id 
+				, pcv.asset_id 
+				, pcv.account_id 
+				, pcv.relation_type_cd 
+				, pcv.retail_date 
+				, pcv.cv_type 
+				, pcv.status_cd 
+			from
+				process.customer_vehicle pcv
+			where
+				pcv.row_id = proc_id;
+			
+			
+			update "replica".asset as ra set 
+				account__external_id__c = pcv.account_id 
+			from
+				process.asset pa
+			join
+				process.customer_vehicle pcv
+			on 
+				pa.row_id = pcv.asset_id 
+			where 
+				pcv.row_id = proc_id
+			and 
+				ra.external_id__c = pa.row_id ;
+				
+		end if;
+	
+	
+		if checkcu = 'update' then 
+			update replica.customervehicle__c as rc set 
+				account__r__external_id__c = pcv.account_id
+				, relationship__c = case when pcv.relation_type_cd isnull then rc.relationship__c else pcv.relation_type_cd end
+				, retaildate__c = case when pcv.retail_date isnull then rc.retaildate__c else pcv.retail_date end
+				, status__c = case when pcv.status_cd isnull then rc.status__c else pcv.status_cd end
+			from
+				process.customer_vehicle pcv
+			where
+				pcv.row_id = proc_id
+			and
+				rc.external_id__c = proc_id;
+			
+			
+			update "replica".asset as ra set 
+				account__external_id__c = pcv.account_id 
+			from
+				process.asset pa
+			join
+				process.customer_vehicle pcv
+			on 
+				pa.row_id = pcv.asset_id 
+			where 
+				pcv.row_id = proc_id
+			and 
+				ra.external_id__c = pa.row_id ;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_auto_vehicle_bl_ws(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_auto_vehicle_bl_ws(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare 
+		v_len integer;
+		v_i integer;
+		v_count integer;
+	begin
+		v_len := array_length(param_id, 1);
+	
+		FOR v_i IN 1..v_len
+		     LOOP
+				select 
+		          	count(*) into v_count
+		          from
+		          	process.bluelink pbc
+		          join
+		          	"replica".bluelink__c rbc 
+		          on
+		          	pbc.chassi__c  = rbc.assetnum__c 
+		          where
+		          	pbc.type__c = rbc.type__c
+		          and
+		          	pbc.row_id = param_id[v_i];
+		          if 0 < v_count then 
+		          --	 update
+		          	update "replica".bluelink__c as rbc set 
+		          		firstactivation__c = case when pbc.firstactivation__c isnull then rbc.firstactivation__c else pbc.firstactivation__c end
+		          		, activationdate__c = case when pbc.activationdate__c isnull then rbc.activationdate__c else pbc.activationdate__c end
+		          		, latestmileage__c = case when pbc.latestmileage__c isnull then rbc.latestmileage__c else pbc.latestmileage__c end
+		          	from 
+		          		process.bluelink as pbc
+		          	where
+		          		rbc.assetnum__c = pbc.chassi__c
+		          	and
+		          		rbc.type__c = pbc.type__c
+		          	and
+		          		pbc.row_id = param_id[v_i];
+		          else
+		          --	insert into
+		          	insert into "replica".bluelink__c(
+		          		integrationid__c
+		          		, latestmileage__c
+						, firstactivation__c
+						, activationdate__c
+						, type__c
+						, assetnum__c
+						, externalid__c
+						, asset__r__external_id__c
+		          	)select
+						integrationid__c
+						, latestmileage__c
+						, firstactivation__c
+						, activationdate__c
+						, type__c
+						, chassi__c
+						, row_id
+						, asset_id
+					from 
+						process.bluelink pbc
+		          	where
+		          		pbc.row_id = param_id[v_i];
+		          end if;
+		END LOOP;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_auto_vehicle_rsa_claim_ws(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_auto_vehicle_rsa_claim_ws(IN proc_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare prrowid varchar;
+	BEGIN
+		if checkcu = 'insert' then
+			-- insert 'roadsideassistance__c'
+			insert into "replica".roadsideassistance__c
+			(
+				integrationid__c 
+				, reqfirstname__c 
+				, reqlastname__c 
+				, reqdocument__c 
+				, reqvehiclerel__c 
+				, claimdate__c 
+				, claimreason__c 
+				, brkdwndesc__c 
+				, brkdwn_cd__c 
+				, brkdwn_nature__c 
+				, statuscd__c 
+				, effstartdate__c 
+				, effenddate__c 
+				, exchangedate__c 
+				, mileage__c 
+				, externalid__c 
+			)
+			select
+				prsa.integration_id 
+				, prsa.req_first_name 
+				, prsa.req_last_name 
+				, prsa.req_document 
+				, prsa.req_vehicle_rel 
+				, prsa.claim_date 
+				, prsa.claim_reason 
+				, prsa.brkdwn_desc 
+				, prsa.brkdwn_cd 
+				, prsa.brkdwn_nature 
+				, prsa.status_cd 
+				, prsa.eff_start_date 
+				, prsa.eff_end_date 
+				, prsa.exchange_date 
+				, prsa.mileage  
+				, prsa.row_id 
+			from
+				process.road_side_assistant prsa 
+			where
+				prsa.row_id = proc_id;			
+			
+			
+			-- insert 'roadsideassistanceservice__c'
+			insert into "replica".roadsideassistanceservice__c 
+			(
+				"name" 
+				, createdate__c 
+				, servicecode__c 
+				, specialty__c 
+				, provider__c 
+				, vehicleproblem__c 
+				, problemdescription__c 
+				, tmcpredicted__c 
+				, important__c 
+				, requeststatus__c 
+				, actuationstatus__c 
+				, addressname__c 
+				, addressnumber__c 
+				, addresscomplement__c 
+				, county__c 
+				, city__c 
+				, state__c 
+				, latitude__c 
+				, longitude__c 
+				, reference__c 
+				, zipcode__c 
+				, dealername__c 
+				, dealernickname__c 
+				, expense__c 
+				, externalid__c 
+				, roadsideassistanceid__r__externalid__c 
+			)
+			select
+				prss."name" 
+				, prss.createdate__c 
+				, prss.servicecode__c 
+				, prss.specialty__c 
+				, prss.provider__c 
+				, prss.vehicleproblem__c 
+				, prss.problemdescription__c 
+				, prss.tmcpredicted__c 
+				, prss.important__c 
+				, prss.requeststatus__c 
+				, prss.actuationstatus__c 
+				, prss.addressname__c 
+				, prss.addressnumber__c 
+				, prss.addresscomplement__c 
+				, prss.county__c 
+				, prss.city__c 
+				, prss.state__c 
+				, prss.latitude__c 
+				, prss.longitude__c 
+				, prss.reference__c 
+				, prss.zipcode__c 
+				, prss.dealername__c 
+				, prss.dealernickname__c 
+				, prss.expense__c 
+				, prss.row_id 
+				, proc_id
+			from
+				process.road_side_assistant_service prss 
+			where
+				prss.rsa_row_id = proc_id;
+		end if;
+	
+	
+	
+		if checkcu = 'update' then 
+			-- update 'roadsideassistance__c'
+			update "replica".roadsideassistance__c as rrsa set 
+				reqfirstname__c = case when prsa.req_first_name isnull then rrsa.reqfirstname__c else prsa.req_first_name end 
+				, reqlastname__c = case when prsa.req_last_name isnull then rrsa.reqlastname__c else prsa.req_last_name end 
+				, reqdocument__c = case when prsa.req_document isnull then rrsa.reqdocument__c else prsa.req_document end 
+				, reqvehiclerel__c = case when prsa.req_vehicle_rel isnull then rrsa.reqvehiclerel__c else prsa.req_vehicle_rel end 
+				, claimdate__c = case when prsa.claim_date isnull then rrsa.claimdate__c else prsa.claim_date end 
+				, claimreason__c = case when prsa.claim_reason isnull then rrsa.claimreason__c else prsa.claim_reason end 
+				, brkdwndesc__c = case when prsa.brkdwn_desc isnull then rrsa.brkdwndesc__c else prsa.brkdwn_desc end 
+				, brkdwn_cd__c = case when prsa.brkdwn_cd isnull then rrsa.brkdwn_cd__c else prsa.brkdwn_cd end 
+				, brkdwn_nature__c = case when prsa.brkdwn_nature isnull then rrsa.brkdwn_nature__c else prsa.brkdwn_nature end 
+				, statuscd__c = case when prsa.status_cd isnull then rrsa.statuscd__c else prsa.status_cd end 
+				, effstartdate__c = case when prsa.eff_start_date isnull then rrsa.effstartdate__c else prsa.eff_start_date end 
+				, effenddate__c = case when prsa.eff_end_date isnull then rrsa.effenddate__c else prsa.eff_end_date end 
+				, exchangedate__c = case when prsa.exchange_date isnull then rrsa.exchangedate__c else prsa.exchange_date end 
+				, mileage__c = case when prsa.mileage isnull then rrsa.mileage__c else prsa.mileage end 
+			from
+				process.road_side_assistant prsa
+			where
+				prsa.row_id = proc_id
+			and
+				rrsa.externalid__c = proc_id;
+			
+			-- delete 'roadsideassistanceservice__c'
+			delete from 
+				"replica".roadsideassistanceservice__c
+			where
+				roadsideassistanceid__r__externalid__c = proc_id;
+		
+			-- insert 'roadsideassistanceservice__c'
+			insert into "replica".roadsideassistanceservice__c 
+			(
+				"name" 
+				, createdate__c 
+				, servicecode__c 
+				, specialty__c 
+				, provider__c 
+				, vehicleproblem__c 
+				, problemdescription__c 
+				, tmcpredicted__c 
+				, important__c 
+				, requeststatus__c 
+				, actuationstatus__c 
+				, addressname__c 
+				, addressnumber__c 
+				, addresscomplement__c 
+				, county__c 
+				, city__c 
+				, state__c 
+				, latitude__c 
+				, longitude__c 
+				, reference__c 
+				, zipcode__c 
+				, dealername__c 
+				, dealernickname__c 
+				, expense__c 
+				, externalid__c 
+				, roadsideassistanceid__r__externalid__c 
+			)
+			select
+				prss."name" 
+				, prss.createdate__c 
+				, prss.servicecode__c 
+				, prss.specialty__c 
+				, prss.provider__c 
+				, prss.vehicleproblem__c 
+				, prss.problemdescription__c 
+				, prss.tmcpredicted__c 
+				, prss.important__c 
+				, prss.requeststatus__c 
+				, prss.actuationstatus__c 
+				, prss.addressname__c 
+				, prss.addressnumber__c 
+				, prss.addresscomplement__c 
+				, prss.county__c 
+				, prss.city__c 
+				, prss.state__c 
+				, prss.latitude__c 
+				, prss.longitude__c 
+				, prss.reference__c 
+				, prss.zipcode__c 
+				, prss.dealername__c 
+				, prss.dealernickname__c 
+				, prss.expense__c 
+				, prss.row_id 
+				, proc_id
+			from
+				process.road_side_assistant_service prss 
+			where
+				prss.rsa_row_id = proc_id;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_auto_vehicle_ws_wf(_text, _text, _text);
+
+CREATE OR REPLACE PROCEDURE replica.if_auto_vehicle_ws_wf(IN proc_asset_id text[], IN proc_invoice_id text[], IN proc_custvehicle_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare 
+		v_len integer;
+		v_i integer;
+		v_count integer;
+		v_status varchar;
+		asset_count integer;
+		invoice_count integer;
+		contact_status varchar;
+		fo_count integer;
+		nego_type integer;
+	BEGIN
+		v_len := array_length(proc_custvehicle_id, 1);
+	
+		select 
+			count(*) into asset_count
+		from
+			"replica".asset 
+		where 
+			external_id__c = proc_asset_id[1];
+		
+		
+		select 
+			count(*) into invoice_count
+		from
+			"replica".invoiceinfo__c ri
+		where 
+			external_id__c = proc_invoice_id[1];	
+		
+		
+		select 
+			position('cancelled' in lower(ri.negotiationtype__c)) into nego_type
+		from
+			"replica".invoiceinfo__c ri
+		where 
+			external_id__c = proc_invoice_id[1];		
+		
+		
+
+		
+		
+	
+		
+	
+		if asset_count = 0 then
+			-- insert 'asset'
+			insert into "replica".asset
+			(
+--				 integrationid
+				vin__c 
+				, status 
+				, renavamcode__c  
+				, enginenumber__c 
+				, vehiclelicensenumber__c  
+				, fsc__c 
+				, modelname__c 
+				, interiorcolor__c 
+				, exteriorcolor__c 
+				, fueltype__c 
+				, price  
+				, manufactureyear__c  
+				, modelyear__c 
+				, latestmileage__c 
+				, wholesaledate__c 
+				, warrantystartdate__c 
+				, billingdate__c 
+				, vehicledeliverydate__c 
+				, dealercode__c 
+				, negotiationtype__c 
+				, subscriptiontype__c 
+				, fiscalreceipt__c 
+				, salesrepid__c 
+				, salesman__c 
+				, urlphoto__c 
+				, urlphotodate__c 
+				, urlauthpublication__c 
+				, vehiclelicensedate__c  
+				, digitalsales__c 
+				, deliveryathome__c 
+				, tdathome__c 
+				, ccsflag__c 
+				, external_id__c 
+				, "name" 
+				, dealeraccount__r__external_id__c 
+				, account__external_id__c 
+				, latestmileagelastupdatedate__c 
+			)
+			select
+--				 pa.assetaccountrollupkey__c 
+				pa.serialnumber 
+				, pa.status 
+				, pa.renavam_code__c 
+				, pa.enginenumber__c 
+				, pa.carregistrationnumber__c 
+				, pa.fsc__c 
+				, pa.modelname__c 
+				, pa.vehicleinternalcolor__c 
+				, pa.vehiclecolor__c 
+				, pa.fueltype__c 
+				, pa.purchaseprice__c 
+				, pa.manufacturedate
+				, pa.modelyear__c 
+				, pa.latestmileage__c 
+				, pa.dealer_rcpt_dt__c 
+				, pa.warranty_start_dt__c 
+				, pa.billing_date__c 
+				, pa.vehicledeliverydate__c 
+				, pa.dealercode__c 
+				, pa.oper_status_cd__c 
+				, pa.ownr_type_cd__c 
+				, pa.purch_loc_desc__c 
+				, pa.dlr_con_int_id__c 
+				, concat ( pa.salesrepfirstname, ' ' ,pa.salesreplastname )
+				, pa.special_moment__c
+				, pa.urlphotodate__c 
+				, pa.urlauthopublication__c::date
+				, pa.vehicle_license_date__c 
+				, pa.x_dig_sales__c
+				, pa.x_del_home__c
+				, pa.x_td_home__c
+				, case when pa.cf_eval_svc_cd__c = 'Y' then true when pa.cf_eval_svc_cd__c = 'N' then false else null end 
+				, pa.row_id 
+				, pa.serialnumber 
+				, pa.account_row_id__c 
+				, pa.contact_row_id__c 
+				, now()
+			from
+				process.asset pa
+			where
+				pa.row_id = proc_asset_id[1];
+		
+			if v_len > 0 then
+				for v_i in 1..v_len
+					loop
+						
+						-- insert 'customervehicle__c'
+						insert into "replica".customervehicle__c
+						(
+							account__r__external_id__c
+							, vehicle__r__external_id__c
+							, relationship__c 
+							, status__c  
+							, employeeflg__c 
+							, external_id__c 
+							, type__c
+						)
+						select
+							pc.account_id
+							, pc.asset_id 
+							, pc.relation_type_cd
+							, pc.status_cd 
+							, ( case when pc.x_employee_flg isnull then null else pc.x_employee_flg end )
+							, pc.row_id 
+							, pc.cv_type 
+						from
+							process.customer_vehicle pc
+						where
+							pc.row_id = proc_custvehicle_id[v_i];						
+						
+					end loop;
+			end if;
+		
+		else
+		
+			-- update 'asset'
+			update "replica".asset as ra set 
+				vin__c  = case when pa.serialnumber isnull then ra.vin__c  else pa.serialnumber end 
+				, status = case when pa.status isnull then ra.status else pa.status end 
+				, renavamcode__c  = case when pa.renavam_code__c isnull then ra.renavamcode__c else pa.renavam_code__c end 
+				, enginenumber__c = case when pa.enginenumber__c isnull then ra.enginenumber__c else pa.enginenumber__c end 
+				, vehiclelicensenumber__c = case when pa.carregistrationnumber__c isnull then ra.vehiclelicensenumber__c else pa.carregistrationnumber__c end 
+				, fsc__c = case when pa.fsc__c isnull then ra.fsc__c else pa.fsc__c end 
+				, modelname__c = case when pa.modelname__c isnull then ra.modelname__c else pa.modelname__c end 
+				, interiorcolor__c = case when pa.vehicleinternalcolor__c isnull then ra.interiorcolor__c else pa.vehicleinternalcolor__c end 
+				, exteriorcolor__c = case when pa.vehiclecolor__c isnull then ra.exteriorcolor__c else pa.vehiclecolor__c end 
+				, fueltype__c = case when pa.fueltype__c isnull then ra.fueltype__c else pa.fueltype__c end 
+				, purchaseprice__c = case when pa.purchaseprice__c isnull then ra.purchaseprice__c else pa.purchaseprice__c end 
+				, manufactureyear__c = case when pa.manufacturedate isnull then ra.manufactureyear__c else pa.manufacturedate end 
+				, modelyear__c = case when pa.modelyear__c isnull then ra.modelyear__c else pa.modelyear__c end 
+				, latestmileage__c = case when pa.latestmileage__c isnull then ra.latestmileage__c else pa.latestmileage__c end 
+				, wholesaledate__c = case when pa.dealer_rcpt_dt__c isnull then ra.wholesaledate__c else pa.dealer_rcpt_dt__c::timestamp end 
+				, warrantystartdate__c = case when pa.warranty_start_dt__c isnull then ra.warrantystartdate__c else pa.warranty_start_dt__c::timestamp end
+				, billingdate__c = case when pa.billing_date__c isnull then ra.billingdate__c else pa.billing_date__c::timestamp end 
+				, vehicledeliverydate__c = case when pa.vehicledeliverydate__c isnull then ra.vehicledeliverydate__c else pa.vehicledeliverydate__c end 
+				, dealercode__c = case when pa.dealercode__c isnull then ra.dealercode__c else pa.dealercode__c end 
+				, negotiationtype__c = case when pa.oper_status_cd__c isnull then ra.negotiationtype__c else pa.oper_status_cd__c end 
+				, subscriptiontype__c = case when pa.ownr_type_cd__c isnull then ra.subscriptiontype__c else pa.ownr_type_cd__c end 
+				, fiscalreceipt__c = case when pa.purch_loc_desc__c isnull then ra.fiscalreceipt__c else pa.purch_loc_desc__c end 
+				, salesrepid__c = case when pa.dlr_con_int_id__c isnull then ra.salesrepid__c else pa.dlr_con_int_id__c end 
+				, salesman__c = case when (pa.salesrepfirstname isnull and pa.salesreplastname isnull) then ra.salesman__c else concat ( pa.salesrepfirstname, ' ' ,pa.salesreplastname ) end 
+				, urlphoto__c = case when pa.special_moment__c isnull then ra.urlphoto__c else pa.special_moment__c end 
+				, urlphotodate__c = case when pa.urlphotodate__c isnull then ra.urlphotodate__c else pa.urlphotodate__c end 
+				, urlauthpublication__c = case when pa.urlauthopublication__c isnull then ra.urlauthpublication__c else pa.urlauthopublication__c::date end 
+				, vehiclelicensedate__c = case when pa.vehicle_license_date__c isnull then ra.vehiclelicensedate__c else pa.vehicle_license_date__c end 
+				, digitalsales__c = case when pa.x_dig_sales__c isnull then ra.digitalsales__c else pa.x_dig_sales__c end 
+				, deliveryathome__c = case when pa.x_del_home__c isnull then ra.deliveryathome__c else pa.x_del_home__c end 
+				, tdathome__c = case when pa.x_td_home__c isnull then ra.tdathome__c else pa.x_td_home__c end 
+				, ccsflag__c = case when pa.cf_eval_svc_cd__c isnull then ra.ccsflag__c else case when pa.cf_eval_svc_cd__c = 'Y' then true when pa.cf_eval_svc_cd__c = 'N' then false else null end end
+				, "name" = pa.serialnumber 
+				, account__external_id__c = case when pa.contact_row_id__c isnull then ra.account__external_id__c else pa.contact_row_id__c end 
+			from
+				process.asset pa
+			where
+				pa.row_id = proc_asset_id[1]
+			and
+				ra.external_id__c =  proc_asset_id[1];
+			
+			-- update 'customervehicle__c'x
+			if v_len > 0 then
+			
+				for v_i in 1..v_len
+					loop
+						select 
+							count(*) into v_count
+						from
+							"replica".customervehicle__c rc
+						where
+							rc.external_id__c  = proc_custvehicle_id[v_i];	
+						
+						-- 입력된 contact의 status check
+						select 
+							lower(cv.status_cd) into v_status
+						from 
+							process.customer_vehicle cv 
+						where
+							cv.row_id = proc_custvehicle_id[v_i];
+						
+						if v_status = 'active' then
+						
+							select 
+								count(*) into fo_count
+							from 
+								"replica".customervehicle__c rc
+							join
+								process.customer_vehicle pc
+							on
+								rc.vehicle__r__external_id__c  = pc.asset_id  
+							where
+								pc.row_id = proc_custvehicle_id[v_i]						
+							and
+								lower(rc.relationship__c) = 'first owner'
+							and
+								lower(rc.type__c) = 'person';
+							
+							if fo_count = 0 then	
+						
+								update "replica".customervehicle__c as rc set 
+									relationship__c = 'First Owner'
+									, status__c = 'Inactive'
+									, relationshipenddate__c = now()
+								from	
+									process.customer_vehicle pc
+								where
+									pc.row_id = proc_custvehicle_id[v_i]						
+								and
+									lower(rc.type__c) = 'person'
+								and
+									rc.vehicle__r__external_id__c = pc.asset_id;
+							else
+							
+								update "replica".customervehicle__c as rc set 
+									status__c = 'Inactive'
+									, relationshipenddate__c = now()
+								from	
+									process.customer_vehicle pc
+								where
+									pc.row_id = proc_custvehicle_id[v_i]
+								and
+									rc.vehicle__r__external_id__c = pc.asset_id
+								and
+									lower(rc.type__c) = 'person'
+								and 
+									lower(rc.status__c) = 'active';
+							end if;
+						end if;
+					
+						
+						
+						
+						if v_count = 0 then
+							-- insert 'customervehicle__c'
+							insert into "replica".customervehicle__c
+							(
+								account__r__external_id__c
+								, vehicle__r__external_id__c
+								, relationship__c 
+								, status__c  
+								, employeeflg__c 
+								, external_id__c 
+								, type__c 
+							)
+							select
+								pc.account_id
+								, pc.asset_id 
+								, pc.relation_type_cd
+								, pc.status_cd 
+								, ( case when pc.x_employee_flg isnull then null else pc.x_employee_flg end )
+								, pc.row_id 
+								, pc.cv_type 
+							from
+								process.customer_vehicle pc
+							where
+								pc.row_id = proc_custvehicle_id[v_i];
+							
+							-- asset에 연결된 account(person) 업데이트 
+							update "replica".asset as ra set
+								account__external_id__c = pa.contact_row_id__c
+							from 
+								process.asset pa
+							where
+								pa.row_id = proc_asset_id[1]
+							and 
+								ra.external_id__c = proc_asset_id[1];
+							
+						else
+							-- status 'Inactive' check
+							select 
+								lower(status_cd)  into contact_status
+							from
+								process.customer_vehicle pv
+							where
+								pv.row_id = proc_custvehicle_id[v_i];							
+							
+							-- update 'customervehicle__c'
+							update "replica".customervehicle__c as rc set 					
+								relationship__c = case when pc.relation_type_cd isnull then rc.relationship__c else pc.relation_type_cd end 
+								, status__c = case when pc.status_cd isnull then rc.status__c else pc.status_cd end 
+								, employeeflg__c = case when pc.x_employee_flg isnull then rc.employeeflg__c else pc.x_employee_flg end 
+							from
+								process.customer_vehicle pc
+							where
+								pc.row_id = proc_custvehicle_id[v_i]
+							and
+								rc.external_id__c = proc_custvehicle_id[v_i];
+							
+							
+							-- asset에 연결된 account(person) 업데이트 
+							update "replica".asset as ra set
+								account__external_id__c = pa.contact_row_id__c
+							from 
+								process.asset pa
+							where
+								pa.row_id = proc_asset_id[1]
+							and 
+								ra.external_id__c = proc_asset_id[1];
+							
+							if contact_status = 'inactive' and nego_type > 0 then
+								update "replica".asset as ra set 
+									account__external_id__c  = ''
+								from
+									process.customer_vehicle pv 
+								where
+									pv.row_id = proc_custvehicle_id[v_i]
+								and 
+									pv.asset_id = ra.external_id__c ;
+							end if;
+							
+						end if;
+						
+						
+					end loop;
+			end if;
+
+		end if;
+	
+	
+	
+	
+
+	
+		if invoice_count = 0 then
+			-- insert 'invoiceinfo__c'
+			insert into "replica".invoiceinfo__c 
+			(
+				status__c
+				, "name" 
+				, renavamcode__c 
+				, enginenumber__c
+				, vehiclelicensenumber__c
+				, fsc_ocn__c
+				, modelname__c
+				, internalcolorcode__c
+				, externalcolorcode__c
+				, fueltype__c
+				, purchaseprice__c
+				, manufactureyear__c
+				, modelyear__c
+				, mileage__c
+				, salestodealerdate__c
+				, warrantystartdate__c
+				, billingdate__c
+				, delivertocustomerdate__c
+				, dealercode__c
+				, negotiationtype__c
+				, subscriptiontype__c
+				, fiscalreceipt__c
+				, salespersonid__c
+				, salespersonfirstname__c
+				, salespersonlastname__c
+				, urlphoto__c
+				, urlphotodate__c
+				, urlauthopublication__c
+				, vehiclelicensedate__c
+				, digitalsales__c
+				, deliveryathome__c  
+				, testdriveathome__c  
+				, ccsflag__c 
+				, customer__r__external_id__c
+				, external_id__c 
+--				, cpf__c
+			)
+			select
+				 piv.status
+				, piv."name" 	
+				, piv.renavamcode__c
+				, piv.enginenumber__c
+				, piv.vehiclelicensenumber__c
+				, piv.fsc_ocn__c
+				, piv.modelname__c
+				, piv.internalcolorcode__c
+				, piv.externalcolorcode__c
+				, piv.fueltype__c
+				, piv.purchaseprice__c
+				, piv.manufactureyear__c
+				, piv.modelyear__c
+				, piv.mileage__c
+				, piv.salestodealerdate__c
+				, piv.warrantystartdate__c
+				, piv.billingdate__c
+				, piv.delivertocustomerdate__c
+				, piv.dealercode__c
+				, piv.negotiationtype__c
+				, piv.subscriptiontype__c
+				, piv.fiscalreceipt__c
+				, piv.salespersonid__c
+				, piv.salespersonfirstname__c
+				, piv.salespersonlastname__c
+				, piv.urlphoto__c
+				, piv.urlphotodate__c
+				, piv.urlauthopublication__c
+				, piv.vehiclelicensedate__c
+				, piv.digitalsales__c
+				, piv.deliveryathome 
+				, piv.tdathome 
+				, piv.ccs_flg
+				, piv.person_account_id
+				, piv.row_id 
+--				, case when (select cpf__c from "replica".account where external_id__c = piv.person_account_id) isnull then null else (select cpf__c from "replica".account where external_id__c = piv.person_account_id) end 
+			from
+				process.invoiceinfo piv
+			where
+				piv.row_id = proc_invoice_id[1];
+		else
+
+			
+		
+			-- update 'invoiceinfo__c'
+			update "replica".invoiceinfo__c as ri set 
+				status__c = case when pv.status isnull then ri.status__c else pv.status end 
+				, "name" = case when pv."name" isnull then ri."name" else pv."name" end 
+				, renavamcode__c = case when pv.renavamcode__c isnull then ri.renavamcode__c else pv.renavamcode__c end 
+				, enginenumber__c= case when pv.enginenumber__c isnull then ri.enginenumber__c else pv.enginenumber__c end 
+				, vehiclelicensenumber__c = case when pv.vehiclelicensenumber__c isnull then ri.vehiclelicensenumber__c else pv.vehiclelicensenumber__c end 
+				, fsc_ocn__c = case when pv.fsc_ocn__c isnull then ri.fsc_ocn__c else pv.fsc_ocn__c end 
+				, modelname__c = case when pv.modelname__c isnull then ri.modelname__c else pv.modelname__c end  
+				, internalcolorcode__c = case when pv.internalcolorcode__c isnull then ri.internalcolorcode__c else pv.internalcolorcode__c end 
+				, externalcolorcode__c = case when pv.externalcolorcode__c isnull then ri.externalcolorcode__c else pv.externalcolorcode__c end 
+				, fueltype__c = case when pv.fueltype__c isnull then ri.fueltype__c else pv.fueltype__c end 
+				, purchaseprice__c = case when pv.purchaseprice__c isnull then ri.purchaseprice__c else pv.purchaseprice__c end 
+				, manufactureyear__c = case when pv.manufactureyear__c isnull then ri.manufactureyear__c else pv.manufactureyear__c end 
+				, modelyear__c = case when pv.modelyear__c isnull then ri.modelyear__c else pv.modelyear__c end 
+				, mileage__c = case when pv.mileage__c isnull then ri.mileage__c else pv.mileage__c end 
+				, salestodealerdate__c = case when pv.salestodealerdate__c isnull then ri.salestodealerdate__c else pv.salestodealerdate__c end 
+				, warrantystartdate__c = case when pv.warrantystartdate__c isnull then ri.warrantystartdate__c else pv.warrantystartdate__c end 
+				, billingdate__c = case when pv.billingdate__c isnull then ri.billingdate__c else pv.billingdate__c end 
+				, delivertocustomerdate__c = case when pv.delivertocustomerdate__c isnull then ri.delivertocustomerdate__c else pv.delivertocustomerdate__c end 
+				, dealercode__c = case when pv.dealercode__c isnull then ri.dealercode__c else pv.dealercode__c end 
+				, negotiationtype__c = case when pv.negotiationtype__c isnull then ri.negotiationtype__c else pv.negotiationtype__c end 
+				, subscriptiontype__c = case when pv.subscriptiontype__c isnull then ri.subscriptiontype__c else pv.subscriptiontype__c end 
+				, fiscalreceipt__c = case when pv.fiscalreceipt__c isnull then ri.fiscalreceipt__c else pv.fiscalreceipt__c end 
+				, salespersonid__c = case when pv.salespersonid__c isnull then ri.salespersonid__c else pv.salespersonid__c end 
+				, salespersonfirstname__c = case when pv.salespersonfirstname__c isnull then ri.salespersonfirstname__c else pv.salespersonfirstname__c end 
+				, salespersonlastname__c = case when pv.salespersonlastname__c isnull then ri.salespersonlastname__c else pv.salespersonlastname__c end
+				, urlphoto__c = case when pv.urlphoto__c isnull then ri.urlphoto__c else pv.urlphoto__c end 
+				, urlphotodate__c = case when pv.urlphotodate__c isnull then ri.urlphotodate__c else pv.urlphotodate__c end 
+				, urlauthopublication__c = case when pv.urlauthopublication__c isnull then ri.urlauthopublication__c else pv.urlauthopublication__c end 
+				, vehiclelicensedate__c = case when pv.vehiclelicensedate__c isnull then ri.vehiclelicensedate__c else pv.vehiclelicensedate__c end 
+				, digitalsales__c = case when pv.digitalsales__c isnull then ri.digitalsales__c else pv.digitalsales__c end
+				, deliveryathome__c  = case when pv.deliveryathome isnull then ri.deliveryathome__c else pv.deliveryathome end 
+				, testdriveathome__c  = case when pv.tdathome isnull then ri.testdriveathome__c else pv.tdathome end 
+				, ccsflag__c  = case when pv.ccs_flg isnull then ri.ccsflag__c else pv.ccs_flg end 
+			from
+				process.invoiceinfo pv
+			where
+				pv.row_id = proc_invoice_id[1]
+			and
+				ri.external_id__c  = proc_invoice_id[1];
+		
+		end if;
+			
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_getlead_ws(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_getlead_ws(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare 
+		v_len integer;
+		v_i integer;
+		v_count integer;
+	BEGIN
+		v_len := array_length(param_id, 1);
+		
+		FOR v_i IN 1..v_len
+	     loop
+	     	update "replica".opportunity as rop set
+	     		testdriverequestdatetime__c = pop.testdriverequestdatetime__c
+				, transferredopportunity__c = pop.transferredopportunity__c
+				, transferredopportunitydate__c = pop.transferredopportunitydate__c
+	     	from
+	     		process.opportunity as pop
+	     	where 
+	     		rop.testdriveprotocolid__c = pop.protocol__c 
+	     	and
+	     		rop.testdriveprotocolid__c = param_id[v_i];
+	     end loop;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_in_channel_partner_inf_wf(_text, _text, _text);
+
+CREATE OR REPLACE PROCEDURE replica.if_in_channel_partner_inf_wf(IN proc_acc_id text[], IN proc_con_id text[], IN checkcu text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		c_i integer;
+        c_len integer;
+        c_count integer;
+        repl_con_externalid varchar;
+        rel_accnt varchar;
+    begin
+        c_len := array_length(PROC_CON_ID, 1);
+    
+        if checkcu[1] = 'insert' then
+            -- insert 'account'
+            insert into "replica".account
+            (
+                integratedid__c 
+                , cnpj__c
+                , "name" 
+                , nickname__c 
+                , situationstatus__c 
+                , situationstatusreason__c 
+                , dealershoptype__c 
+                , dealercode__c 
+                , phone
+                , fax 
+                , emailaddress__c 
+                , sapworkaddress__c
+                , salesflag__c 
+                , serviceflag__c 
+              	, operationdate__c
+              	, terminationdate__c 
+                , region__c 
+                , businesshours__c 
+                , facebook__c 
+                , website 
+                , billingstreet 
+                , neighborhood__c  
+                , billingcity 
+                , billingstate 
+                , latitude__c  
+                , longitude__c  
+                , billingpostalcode 
+                , dealergroupcode__c 
+                , salesgroup__c 
+                , salesmanager__c 
+                , servicemanager__c 
+                , servicewhatsappnumber__c 
+                , saleswhatsappnumber__c 
+                , salesdistrict__c 
+                , salesoffice__c 
+                , division__c 
+                , external_id__c 
+                , subsidiarycode__c
+                , recordtypeid
+            )
+            select
+                pa.integrationid 
+                , pa.corporateregistrationnumber__c 
+                , pa."name" 
+                , pa.corporaterepresentativename__c 
+                , pa.cust_stat_cd__c 
+                , pa.situationstatusreason__c 
+                , pa.dealershoptype__c 
+                , pa.dealercode__c 
+                , pa.phone 
+                , pa.fax 
+                , pa.emailaddress__c 
+                , pa.sapworkaddress__c
+                , pa.salesflag__c 
+                , pa.serviceflag__c 
+              	, pa.prtnrshp_start_dt__c 
+              	, pa.prtnrshp_end_dt__c 
+                , pa.region__c
+                , pa.businesshours__c
+                , pa.facebook__c 
+                , pa.website 
+                , concat(pa.billingstreet,' ',pa.billingstreet_2__c,' ',pa.billingstreet_3__c )
+                , pa.billingcounty 
+                , pa.billingcity 
+                , pa.billingstate 
+                , pa.billinglatitude 
+                , pa.billinglongitude 
+                , pa.billingpostalcode 
+                , pa.dealergroupcode__c 
+                , pa.salesgroup__c 
+                , pa.salesmanager__c 
+                , pa.servicemanager__c 
+                , pa.servicewhatsappnumber__c 
+                , pa.saleswhatsappnumber__c 
+                , pa.salesdistrict__c 
+                , pa.salesoffice__c 
+                , pa.division__c 
+                , pa.row_id 
+                , 'HMB'
+                , (select sfid from "replica".recordtype where sobjecttype = 'Account' and ispersontype = false and developername = 'HMB_Dealer_Account')
+            from
+                process.account pa
+            where
+                pa.row_id = PROC_ACC_ID[1];         
+        
+        
+            -- insert 'contact'
+            if proc_con_id notnull then
+                for c_i in 1..c_len
+                loop        
+	                
+	                -- contact 유무 check 
+	                select 
+	                	rc.external_id__c into repl_con_externalid
+	                from
+	                	"replica".contact rc 
+	                join
+	                	process.contact pc
+	                on
+	                	rc.external_id__c = pc.row_id 
+	                where
+	                	pc.row_id = proc_con_id[c_i];
+	                
+	                
+	                if repl_con_externalid notnull then
+	                
+	                	-- 기존 부모 account가 존재하는지 check 
+	                	select 
+	                		account__external_id__c into rel_accnt
+	                	from 
+	                		"replica".contact rc 	                	
+	                	where	                		
+	                		rc.external_id__c = proc_con_id[c_i];
+	                	
+	                	-- 부모 account가 존재하고 그게 이 account가 아니면 insert 'accountcontactrelation'
+	                	if rel_accnt notnull and rel_accnt != proc_acc_id[1] then
+	                		insert into "replica".accountcontactrelation
+	                		(
+	                			account__external_id__c 
+	                			, contact__external_id__c 
+	                		)
+	                		values
+	                		(
+	                			proc_acc_id[1]
+	                			, proc_con_id[c_i]
+	                		);
+	                	
+	                		-- update 'contact'
+	                        update "replica".contact as rc set    
+	                        	firstname = case when pc.firstname isnull then rc.firstname else pc.firstname end  
+	                        	, lastname = case when pc.lastname isnull then rc.lastname else pc.lastname end  
+	                        	, email = case when pc.email isnull then rc.email else pc.email end 
+	                            , homephone = case when pc.homephone isnull then rc.homephone else pc.homephone end 
+	                            , workphone__c  = case when pc.companyphone__c isnull then rc.workphone__c else pc.companyphone__c end 
+	                            , mobilephone = case when pc.mobilephone isnull then rc.mobilephone else pc.mobilephone end 
+	                            , title = case when pc.title isnull then rc.title else pc.title end 
+	                            , note__c = case when pc.note__c isnull then rc.note__c else pc.note__c end 
+--	                            , statusdealer__c = case when pc.statusdealer__c isnull then rc.statusdealer__c else pc.statusdealer__c end 
+	                            , account__external_id__c = case when account__external_id__c isnull then proc_acc_id[1] else account__external_id__c end 
+	                        from
+	                            process.contact pc
+	                        where
+	                            pc.row_id = PROC_CON_ID[c_i]
+	                        and
+	                            rc.external_id__c = PROC_CON_ID[c_i]; 
+	                	else 
+	                	
+		                	-- update 'contact'
+	                        update "replica".contact as rc set    
+	                        	firstname = case when pc.firstname isnull then rc.firstname else pc.firstname end  
+	                        	, lastname = case when pc.lastname isnull then rc.lastname else pc.lastname end  
+	                        	, email = case when pc.email isnull then rc.email else pc.email end 
+	                            , homephone = case when pc.homephone isnull then rc.homephone else pc.homephone end 
+	                            , workphone__c  = case when pc.companyphone__c isnull then rc.workphone__c else pc.companyphone__c end 
+	                            , mobilephone = case when pc.mobilephone isnull then rc.mobilephone else pc.mobilephone end 
+	                            , title = case when pc.title isnull then rc.title else pc.title end 
+	                            , note__c = case when pc.note__c isnull then rc.note__c else pc.note__c end 
+--	                            , statusdealer__c = case when pc.statusdealer__c isnull then rc.statusdealer__c else pc.statusdealer__c end 
+	                            , account__external_id__c = case when account__external_id__c isnull then proc_acc_id[1] else account__external_id__c end 
+	                        from
+	                            process.contact pc
+	                        where
+	                            pc.row_id = PROC_CON_ID[c_i]
+	                        and
+	                            rc.external_id__c = PROC_CON_ID[c_i];      
+                           
+	               		end if;
+	               	else 
+            
+	                    insert into "replica".contact 
+	                    (
+	                        account__external_id__c
+	                        , integrationid__c 
+	                        , cpf__c 
+	                        , firstname 
+	                        , lastname 
+	                        , email 
+	                        , homephone 
+	                        , workphone__c  
+	                        , mobilephone 
+	                        , title 
+	                        , note__c 
+	                        , statusdealer__c 
+	                        , external_id__c 
+	                        , subsidiarycode__c
+	                        , recordtypeid
+	                    )
+	                    select
+	                        proc_acc_id[1]
+	                        , pc.integrationid 
+	                        , pc.cpf__c 
+	                        , pc.firstname 
+	                        , pc.lastname 
+	                        , pc.email 
+	                        , pc.homephone 
+	                        , pc.companyphone__c 
+	                        , pc.mobilephone 
+	                        , pc.title 
+	                        , pc.note__c 
+	                        , pc.statusdealer__c 
+	                        , pc.row_id 
+	                        , 'HMB'
+	                        , (select sfid from "replica".recordtype where sobjecttype = 'Contact' and ispersontype = false and developername = 'HMB_Dealer')
+	                    from
+	                        process.contact pc  
+	                    where
+	                        pc.row_id = PROC_CON_ID[c_i];
+                   end if;                
+    
+    
+                end loop;
+            end if;
+        else
+            -- update 'account'
+            update "replica".account as ra set 
+--                cnpj__c = case when pa.corporateregistrationnumber__c isnull then ra.cnpj__c else pa.corporateregistrationnumber__c end 
+                nickname__c = case when pa.corporaterepresentativename__c isnull then ra.nickname__c else pa.corporaterepresentativename__c end 
+                , situationstatus__c = case when pa.cust_stat_cd__c isnull then ra.situationstatus__c else pa.cust_stat_cd__c end 
+                , situationstatusreason__c = case when pa.situationstatusreason__c isnull then ra.situationstatusreason__c else pa.situationstatusreason__c end 
+                , dealershoptype__c = case when pa.dealershoptype__c isnull then ra.dealershoptype__c else pa.dealershoptype__c end 
+                , phone = case when pa.phone isnull then ra.phone else pa.phone end 
+                , fax = case when pa.fax isnull then ra.fax else pa.fax end 
+                , emailaddress__c = case when pa.emailaddress__c isnull then ra.emailaddress__c else pa.emailaddress__c end 
+                , sapworkaddress__c = case when pa.sapworkaddress__c isnull then ra.sapworkaddress__c else pa.sapworkaddress__c end 
+                , salesflag__c = case when pa.salesflag__c isnull then ra.salesflag__c else pa.salesflag__c end 
+                , serviceflag__c = case when pa.serviceflag__c isnull then ra.serviceflag__c else pa.serviceflag__c end 
+              	, operationdate__c = case when pa.prtnrshp_start_dt__c isnull then ra.operationdate__c else pa.prtnrshp_start_dt__c end  
+              	, terminationdate__c = case when pa.prtnrshp_end_dt__c isnull then ra.terminationdate__c else pa.prtnrshp_end_dt__c end  
+                , region__c = case when pa.region__c isnull then ra.region__c else pa.region__c end 
+                , businesshours__c = case when pa.businesshours__c isnull then ra.businesshours__c else pa.businesshours__c end 
+                , facebook__c = case when pa.facebook__c isnull then ra.facebook__c else pa.facebook__c end 
+                , website = case when pa.website isnull then ra.website else pa.website end 
+                , billingstreet = case when pa.billingstreet isnull then ra.billingstreet else concat(pa.billingstreet,' ',pa.billingstreet_2__c ,' ',pa.billingstreet_3__c) end
+                , billingcountry = case when pa.billingcountry isnull then ra.billingcountry else pa.billingcountry end 
+                , billingcity = case when pa.billingcity isnull then ra.billingcity else pa.billingcity end 
+                , billingstate = case when pa.billingstate isnull then ra.billingstate else pa.billingstate end 
+                , latitude__c  = case when pa.billinglatitude isnull then ra.latitude__c else pa.billinglatitude::varchar(255) end 
+                , longitude__c  = case when pa.billinglongitude isnull then ra.longitude__c else pa.billinglongitude::varchar(255) end 
+                , billingpostalcode = case when pa.billingpostalcode isnull then ra.billingpostalcode else pa.billingpostalcode end
+                , dealergroupcode__c = case when pa.dealergroupcode__c isnull then ra.dealergroupcode__c else pa.dealergroupcode__c end 
+                , salesgroup__c = case when pa.salesgroup__c isnull then ra.salesgroup__c else pa.salesgroup__c end 
+                , salesmanager__c = case when pa.salesmanager__c isnull then ra.salesmanager__c else pa.salesmanager__c end 
+                , servicemanager__c = case when pa.servicemanager__c isnull then ra.servicemanager__c else pa.servicemanager__c end 
+                , servicewhatsappnumber__c = case when pa.servicewhatsappnumber__c isnull then ra.servicewhatsappnumber__c else pa.servicewhatsappnumber__c end 
+                , saleswhatsappnumber__c =case when pa.saleswhatsappnumber__c isnull then ra.saleswhatsappnumber__c else pa.saleswhatsappnumber__c end 
+                , salesdistrict__c = case when pa.salesdistrict__c isnull then ra.salesdistrict__c else pa.salesdistrict__c end 
+                , salesoffice__c = case when pa.salesoffice__c isnull then ra.salesoffice__c else pa.salesoffice__c end 
+                , division__c = case when pa.division__c isnull then ra.division__c else pa.division__c end
+            from
+                process.account pa
+            where
+                pa.row_id = PROC_ACC_ID[1]
+            and
+                ra.external_id__c = PROC_ACC_ID[1];
+        
+            if proc_con_id notnull then
+                for c_i in 1..c_len
+                loop
+	                
+	                -- contact 유무 check 
+	                select 
+	                	rc.external_id__c into repl_con_externalid
+	                from
+	                	"replica".contact rc 
+	                join
+	                	process.contact pc
+	                on
+	                	rc.external_id__c = pc.row_id 
+	                where
+	                	pc.row_id = proc_con_id[c_i];
+	                
+	                
+	                if repl_con_externalid notnull then
+	                
+	                	-- 기존 부모 account가 존재하는지 check 
+	                	select 
+	                		account__external_id__c into rel_accnt
+	                	from 
+	                		"replica".contact rc 	                	
+	                	where	                		
+	                		rc.external_id__c = proc_con_id[c_i];
+	                	
+	                	-- 부모 account가 존재하고 그게 이 account가 아니면 insert 'accountcontactrelation'
+	                	if rel_accnt notnull and rel_accnt != proc_acc_id[1] then
+	                		insert into "replica".accountcontactrelation
+	                		(
+	                			account__external_id__c 
+	                			, contact__external_id__c 
+	                		)
+	                		values
+	                		(
+	                			proc_acc_id[1]
+	                			, proc_con_id[c_i]
+	                		);
+	                	
+	                		-- update 'contact'
+	                        update "replica".contact as rc set          
+	                            firstname = case when pc.firstname isnull then rc.firstname else pc.firstname end  
+	                        	, lastname = case when pc.lastname isnull then rc.lastname else pc.lastname end  
+	                        	, email = case when pc.email isnull then rc.email else pc.email end 
+	                            , homephone = case when pc.homephone isnull then rc.homephone else pc.homephone end 
+	                            , workphone__c  = case when pc.companyphone__c isnull then rc.workphone__c else pc.companyphone__c end 
+	                            , mobilephone = case when pc.mobilephone isnull then rc.mobilephone else pc.mobilephone end 
+	                            , title = case when pc.title isnull then rc.title else pc.title end 
+	                            , note__c = case when pc.note__c isnull then rc.note__c else pc.note__c end 
+--	                            , statusdealer__c = case when pc.statusdealer__c isnull then rc.statusdealer__c else pc.statusdealer__c end 
+	                            , account__external_id__c = case when account__external_id__c isnull then proc_acc_id[1] else account__external_id__c end 
+	                        from
+	                            process.contact pc
+	                        where
+	                            pc.row_id = PROC_CON_ID[c_i]
+	                        and
+	                            rc.external_id__c = PROC_CON_ID[c_i];      
+	                	else 
+	                	
+		                	-- update 'contact'
+	                        update "replica".contact as rc set          
+	                            firstname = case when pc.firstname isnull then rc.firstname else pc.firstname end  
+	                        	, lastname = case when pc.lastname isnull then rc.lastname else pc.lastname end  
+	                        	, email = case when pc.email isnull then rc.email else pc.email end 
+	                            , homephone = case when pc.homephone isnull then rc.homephone else pc.homephone end 
+	                            , workphone__c  = case when pc.companyphone__c isnull then rc.workphone__c else pc.companyphone__c end 
+	                            , mobilephone = case when pc.mobilephone isnull then rc.mobilephone else pc.mobilephone end 
+	                            , title = case when pc.title isnull then rc.title else pc.title end 
+	                            , note__c = case when pc.note__c isnull then rc.note__c else pc.note__c end 
+--	                            , statusdealer__c = case when pc.statusdealer__c isnull then rc.statusdealer__c else pc.statusdealer__c end 
+	                            , account__external_id__c = case when account__external_id__c isnull then proc_acc_id[1] else account__external_id__c end 
+	                        from
+	                            process.contact pc
+	                        where
+	                            pc.row_id = PROC_CON_ID[c_i]
+	                        and
+	                            rc.external_id__c = PROC_CON_ID[c_i];      
+                           
+	               		end if;
+	               	else 
+            
+	                    insert into "replica".contact 
+	                    (
+	                        account__external_id__c
+	                        , integrationid__c 
+	                        , cpf__c 
+	                        , firstname 
+	                        , lastname 
+	                        , email 
+	                        , homephone 
+	                        , workphone__c  
+	                        , mobilephone 
+	                        , title 
+	                        , note__c 
+	                        , statusdealer__c 
+	                        , external_id__c 
+	                        , subsidiarycode__c
+	                        , recordtypeid
+	                    )
+	                    select
+	                        proc_acc_id[1]
+	                        , pc.integrationid 
+	                        , pc.cpf__c 
+	                        , pc.firstname 
+	                        , pc.lastname 
+	                        , pc.email 
+	                        , pc.homephone 
+	                        , pc.companyphone__c 
+	                        , pc.mobilephone 
+	                        , pc.title 
+	                        , pc.note__c 
+	                        , pc.statusdealer__c 
+	                        , pc.row_id 
+	                        , 'HMB'
+	                        , (select sfid from "replica".recordtype where sobjecttype = 'Contact' and ispersontype = false and developername = 'HMB_Dealer')
+	                    from
+	                        process.contact pc  
+	                    where
+	                        pc.row_id = PROC_CON_ID[c_i];
+                   end if; 
+    
+                end loop;
+            end if;
+        end if;
+    END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_in_color(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_in_color(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare 
+		v_len integer;
+		v_i integer;
+		v_count integer;
+	declare codeNum int;
+	declare em_check varchar(30);
+	declare landing_code varchar(30);
+	begin
+		v_len := array_length(param_id, 1);
+	
+		FOR v_i IN 1..v_len
+		     LOOP
+		
+		select 
+			lang_id__c into landing_code
+		from
+			process.color_information pci
+		where 
+			row_id = param_id[v_i];
+		
+		
+		if landing_code = 'ENU' then
+			select 
+				count(rci.id) into codeNum
+			from
+				"replica".colorinformation__c rci
+			join
+				process.color_information pci
+			on
+				rci.namecode__c = pci.name_code and rci.langid__c = 'ENU'
+			where 
+				pci.row_id = param_id[v_i];
+		
+		else
+			select 
+				count(rci.id) into codeNum
+			from
+				"replica".colorinformation__c rci
+			join
+				process.color_information pci
+			on
+				rci.namecode__c = pci.name_code and rci.langid__c = 'PTB'
+			where 
+				pci.row_id = param_id[v_i];
+		
+		end if;
+		
+		select 
+			val into em_check
+		from
+			process.color_information pci
+		where 
+			lang_id__c  = 'ENU'
+		and
+			row_id = param_id[v_i];
+		
+			if codeNum = 0 then
+				insert into "replica".colorinformation__c(
+					externalid__c
+					, type__c
+					, namecode__c
+					, langid__c
+					, val__c
+					, low__c
+					, high__c
+				)
+				select 
+					row_id
+					, "type"
+					, name_code
+					, lang_id__c
+					, val
+					, low
+					, high
+				from process.color_information pci
+				where 
+					pci.row_id = param_id[v_i];
+			else
+				update "replica".colorinformation__c as rci set
+					val__c = case when pci.val isnull then rci.val__c else pci.val end
+					, low__c = case when pci.low isnull then rci.low__c else pci.low end
+					, high__c = case when pci.high isnull then rci.high__c else pci.high end
+				from 
+					process.color_information as pci
+				where
+					rci.namecode__c = pci.name_code
+				and
+					rci.langid__c = 'PTB'
+				and
+					pci.lang_id__c = 'PTB'
+				and
+					pci.row_id = param_id[v_i];
+				
+				if em_check = null and em_check = '' then
+				else
+					update "replica".colorinformation__c as rci set
+					val__c = case when pci.val isnull then rci.val__c else pci.val end
+					, low__c = case when pci.low isnull then rci.low__c else pci.low end
+					, high__c = case when pci.high isnull then rci.high__c else pci.high end
+					from 
+						process.color_information as pci
+					where
+						rci.namecode__c = pci.name_code
+					and
+						rci.langid__c = 'ENU'
+					and
+						pci.lang_id__c = 'ENU'
+					and
+						pci.row_id = param_id[v_i];
+				end if;
+			end if;
+		
+		END LOOP;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_in_contact_inf_wf(varchar, varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_in_contact_inf_wf(IN param_id character varying, IN checkcu character varying, IN contact_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+
+
+    begin    
+    
+
+    
+    if checkcu = 'insert' then
+        -- insert account
+        insert into "replica".account 
+        (
+            external_id__c 
+            , cpf__c 
+            , cpf__pc 
+            , integratedid__c  
+            , firstname         
+            , lastname 
+            , personemail  
+            , personhomephone  
+            , workphone__c
+            , personmobilephone             
+            , personbirthdate  
+            , income__c 
+            , productofinterest__c 
+            , calledby__c 
+            , literacy__c 
+            , preferredcontactchannel__c                             
+            , gender__pc 
+            , maritalstatus__pc 
+            , blockedcalls__c
+            , blockedcalls__pc
+            , blockedemails__c
+            , blockedemails__pc
+            , blockedletters__c
+            , blockedletters__pc
+            , blockedmobile__c
+            , blockedmobile__pc
+            , blockedsms__c
+            , blockedsms__pc 
+            , blockedvideocall__c
+            , blockedvideocall__pc
+            , blockedwhatsapp__c
+            , blockedwhatsapp__pc            
+            , occupation__pc                 
+            , personmailingstreet 
+            , personmailingcity 
+            , personmailingstate 
+            , personmailingpostalcode 
+            , neighborhood__c
+            , dealercode__c
+            , receiveproductnewsflag__c
+            , receiveretailoffersflag__c
+            , receiveserviceoffersflag__c
+            , receivenewsletterflag__c
+			, receiveeventsflag__c
+			, receiveresearchflag__c
+			, registrysource__c
+            , countrycode__c
+            , subsidiarycode__c
+            , subsidiarycode__pc
+            , recordtypeid
+        )
+        select
+            pa.row_id 
+            , pa.cpf__c 
+            , pa.cpf__c 
+            , pa.integrationid
+            , pa.firstname
+            , pa.lastname 
+            , pa.personemail 
+            , pa.personhomephone 
+            , pa.workphone__c
+            , pa.personmobilephone
+            , pa.personbirthdate
+            , pa.income__c
+            , pa.productofinterest__c 
+            , pa.calledby__c 
+            , pa.literacy__c 
+            , pa.preferredcontactchannel__c 
+            , pc.gender__c
+            , pc.maritalstatus__c
+            , pa.calloptyn__pc
+            , pa.calloptyn__pc  
+            , pa.blockedemails__pc
+            , pa.blockedemails__pc
+            , pa.blockedletters__c
+            , pa.blockedletters__c
+            , pa.blockedmobile__c
+            , pa.blockedmobile__c
+            , pa.blockedsms__c
+            , pa.blockedsms__c
+            , pa.blockedvideocall__c
+            , pa.blockedvideocall__c
+            , pa.blockedwhatsapp__c 
+            , pa.blockedwhatsapp__c 
+            , pc.occupation__c                
+            , concat( pc.mailingstreet,pc.mailingstreet_2__c,pc.mailingstreet_3__c)          
+            , pc.mailingcity
+            , pc.mailingstate
+            , pc.mailingpostalcode
+            , pa.billingcounty
+            , pa.dealercode__c
+            , pc.receiveproductnewsflag__c
+			, pc.receiveretailoffersflag__c
+			, pc.receiveserviceoffersflag__c
+			, pc.receivenewsletterflag__c
+			, pc.receiveeventsflag__c
+			, pc.receiveresearchflag__c
+			, pa.registrysource__c
+            , 'BR'
+            , 'HMB'
+            , 'HMB'
+            , (select sfid from "replica".recordtype where  sobjecttype = 'Account' and ispersontype = true and developername = 'HMB_Person_Account')
+        from
+            process.account pa    
+        join 
+            process.contact pc
+        on
+            pa.row_id = pc.account_row_id  
+        where
+            pa.row_id = contact_id;
+            
+    end if;
+    
+    if checkcu = 'update' then
+    
+        -- update account 
+        update "replica".account as ra set                 
+            cpf__c = case when pa.cpf__c isnull then ra.cpf__c else pa.cpf__c end
+--            , cpf__pc = case when pc.cpf__c isnull then ra.cpf__pc else pc.cpf__c end
+            , firstname = case when pa.firstname isnull then ra.firstname else pa.firstname end
+            , lastname = case when pa.lastname isnull then ra.lastname else pa.lastname end
+            , personemail  = case when pa.personemail isnull then ra.personemail else pa.personemail end
+            , personhomephone = case when pa.personhomephone isnull then ra.personhomephone else pa.personhomephone end
+            , workphone__c = case when pa.workphone__c isnull then ra.workphone__c else pa.workphone__c end  
+            , personmobilephone = case when pa.personmobilephone isnull then ra.personmobilephone else pa.personmobilephone end            
+            , personbirthdate = case when pa.personbirthdate isnull then ra.personbirthdate else pa.personbirthdate end    
+            , income__c = case when pa.income__c isnull then ra.income__c else pa.income__c end
+            , productofinterest__c = case when pa.productofinterest__c isnull then ra.productofinterest__c else ra.productofinterest__c end
+            , calledby__c = case when pa.calledby__c isnull then ra.calledby__c else pa.calledby__c end
+            , literacy__c = case when pa.literacy__c isnull then ra.literacy__c else pa.literacy__c end
+            , preferredcontactchannel__c = case when pa.preferredcontactchannel__c isnull then ra.preferredcontactchannel__c else pa.preferredcontactchannel__c end
+            , blockedcalls__c = case when pa.calloptyn__pc isnull then ra.blockedcalls__c else pa.calloptyn__pc end 
+            , blockedcalls__pc = case when pa.calloptyn__pc isnull then ra.blockedcalls__pc else pa.calloptyn__pc end 
+            , blockedemails__c = case when pa.blockedemails__pc isnull then ra.blockedemails__c else pa.blockedemails__pc end
+            , blockedemails__pc = case when pa.blockedemails__pc isnull then ra.blockedemails__pc else pa.blockedemails__pc end
+            , blockedletters__c = case when pa.blockedletters__c isnull then ra.blockedletters__c else pa.blockedletters__c end
+            , blockedletters__pc = case when pa.blockedletters__c isnull then ra.blockedletters__pc else pa.blockedletters__c end
+            , blockedmobile__c = case when pa.blockedmobile__c isnull then ra.blockedmobile__c else pa.blockedmobile__c end  
+            , blockedmobile__pc = case when pa.blockedmobile__c isnull then ra.blockedmobile__pc else pa.blockedmobile__c end
+            , blockedsms__c = case when pa.blockedsms__c isnull then ra.blockedsms__c else pa.blockedsms__c end 
+            , blockedsms__pc  = case when pa.blockedsms__c isnull then ra.blockedsms__pc else pa.blockedsms__c end 
+            , blockedvideocall__c = case when pa.blockedvideocall__c isnull then ra.blockedvideocall__c else pa.blockedvideocall__c end  
+            , blockedvideocall__pc = case when pa.blockedvideocall__c isnull then ra.blockedvideocall__pc else pa.blockedvideocall__c end 
+            , blockedwhatsapp__c = case when pa.blockedwhatsapp__c isnull then ra.blockedwhatsapp__c else pa.blockedwhatsapp__c end 
+            , blockedwhatsapp__pc = case when pa.blockedwhatsapp__c isnull then ra.blockedwhatsapp__pc else pa.blockedwhatsapp__c end           
+            , companyphone__pc = case when pc.companyphone__c isnull then ra.companyphone__pc else pc.companyphone__c end 
+            , gender__pc = case when pc.gender__c  isnull then ra.gender__pc else pc.gender__c  end 
+            , maritalstatus__pc = case when pc.maritalstatus__c isnull then ra.maritalstatus__pc else pc.maritalstatus__c end 
+            , personmailingstreet = case when pc.mailingstreet isnull then ra.personmailingstreet else concat(pc.mailingstreet ,' ',pc.mailingstreet_2__c ,' ', pc.mailingstreet_3__c) end 
+            , neighborhood__c  = case when pa.billingcounty isnull then ra.neighborhood__c else pa.billingcounty  end 
+            , personmailingcity  = case when pc.mailingcity isnull then ra.personmailingcity else pc.mailingcity end 
+            , personmailingstate  = case when pc.mailingstate isnull then ra.personmailingstate else pc.mailingstate end 
+            , personmailingpostalcode  = case when pc.mailingpostalcode isnull then ra.personmailingpostalcode else pc.mailingpostalcode end 
+            , occupation__pc = case when pc.occupation__c isnull then ra.occupation__pc else pc.occupation__c end  
+            , dealercode__c = case when pa.dealercode__c isnull then ra.dealercode__c else pa.dealercode__c end
+            , receiveproductnewsflag__c = case when pa.receiveproductnewsflag__c isnull then ra.receiveproductnewsflag__c else pa.receiveproductnewsflag__c end 
+            , receiveretailoffersflag__c = case when pa.receiveretailoffersflag__c isnull then ra.receiveretailoffersflag__c else pa.receiveretailoffersflag__c end  
+            , receiveserviceoffersflag__c = case when pa.receiveserviceoffersflag__c isnull then ra.receiveserviceoffersflag__c else pa.receiveserviceoffersflag__c end 
+            , receivenewsletterflag__c = case when pa.receivenewsletterflag__c isnull then ra.receivenewsletterflag__c else pa.receivenewsletterflag__c end  
+			, receiveeventsflag__c = case when pa.receiveeventsflag__c isnull then ra.receiveeventsflag__c else pa.receiveeventsflag__c end  
+			, receiveresearchflag__c = case when pa.receiveresearchflag__c isnull then ra.receiveresearchflag__c else pa.receiveresearchflag__c end  
+			, registrysource__c = case when pa.registrysource__c isnull then ra.registrysource__c else pa.registrysource__c end 
+        from 
+            process.account pa            
+        join
+            process.contact pc
+        on
+            pa.row_id = pc.account_row_id 
+        and 
+            pa.row_id = contact_id    
+        where 
+            ra.external_id__c = contact_id;
+        
+        
+           
+           
+    end if;
+    END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_in_rental_car_rq_rs(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_in_rental_car_rq_rs(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		v_len integer;
+		v_i integer;
+		v_count integer;
+	begin
+		v_len := array_length(param_id, 1);
+		
+		FOR v_i IN 1..v_len
+		     loop
+		     	update "replica".rental__c as rrt set
+			    	rental_status__c = prt.rental_status__c
+			    	, deltaprotocolnumber__c = prt.deltaprotocolnumber__c
+			    	, confirmedmodelofrentalcar__c = prt.confirmedmodelofrentalcar__c
+			    	, confirmedrentalstartdate__c = prt.confirmedrentalstartdate__c
+			    	, confirmedrentalenddate__c = prt.confirmedrentalenddate__c
+			    	, external_id__c = prt.row_id
+			    from
+			    	process.rental prt
+			    where 
+			    	rrt.name = prt.name
+			    and
+			    	prt.row_id = param_id[v_i];
+		     end loop;
+		
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_in_repair_order(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_in_repair_order(IN param_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		update "replica".asset as ras set
+			latestmileage__c =  pas.latestmileage__c 
+		from
+			process.asset as pas
+		where
+			ras.external_id__c = pas.row_id 
+		and
+			pas.row_id = param_id;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_mntsrvc_manage_dlr_holiday(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_mntsrvc_manage_dlr_holiday(IN proc_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+
+	begin
+		
+		
+		
+		IF checkcu = 'insert' then
+			insert into "replica".dealerholiday__c
+			(
+				external_id__c
+				, dealeraccount__r__external_id__c  				
+				, holiday_name__c
+				, holiday_date__c
+				, holiday_day__c 
+				, type__c
+--				, "name" 
+			)
+			select
+	            pdh.row_id
+	            , pdh.par_row_id__c
+	            , pdh.holiday_name__c 
+	            , pdh.holiday_date__c 
+	            , pdh.holiday_day__c 
+	            , pdh.type__c 
+--	            , pdh.holiday_name__c 
+			from   
+				process.dealerholiday pdh			
+			where 
+				pdh.row_id  = proc_id;
+		end if;
+	
+	
+		IF checkcu ='update' then		
+			update "replica".dealerholiday__c rdh set
+				type__c = case when pdh.type__c isnull then rdh.type__c else pdh.type__c end
+				, holiday_name__c = case when pdh.holiday_name__c isnull then rdh.holiday_name__c else pdh.holiday_name__c end 
+				, holiday_date__c = case when pdh.holiday_date__c isnull then rdh.holiday_date__c else pdh.holiday_date__c end
+				, lastmodifieddate = now()
+--				, "name" = case when pdh.holiday_name__c isnull then rdh."name"  else pdh.holiday_name__c end 
+				--, lastmodifiedby = pdh.lastmodifiedby 
+--				, external_id__c = pdh.row_id 
+			from 
+				process.dealerholiday pdh
+			where 
+				pdh.row_id  = proc_id
+			and 
+				rdh.external_id__c = proc_id;
+		
+		end if;	
+	
+		if checkcu ='delete' then
+			delete from 
+				"replica".dealerholiday__c
+			where 
+				external_id__c = proc_id;
+			
+		end if;	
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_mntsrvc_manage_dlr_svc(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_mntsrvc_manage_dlr_svc(IN parrow_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	begin
+		-- delete dealerservice__c
+		delete from 
+			"replica".dealerservice__c
+		where 
+			dealeraccount__r__external_id__c  = parrow_id;
+			
+		-- insert dealerservice__c
+		insert into "replica".dealerservice__c 
+		(
+			type__c 
+			, external_id__c 
+			, dealeraccount__r__external_id__c
+			, dlr_srvc_type__c 
+			, dlr_srvc_len__c 
+			, "name" 
+		)
+		select
+			pd.type__c 
+			, pd.row_id 
+			, pd.par_row_id__c 
+			, pd.dlr_srvc_type__c 
+			, pd.dlr_srvc_len__c 
+			, pd.par_row_id__c || '-' || pd.dlr_srvc_type__c 
+		from
+			process.dealerservice pd
+		where 
+			pd.par_row_id__c = parrow_id;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_mntsrvc_schedule_maintenace(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_mntsrvc_schedule_maintenace(IN proc_protocol character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare checkexternalid varchar;
+	begin
+		
+		select
+			externalid__c into checkexternalid
+		from
+			"replica".dealerappointmenthistory__c rd
+		join
+			process.dealer_appointment_history pd
+		on
+			rd.externalid__c = pd.row_id 
+		where
+			pd.protocol__c = proc_protocol
+		limit 1;
+
+			
+			
+		if checkexternalid isnull then
+			-- insert 'dealerappointmenthistory__c'
+			insert into "replica".dealerappointmenthistory__c
+			(
+				srvcconsultantid__c
+				, srvctechnicianid__c 
+				, srvc_type__c  
+				, srvcstatuscd__c 
+				, srvcarrivaldate__c 
+				, srvcstartdate__c 
+				, srvcduration__c 
+				, srvcdeliverydate__c 
+				, externalid__c 
+				, "name" 
+				, cpf__c 
+				, accountid__r__external_id__c  
+				, dealercode__c 
+			)
+			select
+				srvc_consultant_id
+				, srvc_technician_id
+				, srvc_type
+				, srvc_status_cd
+				, srvc_arrival_date
+				, srvc_start_date
+				, srvc_duration
+				, srvc_delivery_date
+				, pd.row_id  
+				, pd.protocol__c 
+				, (select cpf__c  from process.account a where a.row_id = sr.contact_row_id__c)
+				, sr.account_row_id__c 
+				, sr.dealercode__c 
+			from
+				process.dealer_appointment_history pd
+			join
+				process.service_request sr 
+			on
+				pd.protocol__c = sr.protocol__c 
+			where
+				pd.protocol__c = proc_protocol;
+			
+		else
+			-- update 'dealerappointmenthistory__c'
+			update "replica".dealerappointmenthistory__c as rd set 
+				srvc_type__c = case when pd.srvc_type isnull then rd.srvc_type__c else pd.srvc_type end 
+				, srvcstatuscd__c = case when pd.srvc_status_cd isnull then rd.srvcstatuscd__c else pd.srvc_status_cd end 
+				, srvcarrivaldate__c = case when pd.srvc_arrival_date isnull then rd.srvcarrivaldate__c else pd.srvc_arrival_date end 
+				, srvcstartdate__c = case when pd.srvc_start_date isnull then rd.srvcstartdate__c else pd.srvc_start_date end 
+				, srvcduration__c = case when pd.srvc_duration isnull then rd.srvcduration__c else pd.srvc_duration end 
+				, srvcdeliverydate__c =  case when pd.srvc_delivery_date isnull then rd.srvcdeliverydate__c else pd.srvc_delivery_date end 
+			from 
+				process.dealer_appointment_history pd
+			where 
+				pd.protocol__c = proc_protocol
+			and
+				rd.externalid__c = checkexternalid;
+		end if;
+		
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_product_in_wf(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_product_in_wf(IN param_id character varying, IN product_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare product_rowid varchar(30);
+	declare product_num int;
+
+	begin	
+
+		
+		-- Product Name 확인 
+		select
+			count(*) into product_num
+		from 
+			process.product pp 
+		join
+			"replica".product2 rp 
+		on
+			pp."name" = rp."name" 
+		where 
+			pp.row_id = product_id;
+		
+		
+		-- insert
+		if product_num = 0 then
+			insert into "replica".product2
+			(
+				"name" 
+				, source_system__c 
+				, product_type__c  
+				, part__c  
+				, advanced_desc__c 
+				, model_year__c 
+				, chassi_model__c 
+				, body_style__c 
+				, hmb_cylinder_capacity__c 
+				, engine__c 
+				, engine_desc__c 
+				, version_desc__c 
+				, transmission_desc__c 
+				, transmission__c 
+				, fuel__c 
+				, doors_amount__c 
+				, suggested_price__c  
+				, description 
+				, productcode 
+				, external_id__c 				
+			)
+			select
+				"name"
+				, source__c 
+				, product_type__c  
+				, part__c  
+				, advanced_desc__c 
+				, model_year__c 
+				, chassi_model__c 
+				, body_style__c 
+				, sap_cylinder_capacity__c  
+				, engine__c  
+				, engine_desc__c 
+				, version_desc__c  
+				, transmission_desc__c 
+				, transmission__c  
+				, fuel__c 
+				, doors_amount__c 
+				, suggested_price__c  
+				, description 
+				, productcode 
+				, row_id 
+			from 
+				process.product p
+			where 
+				p.row_id = product_id;
+			
+		-- update	
+		else
+			update "replica".product2 rp set 
+				source_system__c  = case when pp.source__c isnull then rp.source_system__c  else pp.source__c end 
+				, product_type__c  = case when pp.product_type__c isnull then rp.product_type__c else pp.product_type__c end 
+				, description  = case when pp.sap_description__c isnull then rp.description else pp.sap_description__c end 
+				, advanced_desc__c  = case when pp.advanced_desc__c isnull then rp.advanced_desc__c else pp.advanced_desc__c end 
+				, model_year__c  = case when pp.model_year__c isnull then rp.model_year__c else pp.model_year__c end 
+				, chassi_model__c  = case when pp.chassi_model__c isnull then rp.chassi_model__c else pp.chassi_model__c end 
+				, body_style__c  = case when pp.body_style__c isnull then rp.body_style__c else pp.body_style__c end 
+				, hmb_cylinder_capacity__c  = case when pp.sap_cylinder_capacity__c isnull then rp.hmb_cylinder_capacity__c else pp.sap_cylinder_capacity__c end 
+				, engine__c  = case when pp.engine__c isnull then rp.engine__c else pp.engine__c end 
+				, engine_desc__c  = case when pp.engine_desc__c isnull then rp.engine_desc__c else pp.engine_desc__c end 
+				, version_desc__c  = case when pp.version_desc__c isnull then rp.version_desc__c else pp.version_desc__c end 
+				, transmission_desc__c  = case when pp.transmission_desc__c isnull then rp.transmission_desc__c else pp.transmission_desc__c end 
+				, transmission__c  = case when pp.transmission__c isnull then rp.transmission__c else pp.transmission__c end 
+				, fuel__c  = case when pp.fuel__c isnull then rp.fuel__c else pp.fuel__c end 
+				, doors_amount__c  = case when pp.doors_amount__c isnull then rp.doors_amount__c else pp.doors_amount__c end 			
+				, suggested_price__c = case when pp.suggested_price__c isnull then rp.suggested_price__c else pp.suggested_price__c end
+				--, description = case when pp.description isnull then rp.description else pp.description end 
+				, productcode = case when pp.productcode isnull then rp.productcode else pp.productcode end 
+			from
+				process.product pp 
+			where 
+				rp."name" = pp."name"
+			and
+				pp.row_id = product_id;
+		end if;
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_product_list_in_wf(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_product_list_in_wf(IN proc_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		v_len integer;
+		v_i integer;
+		v_count integer;
+	begin
+		v_len := array_length(proc_id, 1);
+	
+		for v_i in 1..v_len
+			loop
+				select 
+					count(*) into v_count
+				from
+					"replica".product2 rp
+				join
+					process.product pp
+				on
+					rp.external_id__c  = pp.row_id 
+				where
+					pp.row_id = proc_id[v_i];
+				
+				
+				if v_count = 0 then
+					insert into "replica".product2
+					(
+						external_id__c 
+						, "name"  
+						, source_system__c  
+						, product_type__c  
+						, suggested_price__c 
+					)
+					select 		
+						pp.row_id 
+						, pp."name" 
+						, pp.source_system__c
+						, pp.product_type__c  
+						, pp.suggested_price__c  
+					from
+						process.product pp
+					where
+						pp.row_id = proc_id[v_i];
+					
+					
+				else
+					update "replica".product2 as rp set 
+						source_system__c = case when pp.source_system__c  isnull then rp.source_system__c when pp.source_system__c = '' then rp.source_system__c else pp.source_system__c end 
+						, product_type__c = case when pp.product_type__c  isnull then rp.product_type__c when pp.product_type__c = '' then rp.product_type__c else pp.product_type__c end 
+						, suggested_price__c = case when pp.suggested_price__c  isnull then rp.suggested_price__c else pp.suggested_price__c end
+					from
+						process.product pp
+					where
+						rp.external_id__c = pp.row_id
+					and
+						pp.row_id = proc_id[v_i];
+				end if;
+				
+			end loop;
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_reclaimaqui_account(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_reclaimaqui_account(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		v_len integer;
+		v_i integer;
+		v_replica_count integer;
+		recl_cpf varchar;
+		v_account_cpf_ck integer;
+		v_account_other_ck integer;
+		v_account_row_id varchar;
+	BEGIN
+		v_len := array_length(param_id, 1);
+	
+	FOR v_i IN 1..v_len
+	     loop
+		    select 
+	       		count(ra.external_id__c) into v_replica_count
+	       	from
+	       		process.account pa
+	       	join
+	       		replica.account ra
+	       	on
+	       		pa.row_id = ra.external_id__c
+	       	where 
+	       		pa.row_id = param_id[v_i];
+	       	
+	       	if 0 < v_replica_count then 
+					update "replica".account as ra set
+						personbirthdate = case when pa.personbirthdate isnull then ra.personbirthdate else pa.personbirthdate end
+						, personemail = case when pa.personemail isnull then ra.personemail else pa.personemail end
+						, personmobilephone = case when pa.personmobilephone isnull then ra.personmobilephone else pa.personmobilephone end
+						, firstname = case when pa.firstname isnull then ra.firstname else pa.firstname end
+						, lastname = case when pa.lastname isnull then ra.lastname else pa.lastname end
+						, billingcity = case when pa.billingcity isnull then ra.billingcity else pa.billingcity end
+						, billingstate = case when pa.billingstate isnull then ra.billingstate else pa.billingstate end
+						, reclame_aqui_id__c = pa.reclame_aqui_id__c
+					from
+						process.account pa
+					where 
+						ra.external_id__c = pa.row_id 
+					and
+						pa.row_id = param_id[v_i];
+			else
+				insert into "replica".account(
+					reclame_aqui_id__c
+					, personbirthdate
+					, cpf__c
+					, personemail
+					, personmobilephone
+					, firstname
+					, lastname
+					, billingcity
+					, billingstate
+					, subsidiarycode__c
+					, recordtypeid
+					, external_id__c 
+				)select
+					reclame_aqui_id__c
+					, personbirthdate
+					, cpf__c
+					, personemail
+					, personmobilephone
+					, firstname
+					, lastname
+					, billingcity
+					, billingstate
+					, 'HMB'
+        			, (select sfid from "replica".recordtype where  sobjecttype = 'Account' and ispersontype = true and developername = 'HMB_Person_Account')
+        			, row_id
+				from
+					process.account pa
+				where 
+					pa.row_id = param_id[v_i];
+			end if;	
+		 end loop;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_reclaimaqui_retrieve_ticket_by_id(_text);
+
+CREATE OR REPLACE PROCEDURE replica.if_reclaimaqui_retrieve_ticket_by_id(IN param_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		v_len integer;
+		v_i integer;
+		v_count integer;
+		v_account_count integer;
+	BEGIN
+		v_len := array_length(param_id, 1);
+	
+	FOR v_i IN 1..v_len
+	     loop
+	     	select 
+	          	count(*) into v_count
+	        from
+	        	process.case pc
+	        join
+	        	"replica".case rc
+	        on
+	        	pc.reclame_aqui_external_id__c = rc.reclame_aqui_external_id__c
+	        where 
+	       		 pc.row_id = param_id[v_i];
+	       		
+	       	/*select
+	       		count(*) into v_account_count
+	       	from
+	       		process.case pc
+	       	join
+	       		"replica".account rac
+	       	on
+	       		rac.external_id__c = pc.ra_contact_row_id
+	       	where 
+	       		pc.row_id = param_id[v_i];*/
+	       
+	       	if 0 < v_count then 
+	       		update "replica".case as rc set 
+					reclame_aqui_status__c = case when pc.reclame_aqui_status__c isnull then rc.reclame_aqui_status__c else pc.reclame_aqui_status__c end
+					, ra_issue_resolved__c = case when pc.ra_issue_resolved__c isnull then rc.ra_issue_resolved__c else pc.ra_issue_resolved__c end
+					, ra_backdoing_business__c = case when pc.ra_backdoing_business__c isnull then rc.ra_backdoing_business__c else pc.ra_backdoing_business__c end
+					, ra_consumer_consideration__c = case when pc.ra_consumer_consideration__c isnull then rc.ra_consumer_consideration__c else pc.ra_consumer_consideration__c end
+					, ra_consumer_consideration_date__c = case when pc.ra_consumer_consideration_date__c isnull then rc.ra_consumer_consideration_date__c else pc.ra_consumer_consideration_date__c end
+					, ra_rating__c = case when pc.ra_rating__c isnull then rc.ra_rating__c else pc.ra_rating__c end
+					, ra_rating_date__c = case when pc.ra_rating_date__c isnull then rc.ra_rating_date__c else pc.ra_rating_date__c end
+					, ra_moderation_request_message__c = case when pc.ra_moderation_request_message__c isnull then rc.ra_moderation_request_message__c else pc.ra_moderation_request_message__c end
+					, ra_active_complaint__c = case when pc.ra_active_complaint__c isnull then rc.ra_active_complaint__c else pc.ra_active_complaint__c end
+					, ra_moderation_status__c = case when pc.ra_moderation_status__c isnull then rc.ra_moderation_status__c else pc.ra_moderation_status__c end
+					, ra_moderation_reason__c = case when pc.ra_moderation_reason__c isnull then rc.ra_moderation_reason__c else pc.ra_moderation_reason__c end
+					, ra_moderation_request_date__c = case when pc.ra_moderation_request_date__c isnull then rc.ra_moderation_request_date__c else pc.ra_moderation_request_date__c end
+					, ra_moderation_response_date__c = case when pc.ra_moderation_response_date__c isnull then rc.ra_moderation_response_date__c else pc.ra_moderation_response_date__c end
+				from
+					process.case pc
+				where 
+					rc.reclame_aqui_external_id__c = pc.reclame_aqui_external_id__c
+				and
+					pc.row_id = param_id[v_i];
+	       	else
+	       		insert into "replica".case(
+					reclame_aqui_id__c
+					, origin
+					, reclame_aqui_external_id__c
+					, reclame_aqui_status__c
+					, subject
+					, ra_moderation_request__c
+					, ra_frozen__c
+					, description
+					, ra_complaint_reason__c
+					, ra_customer_feeling__c
+					, ra_complaint_response_contents__c
+					, ra_complaint_response_date__c
+					, ra_issue_resolved__c
+					, ra_backdoing_business__c
+					, ra_consumer_consideration__c
+					, ra_consumer_consideration_date__c
+					, ra_rating__c
+					, ra_rating_date__c
+					, external_id__c
+					, ra_moderation_request_message__c
+					, ra_active_complaint__c
+					, ra_moderation_status__c
+					, ra_moderation_reason__c
+					, ra_moderation_request_date__c
+					, ra_moderation_response_date__c
+					, ra_customer_id__c
+					, ra_file_attachment_name__c
+					, ra_file_attachment_link__c
+				)select
+					reclame_aqui_id__c
+					, origin
+					, reclame_aqui_external_id__c
+					, reclame_aqui_status__c
+					, subject
+					, ra_moderation_request__c
+					, ra_frozen__c
+					, description
+					, ra_complaint_reason__c
+					, ra_customer_feeling__c
+					, ra_complaint_response_contents__c
+					, ra_complaint_response_date__c
+					, ra_issue_resolved__c
+					, ra_backdoing_business__c
+					, ra_consumer_consideration__c
+					, ra_consumer_consideration_date__c
+					, ra_rating__c
+					, ra_rating_date__c
+					, row_id
+					, ra_moderation_request_message__c
+					, ra_active_complaint__c
+					, ra_moderation_status__c
+					, ra_moderation_reason__c
+					, ra_moderation_request_date__c
+					, ra_moderation_response_date__c
+					, ra_customer_id__c
+					, attach_name
+					, attach_detail_description
+				from
+					process.case pc
+				where
+					pc.row_id = param_id[v_i];
+	       	end if;
+	     end loop;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_register_in_app_ws(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_register_in_app_ws(IN account_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+
+		if checkcu = 'insert' then
+			insert into "replica".loyaltyprogram__c
+			(
+				personaccountid__r__external_id__c
+				, x_src_app__c
+				, external_id__c 
+				, "name" 
+			)
+			select
+				plp.person_account_id 
+				, plp.x_src_app__c 
+				, plp.row_id
+				, plp.person_account_id || ' ' || plp.x_src_app__c  
+			from
+				process.loyalty_program plp
+			where				
+				plp.person_account_id = account_id;
+			
+			
+			
+			update "replica".account as ra set 
+				loyaltystatus__c = case when pa.loyaltystatus__c isnull then ra.loyaltystatus__c else pa.loyaltystatus__c end
+				, optinflag__c  = case when pa.optinflag__c isnull then ra.optinflag__c else pa.optinflag__c end 
+			from
+				process.account pa
+			where
+				pa.row_id = account_id
+			and
+				ra.external_id__c = account_id;
+			
+
+		end if;
+	
+		if checkcu = 'update' then
+			update "replica".loyaltyprogram__c as rlp set 
+				x_src_app__c = case when plp.x_src_app__c isnull then plp.x_src_app__c else plp.x_src_app__c end 
+			from
+				process.loyalty_program plp
+			where 
+				plp.person_account_id = account_id
+			and
+				rlp.personaccountid__r__external_id__c = account_id;
+			
+			
+			update "replica".account as ra set 
+				loyaltystatus__c = case when pa.loyaltystatus__c isnull then ra.loyaltystatus__c else pa.loyaltystatus__c end
+				, optinflag__c  = case when pa.optinflag__c isnull then ra.optinflag__c else pa.optinflag__c end 
+			from
+				process.account pa
+			where
+				pa.row_id = account_id
+			and
+				ra.external_id__c = account_id;
+		end if;
+	
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_register_loyalty_bnf_used_ws(varchar, varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_register_loyalty_bnf_used_ws(IN proc_id character varying, IN checkcu character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+
+		if checkcu = 'insert' then
+			insert into "replica".loyaltyprogram__c
+			(
+				external_id__c 
+				, personaccountid__r__external_id__c
+				, dealeraccountid__r__external_id__c 
+				, name__c 
+				, x_benefit_name__c 
+				, x_benefit_url__c 
+				, x_src_app__c 
+			)
+			select
+				pl.row_id
+				, pl.person_account_id
+				, pl.dealer_account_id 
+				, pl.partnername  
+				, pl.x_benefit_name__c
+				, pl.x_benefit_url__c
+				, pl.x_src_app__c
+			from
+				process.loyalty_program pl			
+			where
+				pl.row_id = proc_id;
+			
+		end if;
+	
+	
+	
+		if checkcu = 'update' then
+			update replica.loyaltyprogram__c as rl set 
+				x_benefit_name__c = case when pl.x_benefit_name__c isnull then rl.x_benefit_name__c else pl.x_benefit_name__c end 
+				, x_benefit_url__c = case when pl.x_benefit_url__c isnull then rl.x_benefit_url__c else pl.x_benefit_url__c end 
+				, x_src_app__c  = case when pl.x_src_app__c isnull then rl.x_src_app__c else pl.x_src_app__c end
+			from
+				process.loyalty_program pl
+			where
+				pl.row_id = proc_id
+			and
+				rl.external_id__c = proc_id;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_svc_req_chat_ws(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_svc_req_chat_ws(IN param_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare reason_sr varchar(30);
+	declare level1_sr varchar(30);
+	declare level2_sr varchar(30);
+	declare protocol_sr varchar(64); --ServiceRequset Number
+	declare testdrive_num int;
+	declare quot_num int;
+	declare case_num int;
+	declare temperaturecheck varchar(30);
+	declare temp_protocol varchar(30);
+	begin
+		
+		select
+		 	reason__c , voctype__c , voc_class into reason_sr, level1_sr, level2_sr
+		from process.service_request psr
+		where protocol__c = CAST(param_id AS TEXT);
+		 	
+		select 
+			count(*) into case_num
+		from
+			process.case pca
+		join
+			"replica".case rca
+		on
+			pca.protocol__c = rca.protocol_id__c
+		where 
+			rca.protocol_id__c = param_id;
+		
+		select 
+			predictive_temp__c , protocol__c into temperaturecheck , temp_protocol
+		from
+			process.service_request psr
+		where 
+			psr.protocol__c = param_id;
+		
+		if coalesce(temperaturecheck) isnull or temperaturecheck = '' then
+			
+			-- Test Drive 
+			if reason_sr = 'Information' and level1_sr = 'Sales' and level2_sr = 'Test drive' then
+				insert into "replica".testdrivehistory_if__c 
+					(
+					reason__c
+					, level1__c
+					, level2__c
+					, level3__c
+					, level4__c
+					, sourcetag__c
+					--, method__c
+					, requestdescription__c
+					, status__c
+					, dealercode__c
+					, serialnumber__c
+					, salespersoncode__c
+					, testdriverequestdate__c
+					, testdriverequesttime__c
+					, testdriveconfirmed__c
+					, dealeraccount__r__external_id__c
+					, account__r__external_id__c
+					, protocolid__c
+					, externalid__c
+					, subsidiarycode__c
+					, dealerportaltdno__c
+					, testdriverequestdatetime__c
+					, testdriverequestvehiclemodel__c 
+					)
+					select
+						reason__c
+						, level1__c
+						, level2__c
+						, level3__c
+						, level4__c
+						, "SourceTag__c"
+						--, method__c
+						, "RequestDescription__c"
+						, status__c
+						, dealercode__c
+						, serialnumber__c
+						, salespersoncode__c
+						, testdriverequestdate__c
+						, testdriverequesttime__c
+						, testdriveconfirmed__c
+						, account_id__c
+						, contact_id__c
+						, protocolid__c
+						, row_id
+						, 'HMB'
+						, dealerportaltdno__c
+						, testdriverequestdatetime__c
+						, ptd.relatedmodel__c 
+					from
+						process.testdrivehistory ptd 
+					where 
+						protocolid__c = ptd.protocolid__c 
+					and 
+						ptd.protocolid__c =  param_id;
+			-- Quotation
+			elseif reason_sr = 'Sales opportunity' and level1_sr = 'Sales' and level2_sr = 'Request a quote' then
+					insert into "replica".quotehistory_if__c
+					(
+						protocolid__c
+						, reason__c
+						, level1__c
+						, level2__c
+						, level3__c
+						, level4__c
+						, sourcetag__c
+						, description__c
+						, dealercode__c
+						, relatedmodel__c
+						, enginetransmission__c
+						, version__c
+						, carversionprice__c
+						, usedcolor__c
+						, colorprice__c
+						--, finalprice__c
+						--, carreplacementintention__c
+						--, pneflag__c
+						--, campaign_id__c
+						, quotestatus__c
+						, dealeraccount__r__external_id__c
+						, account__r__external_id__c
+						, externalid__c
+					)
+					select
+						protocolid__c
+						, reason__c
+						, voctype__c
+						, voc_class
+						, voc_level_2__c
+						, voc_level_3__c
+						, source_tag__c
+						, requestdescription__c
+						, dealercode__c
+						, relatedmodel__c
+						, enginetransmission__c
+						, version__c
+						, carversionprice__c
+						, color__c
+						, colorprice
+						--, finalprice
+						--, carreplacementintention
+						--, pneflag__c
+						--, campaign_id
+						, status
+						, account_row_id__c
+						, contact_row_id__c
+						, row_id
+					from
+						process.quotehistory qth
+					where 
+						protocolid__c = qth.protocolid__c 
+					and 
+						qth.protocolid__c =  param_id;
+			-- Case
+			else
+				--Insert
+				if case_num = 0 then
+					insert into "replica".case
+					(
+						protocol_id__c
+						, Reason
+						, voctype__c
+						, vocclass__c
+						, voc_level_2__c
+						, voc_level_3__c
+						, origin
+						, source__c
+						, description
+						, status
+						, priority
+						, resolution__c
+						--, Tendency__c
+						--, customersatisfied__c
+						, dealer_sold__r__external_id__c 
+						, account__external_id__c 
+						, external_id__c
+						, recordtypeid
+						, integrationid__c
+					)
+					select
+						protocol__c
+						, service_request_reason__c
+						, voctype__c
+						, voc_class
+						, voc_level_2__c
+						, voc_level_3__c
+						, origin
+						, source__c
+						, description
+						, status
+						, priority
+						, resolution__c
+						--, sr_impact_cd__c
+						--, customersatisfied__c
+						, account_row_id__c
+						, contact_row_id__c
+						, row_id
+						, (select sfid from "replica".recordtype where sobjecttype = 'Case'  and developername = 'HMB_Case')
+						, sap_code_test_drive__c
+					from
+						process.case pca
+					where 
+						protocol__c = pca.protocol__c 
+					and 
+						pca.protocol__c =  param_id;
+				--Update	
+				else
+					update "replica".case as rca set 
+						voc_level_2__c = case when pca.voc_level_2__c isnull then rca.voc_level_2__c else pca.voc_level_2__c end
+						, voc_level_3__c = case when pca.voc_level_3__c isnull then rca.voc_level_3__c else pca.voc_level_3__c end
+						, source__c = case when pca.source__c isnull then rca.source__c else pca.source__c end
+						, origin = case when pca.origin isnull then rca.origin else pca.origin end
+						, description = case when pca.description isnull then rca.description else pca.description end
+						, status = case when pca.status isnull then rca.status else pca.status end
+						, priority = case when pca.priority isnull then rca.priority else pca.priority end
+						, resolution__c = case when pca.resolution__c isnull then rca.resolution__c else pca.resolution__c end
+						, Tendency__c = case when pca.sr_impact_cd__c isnull then rca.Tendency__c else pca.sr_impact_cd__c end
+						--, customersatisfied__c = case when pca.customersatisfied__c isnull then rca.customersatisfied__c else pca.customersatisfied__c end
+					from 
+						process.case pca
+					where 
+						rca.protocol_id__c = pca.protocol__c
+					and
+						pca.protocol__c = param_id;
+				end if;
+			end if;
+		else
+			update "replica".opportunity ro set 
+				 predictive_temp__c = po.predictive_temp__c
+			from 
+				process.opportunity as po
+			where 
+				ro.testdriveprotocolid__c = po.testdriveprotocolid__c
+			and
+				po.testdriveprotocolid__c = temp_protocol;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_svc_req_ws_wf(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_svc_req_ws_wf(IN param_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare reason_sr varchar(30);
+	declare level1_sr varchar(30);
+	declare level2_sr varchar(30);
+	declare protocol_sr varchar(64); --ServiceRequset Number
+	declare testdrive_num int;
+	declare quot_num int;
+	declare case_num int;
+	declare lead_num int;
+	declare temperaturecheck varchar(30);
+	declare temp_protocol varchar(30);
+	declare protocol_status varchar;
+	begin
+		
+		select
+		 	reason__c , voctype__c , voc_class into reason_sr, level1_sr, level2_sr
+		from process.service_request psr
+		where protocol__c = CAST(param_id AS TEXT);
+						 	
+		select 
+			count(*) into case_num
+		from
+			process.case pca
+		join
+			"replica".case rca
+		on
+			pca.protocol__c = rca.protocol_id__c
+		where 
+			rca.protocol_id__c = param_id;
+		
+		select 
+			predictive_temp__c , protocol__c into temperaturecheck , temp_protocol
+		from
+			process.service_request psr
+		where 
+			psr.protocol__c = param_id;
+		
+		
+		select 
+			lower(ps.status) into protocol_status
+		from
+			process.service_request ps
+		where
+			ps.protocol__c = param_id;
+		
+		if coalesce(temperaturecheck) isnull or temperaturecheck = '' then
+			
+			-- Test Drive 
+			if reason_sr = 'Information' and level1_sr = 'Sales' and level2_sr = 'Test drive' then
+				--insert into "replica".testdrivehistory__c
+				insert into "replica".testdrivehistory_if__c 
+					(
+					reason__c
+					, level1__c
+					, level2__c
+					, level3__c
+					, level4__c
+					, origin__c
+					, sourcetag__c
+					--, method__c
+					, requestdescription__c
+					, status__c
+					, dealercode__c
+					, serialnumber__c
+					, salespersoncode__c
+					, testdriverequestdate__c
+					, testdriverequesttime__c
+					, testdriveconfirmed__c
+					, dealeraccount__r__external_id__c
+					, account__r__external_id__c
+					, protocolid__c
+					, externalid__c
+					, subsidiarycode__c
+					, dealerportaltdno__c
+					, testdriverequestdatetime__c
+					, testdriverequestvehiclemodel__c 
+					, prioridade__c 
+					, recordinsertupdatecheck__c
+					)
+					select
+						reason__c
+						, level1__c
+						, level2__c
+						, level3__c
+						, level4__c
+						, origin
+						, "SourceTag__c"
+						--, method__c
+						, "RequestDescription__c"
+						, status__c
+						, dealercode__c
+						, serialnumber__c
+						, salespersoncode__c
+						, testdriverequestdate__c
+						, testdriverequesttime__c
+						, testdriveconfirmed__c
+						, account_id__c
+						, contact_id__c
+						, protocolid__c
+						, row_id
+						, 'HMB'
+						, dealerportaltdno__c
+						, testdriverequestdatetime__c
+						, ptd.relatedmodel__c 
+						, ptd.priority__c 
+						, 'insert'
+					from
+						process.testdrivehistory ptd 
+					where 
+						protocolid__c = ptd.protocolid__c 
+					and 
+						ptd.protocolid__c =  param_id;
+			-- Quotation
+			elseif reason_sr = 'Sales opportunity' and level1_sr = 'Sales' and level2_sr = 'Request a quote' then
+				--insert into "replica".quotehistory__c
+				insert into "replica".quotehistory_if__c
+				(
+					protocolid__c
+					, reason__c
+					, level1__c
+					, level2__c
+					, level3__c
+					, level4__c
+					, origin__c
+					, sourcetag__c
+					, description__c
+					, dealercode__c
+					, relatedmodel__c
+					, enginetransmission__c
+					, version__c
+					, carversionprice__c
+					, color__c 
+					, colorprice__c
+					, endprice__c 
+					, carreplacementintention__c 
+					, pcd__c 
+					--, campaign_id__c
+					, quotestatus__c
+					, dealeraccount__r__external_id__c
+					, account__r__external_id__c
+					, externalid__c
+					, prioridade__c 
+					, form__c 
+					, contenttag__c 
+					, mediumtag__c 
+					, campaigntag__c 
+					, financing__c 
+					, loantype__c 
+					, reservationamount__c 
+					, methodofpayment__c 
+					, paymentstatus__c 
+					, paymentdate__c 
+					, usedcarpayment__c 
+					, usedplate__c 
+					, usedchassi__c 
+					, usedyear__c 
+					, usedversion__c 
+					, usedkm__c 
+					, usedcolor__c 
+					, usedbrand__c 
+					, usedmodel__c 
+					, usedmaxprice__c 
+					, usedmedprice__c 
+					, usedminprice__c
+					, subsidiarycode__c
+				)
+				select
+					protocolid__c
+					, reason__c
+					, voctype__c
+					, voc_class
+					, voc_level_2__c
+					, voc_level_3__c
+					, origin
+					, source_tag__c
+					, requestdescription__c
+					, dealercode__c
+					, relatedmodel__c
+					, enginetransmission__c
+					, version__c
+					, carversionprice__c
+					, color__c
+					, colorprice
+					, finalprice
+					, carreplacementintention
+					, pneflag__c
+					--, campaign_id
+					, status
+					, account_row_id__c
+					, contact_row_id__c
+					, row_id
+					, qth.priority  
+					, form__c 
+					, content_tag__c 
+					, medium_tag__c 
+					, campaign_tag__c 
+					, wants_loan__c 
+					, loan_type__c 
+					, reserve_amount__c 
+					, payment_method__c 
+					, payment_status__c 
+					, payment_date__c 
+					, usedcar_as_down_payment__c 
+					, usedcar_plate__c 
+					, usedcar_chassi__c 
+					, usedcar_year__c 
+					, usedcar_version__c 
+					, usedcar_km__c 
+					, usedcar_color__c 
+					, usedcar_brand__c 
+					, usedcar_model__c 
+					, usedcar_max_price__c 
+					, usedcar_mid_price__c 
+					, usedcar_min_price__c
+					, 'HMB'
+				from
+					process.quotehistory qth
+				where 
+					protocolid__c = qth.protocolid__c 
+				and 
+					qth.protocolid__c =  param_id;
+			
+			-- Lead
+			elseif (reason_sr = 'Sales opportunity' and level1_sr = 'Marketing' and level2_sr = 'Promotion') or (reason_sr = 'Sales opportunity' and level1_sr = 'Visitor' and level2_sr = 'Dealer') then 
+				insert into "replica"."lead"
+				(
+					firstname
+					, lastname
+					, mobilephone
+					, email
+					, leadtype__c
+					, cpf__c
+					, dealercode__c 
+					, phone 
+					, personhomephone__c 
+					, fax 
+					, gender__c 
+					, productofinterest__c 
+					, description 
+					, reason__c 
+					, level1__c 
+					, level2__c 
+					, level3__c 
+					, level4__c 
+					, origin__c 
+					, form__c 
+					, sourcetag__c 
+					, mediumtag__c 
+					, contenttag__c 
+					, campaigntag__c 
+					, postalcode 
+					, street 
+					, state 
+					, city 
+					, country 						
+					, hyundaiuniquekeylead__c  
+					, testdriveprotocolid__c
+					, subsidiarycode__c
+--						, priority
+--						, salutation 
+--						, opt-in 관련내용 
+				)
+				select
+					firstname
+					, lastname
+					, mobilephone
+					, email
+					, leadtype__c
+					, cpf__c
+					, dealercode__c 
+					, phone 
+					, personhomephone__c 
+					, fax 
+					, gender__c 
+					, productofinterest__c 
+					, description 
+					, reason__c 
+					, level1__c 
+					, level2__c 
+					, level3__c 
+					, level4__c 
+					, origin__c 
+					, form__c 
+					, sourcetag__c 
+					, mediumtag__c 
+					, contenttag__c 
+					, campaigntag__c 
+					, postalcode 
+					, street 
+					, state 
+					, city 
+					, country 						
+					, pl.row_id  
+					, protocol__c 
+					, 'HMB'
+--						, priority
+--						, salutation 
+--						, opt-in 관련내용 
+				from 
+					process."lead" pl
+				where 
+					pl.protocol__c = param_id;
+			-- Case
+			else
+				--Insert
+				if case_num = 0 then
+					insert into "replica".case
+					(
+						protocol_id__c
+						, Reason
+						, voctype__c
+						, vocclass__c
+						, voc_level_2__c
+						, voc_level_3__c
+						, origin
+						, source__c
+						, description
+						, status
+						, priority
+						, resolution__c
+						--, Tendency__c
+						--, customersatisfied__c
+						, dealer_sold__r__external_id__c 
+						, account__external_id__c 
+						, external_id__c
+						, recordtypeid
+						, integrationid__c
+						, subsidiarycode__c
+					)
+					select
+						protocol__c
+						, service_request_reason__c
+						, voctype__c
+						, voc_class
+						, voc_level_2__c
+						, voc_level_3__c
+						, origin
+						, source__c
+						, description
+						, status
+						, priority
+						, resolution__c
+						--, sr_impact_cd__c
+						--, customersatisfied__c
+						, account_row_id__c
+						, contact_row_id__c
+						, row_id
+						, (select sfid from "replica".recordtype where sobjecttype = 'Case'  and developername = 'HMB_Case')
+						, sap_code_test_drive__c
+						, 'HMB'
+					from
+						process.case pca
+					where 
+						protocol__c = pca.protocol__c 
+					and 
+						pca.protocol__c =  param_id;
+				--Update	
+				else
+				
+					if protocol_status = 'open' then
+					
+						update "replica".case as rca set 
+							voc_level_2__c = case when pca.voc_level_2__c isnull then rca.voc_level_2__c else pca.voc_level_2__c end
+							, voc_level_3__c = case when pca.voc_level_3__c isnull then rca.voc_level_3__c else pca.voc_level_3__c end
+							, source__c = case when pca.source__c isnull then rca.source__c else pca.source__c end
+							, origin = case when pca.origin isnull then rca.origin else pca.origin end
+							, description = case when pca.description isnull then rca.description else pca.description end
+							, status = case when pca.status isnull then rca.status else pca.status end
+							, priority = case when pca.priority isnull then rca.priority else pca.priority end
+							, resolution__c = case when pca.resolution__c isnull then rca.resolution__c else pca.resolution__c end
+							, Tendency__c = case when pca.sr_impact_cd__c isnull then rca.Tendency__c else pca.sr_impact_cd__c end
+							--, customersatisfied__c = case when pca.customersatisfied__c isnull then rca.customersatisfied__c else pca.customersatisfied__c end
+						from 
+							process.case pca
+						where 
+							rca.protocol_id__c = pca.protocol__c
+						and
+							pca.protocol__c = param_id;
+					end if;
+				end if;
+			end if;
+		else
+			update "replica".opportunity ro set 
+				 predictive_temp__c = po.predictive_temp__c
+			from 
+				process.opportunity as po
+			where 
+				ro.testdriveprotocolid__c = po.protocol__c
+			and
+				po.protocol__c = param_id;
+		end if;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_update_contact_in_wf(_text, _text);
+
+CREATE OR REPLACE PROCEDURE replica.if_update_contact_in_wf(IN asset_id_list text[], IN proc_account_id text[])
+ LANGUAGE plpgsql
+AS $procedure$
+	declare
+		a_len integer;
+		a_i integer;
+		a_count integer;
+		relation varchar;
+		fo_count integer;
+	begin		
+		a_len := array_length(asset_id_list, 1);
+		
+		-- update account
+		update "replica".account ra set 
+			cnhexpirationdate__c  = case when pa.cnhexpirationdate__c  isnull then ra.cnhexpirationdate__c else pa.cnhexpirationdate__c end 
+			, firstname = case when pa.firstname isnull then ra.firstname else pa.firstname end 
+			, lastname = case when pa.lastname isnull then ra.lastname else pa.lastname end 
+			, personbirthdate = case when pa.personbirthdate isnull then ra.personbirthdate else pa.personbirthdate end 
+			, gender__pc = case when pa.gender__pc isnull then ra.gender__pc else pa.gender__pc end 
+			, personhomephone = case when pa.personhomephone isnull then ra.personhomephone else pa.personhomephone end 
+			, workphone__c = case when pa.workphone__c isnull then ra.workphone__c else pa.workphone__c end 
+			, personmobilephone = case when pa.personmobilephone isnull then ra.personmobilephone else pa.personmobilephone end 
+			, personemail = case when pa.personemail isnull then ra.personemail else pa.personemail end 
+--			, amountfriends
+--			, amountchildren
+			, personmailingstreet = case when pa.billingstreet isnull then ra.personmailingstreet else concat(pa.billingstreet||' '||pa.billingstreet_2__c||' '||pa.billingstreet_3__c) end
+			, personmailingcountry = case when pa.billingcounty isnull then ra.personmailingcountry else pa.billingcountry end
+			, neighborhood__c = case when pa.billingcounty isnull then ra.neighborhood__c else pa.billingcounty end 
+			, personmailingcity = case when pa.billingcity isnull then ra.personmailingcity else pa.billingcity end 
+			, personmailingstate = case when pa.billingstate isnull then ra.personmailingstate else pa.billingstate end
+			, personmailingpostalcode = case when pa.billingpostalcode isnull then ra.personmailingpostalcode else pa.billingpostalcode end 
+			, blockedcalls__c = case when pa.calloptyn__pc isnull then ra.blockedcalls__c else pa.calloptyn__pc end 
+            , blockedcalls__pc = case when pa.calloptyn__pc isnull then ra.blockedcalls__pc else pa.calloptyn__pc end 
+            , blockedemails__c = case when pa.blockedemails__pc isnull then ra.blockedemails__c else pa.blockedemails__pc end
+            , blockedemails__pc = case when pa.blockedemails__pc isnull then ra.blockedemails__pc else pa.blockedemails__pc end
+            , blockedletters__c = case when pa.blockedletters__c isnull then ra.blockedletters__c else pa.blockedletters__c end
+            , blockedletters__pc = case when pa.blockedletters__c isnull then ra.blockedletters__pc else pa.blockedletters__c end
+            , blockedmobile__c = case when pa.blockedmobile__c isnull then ra.blockedmobile__c else pa.blockedmobile__c end  
+            , blockedmobile__pc = case when pa.blockedmobile__c isnull then ra.blockedmobile__pc else pa.blockedmobile__c end
+            , blockedsms__c = case when pa.blockedsms__c isnull then ra.blockedsms__c else pa.blockedsms__c end 
+            , blockedsms__pc  = case when pa.blockedsms__c isnull then ra.blockedsms__pc else pa.blockedsms__c end 
+            , blockedvideocall__c = case when pa.blockedvideocall__c isnull then ra.blockedvideocall__c else pa.blockedvideocall__c end  
+            , blockedvideocall__pc = case when pa.blockedvideocall__c isnull then ra.blockedvideocall__pc else pa.blockedvideocall__c end 
+            , blockedwhatsapp__c = case when pa.blockedwhatsapp__c isnull then ra.blockedwhatsapp__c else pa.blockedwhatsapp__c end 
+            , blockedwhatsapp__pc = case when pa.blockedwhatsapp__c isnull then ra.blockedwhatsapp__pc else pa.blockedwhatsapp__c end 
+			, optinflag__c = case when pa.optinflag__c isnull then ra.optinflag__c else pa.optinflag__c end
+		from
+			process.account pa
+		join
+			process.contact pc
+		on
+			pa.row_id = pc.account_row_id 
+		where 
+			ra.external_id__c = proc_account_id[1]
+		and 
+			pa.row_id = proc_account_id[1];
+		
+		
+		
+		if a_len > 0 then 
+		
+			for a_i in 1..a_len
+				loop
+					
+					select 
+						count(*) into a_count
+					from
+						"replica".customervehicle__c rcv
+					join
+						process.customer_vehicle pcv 
+					on
+						rcv.external_id__c  = pcv.row_id  
+					where
+						pcv.account_id = proc_account_id[1]
+					and
+						pcv.asset_id = asset_id_list[a_i];
+					
+					
+					select 
+						count(*) into fo_count
+					from 
+						"replica".customervehicle__c rc
+					join
+						process.customer_vehicle pc
+					on 
+						rc.vehicle__r__external_id__c = pc.asset_id 
+					where 
+						lower(rc.relationship__c) = 'first owner'
+					and
+						lower(rc.type__c) = 'person'
+					and 
+						pc.asset_id = asset_id_list[a_i];
+					
+					if fo_count = 0 then 
+						update "replica".customervehicle__c as rc set 
+							relationship__c = 'First Owner'
+							, status__c = 'Inactive'
+							, relationshipenddate__c = now()
+						from	
+							process.customer_vehicle pc
+						where
+							lower(rc.type__c) = 'person'
+						and 
+							pc.asset_id = asset_id_list[a_i]
+						and
+							rc.vehicle__r__external_id__c = pc.asset_id ;
+					else 
+					
+						update "replica".customervehicle__c as rc set 
+							status__c = 'Inactive'
+							, relationshipenddate__c = now()
+						from	
+							process.customer_vehicle pc
+						where
+							lower(rc.type__c) = 'person'
+						and 
+							pc.asset_id = asset_id_list[a_i]
+						and
+							rc.vehicle__r__external_id__c = pc.asset_id;
+					
+					end if;
+					
+					
+					
+					if a_count = 0 then
+						-- customervehicle__c insert 
+						insert into "replica".customervehicle__c
+						(
+							relationship__c
+							, external_id__c
+							, account__r__external_id__c 
+							, vehicle__r__external_id__c 
+							, retaildate__c 
+							, status__c  
+							, type__c 
+						)
+						select
+							pcv.relation_type_cd 
+							, pcv.row_id 
+							, proc_account_id[1]
+							, asset_id_list[a_i]
+							, pcv.retail_date 
+							, pcv.status_cd  
+							, pcv.cv_type 
+						from
+							process.customer_vehicle pcv
+						where
+							pcv.asset_id = asset_id_list[a_i]
+						and
+							pcv.account_id = proc_account_id[1];
+						
+						
+
+						update "replica".asset as rass set 
+							carregistrationnumber__c = case when pass.renavam_code__c isnull then rass.carregistrationnumber__c else pass.renavam_code__c end 
+							, latestmileage__c = case when pass.latestmileage__c isnull then rass.latestmileage__c else pass.latestmileage__c end 
+							, version__c = case when pass.carregistrationnumber__c isnull then rass.version__c else pass.carregistrationnumber__c end 
+							, account__external_id__c = proc_account_id[1]
+						from
+							process.asset pass 
+						where 
+							pass.row_id  = asset_id_list[a_i]
+						and 
+							rass.external_id__c = asset_id_list[a_i];
+
+						
+					else				
+						-- customervehicle__c update 
+						update "replica".customervehicle__c rcv set 
+							relationship__c = case when pcv.relation_type_cd isnull then rcv.relationship__c else pcv.relation_type_cd end
+							, retaildate__c = case when pcv.retail_date isnull then rcv.retaildate__c else pcv.retail_date end 
+							, status__c = case when pcv.status_cd isnull then rcv.status__c else pcv.status_cd end
+						from
+							process.customer_vehicle pcv 
+						where 
+							rcv.external_id__c  = pcv.row_id 
+						and 
+							pcv.asset_id = asset_id_list[a_i];
+						
+						
+
+						-- asset update 
+						update "replica".asset as rass set 
+							carregistrationnumber__c = case when pass.renavam_code__c isnull then rass.carregistrationnumber__c else pass.renavam_code__c end 
+							, latestmileage__c = case when pass.latestmileage__c isnull then rass.latestmileage__c else pass.latestmileage__c end 
+							, version__c = case when pass.carregistrationnumber__c isnull then rass.version__c else pass.carregistrationnumber__c end 
+							, account__external_id__c = pass.contact_row_id__c 
+						from
+							process.asset pass 
+						where 
+							pass.row_id  = asset_id_list[a_i]
+						and 
+							rass.external_id__c = asset_id_list[a_i];
+						
+						
+						
+					end if;
+	
+					
+					
+				end loop;
+			
+			end if;
+		
+			
+			
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".if_update_lead_ws(varchar);
+
+CREATE OR REPLACE PROCEDURE replica.if_update_lead_ws(IN param_id character varying)
+ LANGUAGE plpgsql
+AS $procedure$
+	declare protocol_val varchar(30);
+	begin
+		
+	select protocol into protocol_val from landing.if_update_lead_ws where row_id = CAST(param_id AS INTEGER);
+		
+		update "replica".opportunity as ro set
+			predictive_temp__c = po.predictive_temp__c 
+			, TransferredOpportunity__c = po.TransferredOpportunity__c
+			, TransferredOpportunityDate__c = po.TransferredOpportunityDate__c
+			, lostreason__c = po.lostreason__c
+			, description = po.description
+		from process.opportunity as po 
+		where 
+			po.protocol__c  = protocol_val
+		and
+			ro.testdriveprotocolid__c = protocol_val;
+		
+		
+		--insert into "replica".salesconsulthistory__c(
+		insert into "replica".salesconsulthistory_if__c(
+			external_id__c 
+			, descriptioninteraction__c
+			, firstinteractiondate__c
+			, contact_flag__c
+			, createddate
+			, salesstatus__c
+			, contactcustomer__c
+			, result__c
+			, source__c
+			, pcd__c
+--			, date__c
+			, salescpf__c
+			, visitdate__c
+			, visitstatus__c
+			, scheduledvisitdate__c
+			, protocolid__c 
+			, opportunity__r__external_id__c 
+			, subsidiarycode__c
+			, interactionnumber__c
+			, temperaturenumber__c
+			, predictivetemp__c
+			, lostreason__c
+		)
+		select 
+			row_id
+			, description_interaction__c
+			, first_interaction_date__c
+			, contact_flag__c
+			, createddate
+			, salesstatus__c
+			, contactcustomer__c
+			, result__c
+			, source__c
+			, pcd__c
+--			, date__c
+			, salescpf__c
+			, visitdate__c
+			, visitstatus__c
+			, scheduledvisitdate__c
+			, protocol__c  
+			, (select external_id__c from "replica".opportunity where testdriveprotocolid__c = protocol_val)
+			, 'HMB'
+			, interactionnumber__c
+			, temperaturenumber__c
+			, predictivetemp__c
+			, lostreason__c
+		from
+			process.sales_consult_history
+		where 
+			external_id__c = param_id;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".m_repli_proc_aprovou_levou();
+
+CREATE OR REPLACE PROCEDURE replica.m_repli_proc_aprovou_levou()
+ LANGUAGE plpgsql
+AS $procedure$
+	begin
+		INSERT INTO "replica".lead (
+			hyundaiuniquekeylead__c,
+			testdriveprotocolid__c,
+			cpf__c,
+			dealer__c,
+			dealercnpj__c,
+			firstname,
+			lastname,
+			email,
+			mobilephone,
+			datavalidade__c,
+			modelo__c,
+			parcela__c,
+			massivedealercode__c,
+			origin__c,
+			status,
+			customertype__c,
+			leadtype__c,
+			reason__c,
+			level1__c,
+			level2__c,
+			level3__c,
+			subsidiarycode__c,
+			recordtypeid			
+		)
+		select 
+			row_id,
+			protocol__c,
+			cpf_cnpj,
+			dealer,
+			dealer_cnpj,
+			first_name,
+			last_name,
+			email,
+			telefone,
+			data_validade,
+			modelo,
+			parcela,
+			dealer_code,
+			origin,
+			lead_status,
+			customer_type,
+			lead_type,
+			reason,
+			level1,
+			level2,
+			level3,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'Lead' and ispersontype = false and developername = 'HMB_Lead')				
+		from process.aprovou_levou 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".m_repli_proc_financing_installment();
+
+CREATE OR REPLACE PROCEDURE replica.m_repli_proc_financing_installment()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".lead (
+			hyundaiuniquekeylead__c,
+			testdriveprotocolid__c,
+			chassi__c,
+			produto__c,
+			inicio__c,
+			fim__c,
+			prazo__c,
+			parcela__c,
+			anofabricacao__c,
+			anomodelo__c,
+			marca__c,
+			modelo__c,
+			concessionario__c,
+			origin__c,
+			frase__c,
+			status,
+			customertype__c,
+			leadtype__c,
+			reason__c,
+			level1__c,
+			level2__c,
+			firstname,
+			lastname,
+			email,
+			mobilephone,
+			cpf__c,
+			dealercode__c,
+			subsidiarycode__c,
+			recordtypeid			
+		)
+		select 
+			row_id,
+			protocol__c,
+			chassi,
+			produto,
+			inicio,
+			fim,
+			prazo,
+			parcela,
+			ano_fabricacao,
+			ano_modelo,
+			marca,
+			modelo,
+			concessionario,
+			origin,
+			frase,
+			lead_status,
+			customer_type,
+			lead_type,
+			reason,
+			level1,
+			level2,
+			firstname,
+			lastname,
+			email,
+			mobilephone,
+			cpf__c,
+			dealercode,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'Lead' and ispersontype = false and developername = 'HMB_Lead')				
+		from process.financing_installment 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".m_repli_proc_loyalty_retention();
+
+CREATE OR REPLACE PROCEDURE replica.m_repli_proc_loyalty_retention()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".lead (
+			hyundaiuniquekeylead__c,
+			testdriveprotocolid__c,
+			chassi__c,
+			massivedealercode__c,
+			dealernickname__c,
+			dealergrupo__c,
+			dealerregiao__c,
+			dealercidade__c,
+			dtultmavenda__c,
+			marca__c,
+			modelo__c,
+			concessionario__c,
+			clienterecompra__c,
+			origin__c,
+			frase__c,
+			status,
+			customertype__c,
+			leadtype__c,
+			reason__c,
+			level1__c,
+			level2__c,
+			level3__c,
+			form__c,
+			firstname,
+			lastname,
+			mobilephone,
+			email,
+			subsidiarycode__c,
+			recordtypeid			
+		)
+		select 
+			row_id,
+			protocol__c,
+			chassi,
+			delaer_code,
+			dealer_nickname,
+			dealer_grupo,
+			dealer_regiao,
+			dealer_cidade,
+			dt_ultima_venda,
+			marca,
+			modelo,
+			concessionario,
+			cliente_recompra,
+			origin,
+			frase,
+			lead_status,
+			customer_type ,
+			lead_type ,
+			reason,
+			level1 ,
+			level2 ,
+			level3,
+			form,
+			firstname,
+			lastname ,
+			mobilephone ,
+			email,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'Lead' and ispersontype = false and developername = 'HMB_Lead')				
+		from process.loyalty_retention 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".m_repli_proc_novo_de_novo();
+
+CREATE OR REPLACE PROCEDURE replica.m_repli_proc_novo_de_novo()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".lead (
+			hyundaiuniquekeylead__c,
+			testdriveprotocolid__c,			
+			campaign__c,
+			oferta__c,
+			cpf__c,
+			firstname,
+			lastname,
+			email,
+			mobilephone,
+			veiculo__c,
+			modelo__c,
+			entrada__c,
+			parcela__c,
+			ocn__c,
+			origin__c,
+			frase__c,
+			status,
+			customertype__c,
+			leadtype__c,
+			reason__c,
+			level1__c,
+			level2__c,
+			level3__c,
+			subsidiarycode__c,
+			recordtypeid			
+		)
+		select 
+			row_id,
+			protocol__c,			
+			campaign,
+			oferta,
+			cpf_cnpj,
+			firstname,
+			lastname,			
+			email,
+			telefone,
+			veiculo,
+			modelo,
+			entrada,
+			parcela,
+			ocn,
+			origin,
+			frase,
+			lead_status,
+			customer_type,
+			lead_type,
+			reason,
+			level1,
+			level2,
+			level3,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'Lead' and ispersontype = false and developername = 'HMB_Lead')				
+		from process.novo_de_novo 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".ob_repli_proc_bounce_performance();
+
+CREATE OR REPLACE PROCEDURE replica.ob_repli_proc_bounce_performance()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".bounce_performance_bulk (
+			external_id__c,
+			name,
+			treatmenttype__c,
+			contacttype__c,
+			bouncestatuscode__c,
+			bouncereasoncode__c,
+			bounced__c	
+		)
+		select 
+			row_id,
+			campaign_name,
+			treatmenttype,
+			contacttype,
+			bouncestatuscode,
+			bouncereasoncode,
+			bounced
+		from process.bounce_performance 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".ob_repli_proc_campaign_performance();
+
+CREATE OR REPLACE PROCEDURE replica.ob_repli_proc_campaign_performance()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".campaign_performance_rpt_bulk (
+			external_id__c,
+            name,
+			treatmenttype__c,
+			contacttype__c,
+			numberoftargeted__c,
+			numberofdeployed__c,
+--			ratioofdeployed__c,
+			numberofsent__c,
+--			ratioofsent__c,
+			numberofbounced__c,
+--			ratioofbounced__c,
+			numberofopened__c,
+--			ratioofopened__c,
+			numberofclicked__c
+--			ratioofclicked__c	
+		)
+		select 
+			row_id,
+			campaign_name,
+			treatmenttype,
+			contacttype,
+			cast(numberoftargeted as float8) numberoftargeted,
+			cast(numberofdeployed as float8) numberofdeployed,
+--			ratioofdeployed,
+			cast(numberofsent as float8) numberofsent,
+--			ratioofsent,
+			cast(numberofbounced as float8) numberofbounced,
+--			ratioofbounced,
+			cast(numberofopened as float8) numberofopened,
+--			ratioofopened,
+			cast(numberofclicked as float8) numberofclicked
+--			ratioofclicked
+		from process.campaign_performance_rpt 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".ob_repli_proc_click_performance();
+
+CREATE OR REPLACE PROCEDURE replica.ob_repli_proc_click_performance()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".click_performance_bulk (
+			external_id__c,
+			name,
+			contacttype__c,
+			treatmenttype__c,
+			hyperlinkname__c,
+			responses__c	
+		)
+		select 
+			row_id,
+			campaign_name,
+			contacttype,
+			treatmenttype,
+			hyperlinkname,
+			responses
+		from process.click_performance 
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_asset();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_asset()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.asset_bulk(
+			external_id__c, 
+			dealeraccount__r__external_id__c, 
+			account__external_id__c,
+			product2__external_id__c, 
+			enginetype__c, 
+			modelname__c, 
+			enginecapacity__c,
+			name, 
+			status, 
+			vin__c, 
+			serialnumber, 
+			vehicleLicenseNumber__c, 
+			warrantystartdate__c,
+			billingdate__c,
+			negotiationtype__c,
+			subscriptiontype__c,
+			fiscalreceipt__c,	
+			modelyear__c, 
+			dealercode__c, 
+			Price, 
+			renavamCode__c, 
+			latestmileage__c, 
+			fueltype__c, 
+			manufactureyear__c, 
+			wholesaledate__c,
+			vehicledeliverydate__c, 
+			enginenumber__c, 
+			interiorcolor__c, 
+			exteriorcolor__c,
+			vehiclelicensedate__c,
+			friendlymodel__c,
+			transmission__c , 
+			bodytype__c, 
+			fsc__c, 
+			latestmileagelastupdatedate__c,	
+			retailcancelleddate__c,
+			campaigncodeforrecall__c,
+			serviceperformed__c,
+			salesman__c,
+			digitalsales__c,
+			tdathome__c,
+			deliveryathome__c,
+			conectcarcss__c,
+			version__c,
+			carregistrationnumber__c,
+			urlphoto__c,
+			productdate__c,
+			recordtypeid
+			)
+		select 
+			ass.row_id, 
+			ass.account_row_id__c,
+			ass.contact_row_id__c,
+			ass.product2id, 
+			ass.enginetype__c, 
+			ass.modelname__c, 
+			ass.enginecapacity__c,
+			ass.name,
+			ass.status, 
+			ass.serialnumber,
+			ass.serialnumber, 
+			ass.carregistrationnumber__c, 
+			ass.warranty_start_dt__c,
+			ass.billing_date__c,
+			ass.oper_status_cd__c,
+			ass.ownr_type_cd__c,
+			ass.purch_loc_desc__c,			
+			ass.modelyear__c, 
+			ass.dealercode__c, 
+			ass.purchaseprice__c, 
+			ass.renavam_code__c, 
+			ass.latestmileage__c, 
+			ass.fueltype__c, 
+			ass.manufacturedate,
+			ass.dealer_rcpt_dt__c,
+			ass.vehicledeliverydate__c, 
+			ass.enginenumber__c, 
+			ass.vehicleinternalcolor__c, 
+            ass.vehiclecolor__c,
+			ass.vehicle_license_date__c::date,
+			ass.friendly_model__c,	
+			ass.transmission__c, 
+			ass.bodytype__c, 
+			ass.fsc__c, 
+			ass.latestmileagelastupdatedate__c,
+			ass.x_sales_cancel_dt__c,
+			ass.campaigncode__c,
+			ass.x_svc_conducted__c,
+			ass.salesman__c,
+			ass.x_dig_sales__c,
+			ass.x_td_home__c,
+			ass.x_del_home__c,
+--			case when ass.x_dig_sales__c = true then 'Y' when ass.x_dig_sales__c = false then 'N' else null end as x_dig_sales__c,
+--			case when ass.x_td_home__c = true then 'Y' when ass.x_td_home__c = false then 'N' else null end as x_td_home__c,
+--			case when ass.x_del_home__c = true then 'Y' when ass.x_del_home__c = false then 'N' else null end as x_del_home__c,	
+			ass.cf_eval_svc_cd__c,			
+			ass.version__c,
+			ass.ref_number,
+			ass.special_moment__c,
+			ass.productdate__c,
+			(select sfid from "replica".recordtype where sobjecttype = 'Asset' and developername = 'HMB_Asset')							 
+--		from process.asset_serialnumber_old_test ass
+		from process.asset ass 
+--		where 
+--			char_length(ass.serialnumber) <= 18
+--		order by ass.row_id desc limit 200000 offset 0
+			;
+	
+--	INSERT INTO replica.asset(
+--			external_id__c, 
+--			account__external_id__c, 
+--			product2__external_id__c, 
+--			modelname__c, 
+--			enginetype__c, 
+--			name, 
+--			status, 
+--			vin__c, 
+--			serialnumber, 
+--			version__c, 
+--			modelyear__c, 
+--			dealercode__c, 
+--			purchaseprice__c, 
+--			carregistrationnumber__c, 
+--			latestmileage__c, 
+--			fueltype__c, 
+--			manufacturedate, 
+--			vehicledeliverydate__c, 
+--			enginenumber__c, 
+--			interiorcolor__c, 
+--			exteriorcolor__c, 
+--			transmission__c , 
+--			bodytype__c, 
+--			fsc__c, 
+--			latestmileagelastupdatedate__c,				
+--			recordtypeid
+--			)
+--		select 
+--			ass.row_id, 
+--			acc.row_id, 
+--			ass.product2id, 
+--			ass.modelname__c, 
+--			ass.enginetype__c, 
+--			ass.name,
+--			--case when ass.name isnull then 'Unformed' else ass.name end as name,
+--			ass.status, 
+--			ass.serialnumber,
+--			ass.serialnumber, 
+--			ass.carregistrationnumber__c, 
+--			ass.modelyear__c, 
+--			ass.dealercode__c, 
+--			ass.purchaseprice__c, 
+--			ass.renavam_code__c, 
+--			ass.latestmileage__c, 
+--			ass.fueltype__c, 
+--			to_date(ass.manufacturedate,'YYYY'), 
+--			ass.vehicledeliverydate__c, 
+--			ass.enginenumber__c, 
+--			ass.vehicleinternalcolor__c, 
+--			ass.vehiclecolor__c, 
+--			ass.transmission__c, 
+--			ass.bodytype__c, 
+--			ass.fsc__c, 
+--			ass.latestmileagelastupdatedate__c,
+--			(select sfid from "replica".recordtype where sobjecttype = 'Asset' and developername = 'HMB_Asset')					 
+--		from process.asset ass
+----		join
+----			replica.product2 p2  
+----		on
+----			ass.product2id  = p2.external_id__c
+--		left join
+--			process.account acc
+--		on
+--			ass.contact_row_id__c = acc.external_id__c
+--			order by ass.row_id desc limit 100000 offset 0
+--			;
+--			--order by ass.contact_row_id__c limit 100;			
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_bluelink();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_bluelink()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.bluelink_bulk(
+			asset__r__external_id__c,
+			externalid__c,
+			type__c,
+			firstactivation__c,
+			eventdate__c,
+			assetnum__c,
+			assetdate__c
+		)
+		select 
+			asset_id,
+			row_id,
+			type__c,
+			firstactivation__c,
+--			to_date(substring(eventdate__c::varchar, 0, 11), 'MM-DD-YYYY') as eventdate__c,
+			eventdate__c,
+			chassi__c,
+			assetdate__c
+		from process.bluelink
+--		where asset_id in (select ass.external_id__c  from "replica".asset  ass)
+--		order by row_id desc limit 1000	
+--		where asset_id in (select ass.external_id__c  from "replica".asset  ass) and type__c !='' 
+--		order by row_id desc limit 100	
+			;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_business_acc();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_business_acc()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.account(
+				external_id__c, 
+				cnpj__c, 
+				name, 
+				nickname__c, 
+				accountcategory__c, 
+				contractrenewaldate__c,
+				registrysource__c, 
+				phone, 
+				fax, 
+				emailaddress__c, 
+				website, 
+				situationstatusreason__c, 
+				dealercode__c, 
+				region__c, 
+				type, 
+				businesstype__c, 
+				industry, 
+				fleetsize__c, 
+				organizationtype__c,
+				dealershoptype__c, 
+				salesflag__c, 
+				serviceflag__c, 
+				businesshours__c, 
+				facebook__c, 
+				billingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				billingcountry, 
+				billingcity, 
+				billingstate, 
+				billingpostalcode, 
+				billinglatitude, 
+				billinglongitude, 
+				latitude__c,
+				longitude__c,
+				FleetAdministrator__c, 
+				description, 
+				leadmanager__c, 
+				dms__c, 
+				apikey__c, 
+				whatsappphone__c, 
+				situationstatus__c, 
+				partnertype__c,			
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+--				CASE when char_length(regexp_replace(regexp_replace(corporateregistrationnumber__c, 'OLD_|-X',''), '_OLD',''))>14 then substring(corporateregistrationnumber__c, 1,14) else regexp_replace(regexp_replace(corporateregistrationnumber__c, 'OLD_|-X',''), '_OLD','') end as corporateregistrationnumber__c, 
+				corporateregistrationnumber__c,
+				name, 
+				corporaterepresentativename__c, 
+				ori_cd__c, 
+				x_contracted_since__c,
+				registrysource__c, 
+				phone, 
+				fax, 
+				emailaddress__c, 
+				website, 
+				situationstatusreason__c, 
+				dealercode__c, 
+				region__c, 
+				type, 
+				businesstype__c, 
+				industry, 
+				cast(x_tot_flt_size__c as float8), 
+				fleettype__c,
+				dealershoptype__c, 
+				salesflag__c, 
+				serviceflag__c, 
+				businesshours__c, 
+				facebook__c, 
+				billingstreet, 
+				billingstreet_2__c, 
+				billingstreet_3__c, 
+				neighborhood, 
+				billingcountry, 
+				billingcity, 
+				billingstate, 
+				billingpostalcode, 
+				coalesce(billinglatitude, 0), 
+				coalesce(billinglongitude, 0), 
+				coalesce(billinglatitude, 0), 
+				coalesce(billinglongitude, 0), 				
+				x_sales_rep__c, 
+				description, 
+				leadmanager__c, 
+				dms__c, 
+				apikey__c, 
+				whatsappphone__c, 
+				cust_stat_cd__c, 
+				partnertype__c,
+				replica.get_repli_account_num('B'),
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Account' and ispersontype = false and developername = 'HMB_Business_Account')				
+			from process.account 
+--			where type not in ('Dealer', 'c_Customer', 'c_Ex-Customer', 'c_Prospect', 'c_', 'c_Invalid') or type isnull
+			where process_account_type='Business'
+			;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_case();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_case()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.case_bulk (
+			external_id__c, 
+			servicingdealer__r__external_id__c,
+			account__external_id__c, 
+			contact__external_id__c,
+			asset__external_Id__c,
+-- 			dms created, dms last modified 데이트 주석 			
+--			legacycreateddate__c, 
+--			legacylastmodifieddate__c, 
+			protocol_id__c, 
+			responsetype__c,
+			voctype__c, 
+			VoCClass__c, 
+			VoC_Level_2__c, 
+			VoC_Level_3__c, 
+			Origin, 
+			Source__c, 
+			description, 
+			Status, 
+			priority, 
+			Severity__c, 
+			resolution__c, 
+			tendency__c, 
+			customersatisfied__c, 
+--			unit_value__c, 
+			opened__c, 
+			recurrence__c,
+--			subsidiarycode__c,
+			opened__c,
+			createddate,
+			closeddate,
+			recordtypeid			
+		)
+		select 
+			row_id, 
+			account_row_id__c,
+--			case when contact_row_id__c isnull then business_row_id else contact_row_id__c end as contact_business_row_id ,
+			contact_row_id__c,
+			contact_row_id__c,
+			asset_id,
+--			legacycreateddate__c, 
+--			legacylastmodifieddate__c, 
+			protocol__c, 
+			service_request_reason__c,
+			voctype__c, 
+			voc_class, 
+			voc_level_2__c, 
+			voc_level_3__c, 
+			origin, 
+			source__c, 
+			description, 
+			status, 
+			priority, 
+			priority, 
+			resolution__c, 
+			sr_impact_cd__c, 
+			customersatisfied__c, 
+--			unit_value__c, 
+			pwa_oped_dt__c, 
+			recurrence__c,
+--			'HMB',
+			legacycreateddate__c,
+			legacycreateddate__,
+			close_date__c,
+			(select sfid from "replica".recordtype where sobjecttype = 'Case' and developername = 'HMB_Case')				
+		from 
+			process."case";
+--			process."case" order by row_id desc limit 10 offset 101043;	
+		
+		--process."case" order by row_id desc limit 100000 offset 100;		
+--		where 
+--			process."case".row_id in (select distinct case_id from process.synergy_action_audit order by case_id limit 100);	
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_colorinformation();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_colorinformation()
+ LANGUAGE plpgsql
+AS $procedure$
+	begin
+		INSERT INTO "replica".colorinformation__c(
+					externalid__c,
+					langid__c,
+					namecode__c,
+					type__c,
+					val__c,
+					translateflag__c,
+					high__c,
+					low__c,
+					intergrationid__c 
+			)
+			select  
+					row_id,
+					lang_id__c,
+					name_code,
+					type,
+					val,
+					translate_flg__c,
+					high,
+					low,
+					integration_id__c
+			from process.color_information
+			where type='AUTO_EXTERIOR' or type='AUTO_INTERIOR'
+			;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_customer_vehicle();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_customer_vehicle()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.customervehicle_bulk (
+			external_id__c, 
+			vehicle__r__external_Id__c, 
+			employeeflg__c, 
+			relationship__c, 
+			status__c, 
+			legacycreateddate__c, 
+			legacycreatedby__c, 
+			legacylastmodifieddate__c, 
+			legacylastupdby__c, 
+			account__r__external_id__c, 
+			type__c 
+--			subsidiarycode__c,
+--			recordtypeid
+		)
+		select 
+			row_id, 
+			trim(asset_id), 
+			x_employee_flg, 
+			relation_type_cd, 
+			status_cd, 
+			legacy_created, 
+			legacy_created_by, 
+			legacy_last_upd, 
+			legacy_last_upd_by, 
+			account_id, 
+			cv_type
+--			'HMB',
+--			(select sfid from "replica".recordtype where sobjecttype = 'CustomerVehicle__c' and developername = 'HMB_Customer_Vehicle')				
+		from process.customer_vehicle 
+--		where asset_id in(select a.external_id__c from "replica".asset a)
+--			and 
+--			  account_id in(select acc.external_id__c  from "replica".account acc)
+--			order by row_id desc limit 1000
+		;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_dealer();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_dealer()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.dealerholiday__c (
+			external_id__c, 
+			type__c, 
+			dealeraccount__r__external_id__c, 
+			holiday_name__c, 
+			holiday_day__c, 
+			holiday_date__c
+		)
+	    select 
+			row_id, 
+			type__c, 
+			par_row_id__c, 
+			holiday_name__c, 
+			holiday_day__c, 
+			holiday_date__c	    
+	    from process.dealerholiday;
+		   
+		INSERT INTO replica.dealerservice__c (
+			external_id__c, 
+			type__c, 
+			dealeraccount__r__external_id__c, 
+			dlr_srvc_type__c		
+		)
+	    select 		
+			row_id, 
+			type__c, 
+			par_row_id__c, 
+			dlr_srvc_type__c	    
+	    from process.dealerservice;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_dealer_acc();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_dealer_acc()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.account(
+				external_id__c, 
+				cnpj__c, 
+				name, 
+				dealergroupcode__c, 
+				registrysource__c, 
+				phone, 
+				fax, 
+				emailaddress__c, 
+				website, 
+				situationstatusreason__c, 
+				dealercode__c, 
+				customersap__c,
+				region__c, 
+				type, 
+				operationdate__c,
+				terminationdate__c,				
+				businesstype__c, 
+				industry, 
+				fleetsize__c,
+				organizationtype__c,
+				dealershoptype__c, 
+				salesflag__c, 
+				serviceflag__c, 
+				businesshours__c, 
+				facebook__c, 
+				billingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				billingcountry, 
+				billingcity, 
+				billingstate, 
+				billingpostalcode, 
+				billinglatitude, 
+				billinglongitude,
+				latitude__c,
+				longitude__c,
+				FleetAdministrator__c, 
+				description, 
+				leadmanager__c, 
+				dms__c, 
+				apikey__c, 
+				whatsappphone__c, 
+				situationstatus__c, 
+				partnertype__c,			
+				nickname__c,
+				sapworkaddress__c,
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+--				CASE when char_length(regexp_replace(regexp_replace(corporateregistrationnumber__c, 'OLD_|-X',''), '_OLD',''))>14 then substring(corporateregistrationnumber__c, 1,14) else regexp_replace(regexp_replace(corporateregistrationnumber__c, 'OLD_|-X',''), '_OLD','') end as corporateregistrationnumber__c, 
+				corporateregistrationnumber__c,
+				name, 
+				ori_cd__c, 
+				registrysource__c, 
+				phone, 
+				fax, 
+				emailaddress__c, 
+				website, 
+				situationstatusreason__c, 
+				dealercode__c, 
+				customersap__c,
+				region__c, 
+				type, 
+				prtnrshp_start_dt__c,
+				prtnrshp_end_dt__c,			
+				businesstype__c, 
+				industry, 
+				cast(x_tot_flt_size__c as float8),
+				fleettype__c,
+				dealershoptype__c, 
+				salesflag__c, 
+				serviceflag__c, 
+				businesshours__c, 
+				facebook__c, 
+				billingstreet, 
+				billingstreet_2__c, 
+				billingstreet_3__c, 
+				neighborhood, 
+				billingcountry, 
+				billingcity, 
+				billingstate, 
+				billingpostalcode, 
+				coalesce(billinglatitude, 0),
+				coalesce(billinglatitude, 0),
+--				case when billinglongitude isnull then 0 else billinglongitude end, 
+				coalesce(billinglongitude, 0),
+				coalesce(billinglongitude, 0),
+				x_sales_rep__c, 
+				description, 
+				leadmanager__c, 
+				dms__c, 
+				apikey__c, 
+				whatsappphone__c, 
+				cust_stat_cd__c, 
+				partnertype__c,
+				nickname__c,
+				sapworkaddress__c,
+				replica.get_repli_account_num('D'),
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Account' and ispersontype = false and developername = 'HMB_Dealer_Account')				
+			from process.account 
+--			where type='Dealer'
+			where process_account_type='Dealer'
+			;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_dealer_appt_his();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_dealer_appt_his()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+--		INSERT INTO "replica".dealerappointmenthistory__c(
+--			externalid__c,
+--			parrowid__c,
+--			legacy_created__c,
+--			legacy_created_by__c,
+--			legacy_last_upd__c,
+--			legacy_last_upd_by__c,
+--			legacy_modification_num__c,
+--			legacy_conflict_id__c,
+--			srvc_type__c,
+--			srvcarrivaldate__c,
+--			srvcstartdate__c,
+--			srvcduration__c,
+--			srvcdeliverydate__c,
+--			srvcconsultantid__c,
+--			srvctechnicianid__c,
+--			srvcstatuscd__c)
+--		select 
+--			row_id,
+--			par_row_id,
+--			created,
+--			created_by,
+--			last_upd,
+--			last_upd_by,
+--			modification_num,
+--			conflict_id,
+--			srvc_type,
+--			srvc_arrival_date,
+--			srvc_start_date,
+--			srvc_duration,
+--			srvc_delivery_date,
+--			srvc_consultant_id,
+--			srvc_technician_id,
+--			srvc_status_cd
+--			from process.dealer_appointment_history;
+		
+		INSERT INTO "replica".dealerappointmenthistory__c(
+			externalid__c,
+			parrowid__c,
+			Account__r__External_ID__c, --Person Account Lookup
+			CPF__c,
+			CustomerEmail__c,
+--			'Field not existed', --Person Moblie Phone (field 생성 후 교체 필요)
+			DealerCode__c, 
+			ServiceDealershop__c, --Dealer Account Lookup (field 생성 후 교체 필요)
+			legacy_created__c,
+			legacy_created_by__c,
+			legacy_last_upd__c,
+			legacy_last_upd_by__c,
+			legacy_modification_num__c,
+			legacy_conflict_id__c,
+			srvc_type__c,
+			srvcarrivaldate__c, --Booking Date
+			srvcstartdate__c,
+			srvcduration__c,
+			srvcdeliverydate__c,
+			srvcconsultantid__c,
+			srvctechnicianid__c,
+			srvcstatuscd__c
+		)
+		select 
+			row_id,
+			par_row_id,
+			contact_row_id__c, --Person Account Lookup
+			cpf__c,
+			personemail,
+--			personmobilephone, --Person Moblie Phone 
+			dealercode__c,
+			account_row_id__c, --Dealer Account Lookup
+			created,
+			created_by,
+			last_upd,
+			last_upd_by,
+			modification_num,
+			conflict_id,
+			srvc_type,
+			srvc_arrival_date,  --Booking Date
+			srvc_start_date,
+			srvc_duration,
+			srvc_delivery_date,
+			srvc_consultant_id,
+			srvc_technician_id,
+			srvc_status_cd
+			from process.dealer_appointment_history;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_dealer_con();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_dealer_con()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.contact_dealer_bulk(
+				external_id__c, 
+				account__external_id__c, 
+				mailingstreet, 
+				mailingcity, 
+				mailingstate, 
+				mailingpostalcode, 
+				mailinglatitude, 
+				mailinglongitude, 
+				legacy_type__c, 
+				firstname, 
+				lastname, 
+				email, 
+				homephone, 
+				mobilephone, 
+				occupation__c, 
+				gender__c, 
+				cpf__c, 
+				receiveproductnewsflag__c, 
+				receiveretailoffersflag__c, 
+				receiveserviceoffersflag__c, 
+				receivenewsletterflag__c, 
+				receiveeventsflag__c, 
+				receiveresearchflag__c, 
+				blockedmobile__c, 
+				blockedvideocall__c, 
+				preferredcontactchannel__c, 
+				maritalstatus__c, 
+				blockedcalls__c, 
+				blockedletters__c, 
+				blockedemails__c, 
+				blockedwhatsapp__c, 
+				department,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+				account_row_id, 
+				mailingstreet, 
+				mailingcountry, 
+				mailingstate, 
+				mailingpostalcode, 
+				mailinglatitude, 
+				mailinglongitude, 
+				con_cd__c, 
+				firstname, 
+				lastname, 
+				email, 
+				homephone, 
+				mobilephone, 
+				title, 
+				gender__c, 
+				cpf__c, 
+				receiveproductnewsflag__c, 
+				receiveretailoffersflag__c, 
+				receiveserviceoffersflag__c, 
+				receivenewsletterflag__c, 
+				receiveeventsflag__c, 
+				receiveresearchflag__c, 
+				blockedmobile__c, 
+				x_printed_card__c, 
+				preferredcontactchannel__c, 
+				maritalstatus__c, 
+				calloptyn__c, 
+				directmailoptyn__c, 
+				emailoptyn__c, 
+				blockedwhatsapp__c, 
+				department,
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Contact' and developername = 'HMB_Dealer')				
+			from process.contact 
+			where 
+				con_cd__c = 'Dealer'
+--			and
+--				account_row_id in (select a.external_id__c  from "replica".account a)
+				;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_invoiceinfo();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_invoiceinfo()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.invoiceinfo__c(
+			external_id__c,
+			dealeraccount__r__external_id__c,
+			customer__r__external_id__c,
+			fsc_ocn__c,
+			modelname__c,
+			status__c,
+			name,
+			vehiclelicensenumber__c,
+			warrantystartdate__c,
+			billingdate__c,
+			negotiationtype__c,
+			subscriptiontype__c,
+			fiscalreceipt__c,
+			salespersonid__c,
+			modelyear__c,
+			dealercode__c,
+			purchaseprice__c,
+			renavamcode__c,
+			mileage__c,
+			fueltype__c,
+			manufactureyear__c,
+			salestodealerdate__c,
+			delivertocustomerdate__c,
+			enginenumber__c,
+			internalcolorcode__c,
+			externalcolorcode__c,
+			vehiclelicensedate__c,
+			urlphoto__c,
+			digitalsales__c,
+			testdriveathome__c,
+			deliveryathome__c,
+			ccsflag__c,
+			urlphotodate__c,
+			urlauthopublication__c,
+			salespersonfirstname__c,
+			salespersonlastname__c,
+			canceldate__c
+			)
+		select 
+			row_id,
+			account_row_id__c,
+			contact_row_id__c,
+			fsc_ocn__c,
+			modelname__c,
+			status,
+			name,
+			vehiclelicensenumber__c,
+			warrantystartdate__c,
+			billingdate__c,
+			negotiationtype__c,
+			subscriptiontype__c,
+			fiscalreceipt__c,
+			salespersonid__c,
+			modelyear__c,
+			dealercode__c,
+			purchaseprice__c,
+			renavamcode__c,
+			mileage__c,
+			fueltype__c,
+			manufactureyear__c,
+			salestodealerdate__c,
+			delivertocustomerdate__c,
+			enginenumber__c,
+			internalcolorcode__c,
+			externalcolorcode__c,
+			vehiclelicensedate__c,
+			urlphoto__c,
+			digitalsales__c,
+			tdathome,
+			deliveryathome,
+			ccs_flg,
+			urlphotodate__c,
+			urlauthopublication__c,
+			salespersonfirstname__c,
+			salespersonlastname__c,
+			canceldate__c
+		from process.invoiceinfo
+		where
+			char_length(name) <= 18
+		order by row_id desc limit 100 offset 0
+		;
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_loyalty_program();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_loyalty_program()
+ LANGUAGE plpgsql
+AS $procedure$
+	begin
+-- TODO Person/Dealer Account external_id uncomment after all account migrated.
+		INSERT INTO replica.loyaltyprogram__c (
+			external_id__c,
+			personaccountid__r__external_id__c,
+			dealeraccountid__r__external_id__c,
+			legacycreated__c,
+			legacycreatedby__c,
+			legacylastupd__c,
+			legacylastupdby__c,
+			legacymodificationnum__c,
+			name__c,
+			type__c,
+			x_benefit_use__c,
+			x_benefit_name__c,
+			x_src_app__c,
+			x_benefit_url__c
+		)
+		select 
+			row_id,
+			person_account_id,
+			dealer_account_id,
+			legacy_created,
+			legacy_created_by,
+			legacy_last_upd,
+			legacy_last_upd_by,
+			legacy_modification_num,
+			name__c,
+			type__c,
+			x_benefit_use__c,
+			x_benefit_name__c,
+			x_src_app__c,
+			x_benefit_url__c
+		from process.loyalty_program;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_oppty();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_oppty()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".opportunity_bulk(
+				external_id__c, 
+				dealercode__c, 
+				account__external_id__c, 
+				dealerAccount__r__external_id__c, 
+				testdriveprotocolid__c, 
+				name, 
+				campaigntag__c, 
+				closedate, 
+				completedate__c,
+				contenttag__c, 
+				additionalnote__c, 
+				form__c, 
+				level1__c, 
+				level2__c, 
+				level3__c, 
+				level4__c, 
+				lostreason__c, 
+				mediumtag__c, 
+				opportunitytype__c, 
+				origin__c, 
+				predictive_temp__c, 
+				reason__c, 
+				sourcetag__c, 
+				stagename,	
+				ownerid				
+			)
+			select 
+				row_id, 
+				dealercode__c, 
+				contact_row_id__c, 
+				dealeraccount__c, 
+				protocol__c, 
+--				oppty_name, 
+				'HMB'|| concat(date_part('year', close_date__c-90)::text  , lpad( date_part('month', close_date__c-90)::text, 2, '0'::text), lpad( date_part('day', close_date__c-90)::text, 2, '0'::text)) || lpad(nextval('replica.seq_oppty_name'::regclass)::text, 6, '0'::text),
+				campaign_tag__c, 
+				close_date__c, 
+				completedate__c,
+				content_tag__c, 
+				description, 
+				form__c, 
+				voctype__c, 
+				voc_class, 
+				voc_level_2__c, 
+				voc_level_3__c, 
+				lostreason__c, 
+				medium_tag__c, 
+				type, 
+				origin, 
+				predictive_temp__c, 
+				reason__c, 
+				source_tag__c, 
+				status,
+				(case when voc_level_3__c = 'Used-Certificates' or voc_level_3__c = 'Direct Sales' then '005Hs00000DuNhoIAF' else '005Hs00000DuNhPIAV' end) as ownerid  -- level3 에 따른 Fleet Manager / lead Manager 구분 
+			from process.opportunity ;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_person_acc();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_person_acc()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN	
+		INSERT INTO replica.account_bulk(
+				external_id__c, 
+				personmailingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				personmailingcity, 
+				personmailingstate, 
+				personmailingpostalcode, 
+				personmailinglatitude, 
+				personmailinglongitude, 
+				type, 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				workphone__c,
+				workphone__pc,
+				personmobilephone, 				 
+				gender__pc, 
+				pcd__c,
+				pcd__pc,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+				literacy__pc,
+				calledby__c,
+				calledby__pc,
+				employee__c,
+				employee__pc,
+				dealercode__c,
+				dealercode__pc,
+				crmindex__c, 
+				engagementIndex__c, 
+				optinflag__c, 
+				satisficationlevel__c, 
+				cnhexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__pc,
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__pc,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__pc,
+				receiveserviceoffersflag__c, 
+				receiveserviceoffersflag__pc,
+				receivenewsletterflag__c,
+				receivenewsletterflag__pc,
+				receiveeventsflag__c,
+				receiveeventsflag__pc,
+				receiveresearchflag__c,
+				receiveresearchflag__pc,
+				blockedmobile__c,
+				blockedmobile__pc,
+				blockedvideocall__c,
+				blockedvideocall__pc,
+				preferredcontactchannel__c,
+				preferredcontactchannel__pc,
+				maritalstatus__c,
+				maritalstatus__pc,
+				blockedcalls__c,
+				blockedcalls__pc,
+				blockedletters__c,
+				blockedletters__pc,
+				blockedemails__c,
+				blockedemails__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__pc,
+				loyaltyexpirationdate__c, 
+				EngagementIndex__c, 
+				LifeCycle__c, 
+				salutation, 
+				personbirthdate, 
+				influentialperson__c,
+				registrysource__c, 
+				registrysource__pc, 
+				loyaltyvalue__c, 
+				sanitized__c,			
+				occupation__pc,
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+				billingstreet, 
+				billingstreet_2__c, 
+				billingstreet_3__c, 
+				neighborhood, 
+				billingcountry, 
+				billingstate, 
+				billingpostalcode, 
+				billinglatitude, 
+				billinglongitude, 
+				replace(type, 'c_', ''), 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				companyphone__pc,
+				companyphone__pc,
+				personmobilephone, 			 
+				gender__pc, 
+				CASE when pcd__c='Y' then true when pcd__c='N' then false else null end as pcd__c,
+				CASE when pcd__c='Y' then true when pcd__c='N' then false else null end as pcd__c,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+				literacy__c,
+				calledby__c,
+				calledby__c,
+				employee__c,
+				employee__c,
+				favoritedealer__c,
+				favoritedealer__c,
+				crmindex__c, 
+				engagement__c, 
+				optinflag__c, 
+				satificationlevel__c, 
+				loyaltyexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__c,
+--				CASE when char_length(replace(REGEXP_REPLACE(cpf__c, 'OLD_|-', ''), '.', ''))>11 then substring(cpf__c, 9, 20) else replace(REGEXP_REPLACE(cpf__c, 'OLD_|-', ''), '.', '') end as cpf__c,
+--				REGEXP_REPLACE(cpf__c, '[A-Za-z]|_|-|\.', '', 'g')
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__c,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__c,
+				receiveserviceoffersflag__c,
+				receiveserviceoffersflag__c,
+				receivenewsletterflag__c,
+				receivenewsletterflag__c,
+				receiveeventsflag__c,
+				receiveeventsflag__c,
+				receiveresearchflag__c,
+				receiveresearchflag__c,
+				blockedmobile__c,
+				blockedmobile__c,
+				x_printed_card__c,
+				x_printed_card__c,
+				preferredcontactchannel__c,
+				preferredcontactchannel__c,
+				maritalstatus__pc,
+				maritalstatus__pc,
+				calloptyn__pc,
+				calloptyn__pc,
+				directmailoptyn__pc,
+				directmailoptyn__pc,
+				emailoptyn__pc,
+				emailoptyn__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__c,
+				loyaltyexpirationtodate__c, 
+				loyaltyengagementindex__c, 
+				loyaltylifecycle__c, 
+				salutation, 
+				personbirthdate, 
+				influentialperson__c, 
+				registrysource__c,
+				registrysource__c,
+				loyaltyvalue__c, 
+				sanitized__c,
+				occupation__pc,
+				'BR-' || 'A' || '-' || concat(substring(date_part('year', legacy_created)::text, 3, 4)  , lpad( date_part('month', legacy_created)::text, 2, '0'::text), lpad( date_part('day', legacy_created)::text, 2, '0'::text)) || '-' || lpad(nextval('replica.seq_account_no'::regclass)::text, 8, '0'::text),
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Account' and developername = 'HMB_Person_Account')				
+			from process.account 
+			where type in ('c_Customer', 'c_Ex-Customer', 'c_Prospect', 'c_', 'c_Invalid') ;
+--			limit 1;
+--						order by row_id desc limit 100000 offset 200000;
+				-- order by row_id desc limit 100000 offset 200000;
+				--and process.account.external_id__c in (select distinct contact_row_id__c from process.asset order by contact_row_id__c limit 100);
+				--and (escalation_flg ='Y' or escalation_flg isnull)) limit 10000;		
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_person_acc_check();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_person_acc_check()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.account_person_check(
+				external_id__c, 
+				registrysource__c,
+--				registrysource__pc,
+				personmailingstreet, 
+				housebuildingno__c, 
+				complement__c, 
+				neighborhood__c, 
+				personmailingcity, 
+				personmailingstate, 
+				personmailingpostalcode, 
+				personmailinglatitude, 
+				personmailinglongitude, 
+				type, 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				workphone__c,
+				workphone__pc,
+				personmobilephone, 
+				occupation__pc, 
+				gender__pc, 
+				pcd__c,
+--				pcd__pc,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+--				literacy__pc,
+				calledby__c,
+--				calledby__pc,
+				employee__c,
+--				employee__pc,
+				dealercode__c,
+				dealercode__pc,
+				crmindex__c, 
+				engagementIndex__c, 
+				optinflag__c, 
+				satisficationlevel__c, 
+				loyaltyexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__pc,
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__pc,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__pc,
+				receiveserviceoffersflag__c, 
+				receiveserviceoffersflag__pc,
+				receivenewsletterflag__c,
+				receivenewsletterflag__pc,
+				receiveeventsflag__c,
+				receiveeventsflag__pc,
+				receiveresearchflag__c,
+				receiveresearchflag__pc,
+				blockedmobile__c,
+				blockedmobile__pc,
+				blockedvideocall__c,
+				blockedvideocall__pc,
+				preferredcontactchannel__c,
+				preferredcontactchannel__pc,
+				maritalstatus__c,
+				maritalstatus__pc,
+				blockedcalls__c,
+				blockedcalls__pc,
+				blockedletters__c,
+				blockedletters__pc,
+				blockedemails__c,
+				blockedemails__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__pc,
+				accountno__c,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+				registrysource__c, 
+--				registrysource__c, 
+				billingstreet, 
+				billingstreet_2__c, 
+				billingstreet_3__c, 
+				neighborhood, 
+				billingcountry, 
+				billingstate, 
+				billingpostalcode, 
+				billinglatitude, 
+				billinglongitude, 
+				replace(type, 'c_', ''), 
+				firstname, 
+				lastname, 
+				personemail, 
+				personhomephone, 
+				companyphone__pc,
+				companyphone__pc,
+				personmobilephone, 
+				occupation__pc, 
+				gender__pc, 
+				CASE when pcd__c='Y' then true when pcd__c='N' then false else null end as pcd__c,
+--				CASE when pcd__c='Y' then true when pcd__c='N' then false else null end as pcd__c,
+				income__c, 
+				productofinterest__c, 
+				literacy__c,
+--				literacy__c,
+				calledby__c,
+--				calledby__c,
+				employee__c,
+--				employee__c,
+				favoritedealer__c,
+				favoritedealer__c,
+				crmindex__c, 
+				engagement__c, 
+				optinflag__c, 
+				satificationlevel__c, 
+				loyaltyexpirationdate__c, 
+				loyaltyactivationdate__c, 
+				loyaltystatus__c, 
+				cpf__c,
+				cpf__c,
+--				CASE when char_length(replace(REGEXP_REPLACE(cpf__c, 'OLD_|-', ''), '.', ''))>11 then substring(cpf__c, 9, 20) else replace(REGEXP_REPLACE(cpf__c, 'OLD_|-', ''), '.', '') end as cpf__c,
+--				REGEXP_REPLACE(cpf__c, '[A-Za-z]|_|-|\.', '', 'g')
+				receiveproductnewsflag__c,
+				receiveproductnewsflag__c,
+				receiveretailoffersflag__c,
+				receiveretailoffersflag__c,
+				receiveserviceoffersflag__c,
+				receiveserviceoffersflag__c,
+				receivenewsletterflag__c,
+				receivenewsletterflag__c,
+				receiveeventsflag__c,
+				receiveeventsflag__c,
+				receiveresearchflag__c,
+				receiveresearchflag__c,
+				blockedmobile__c,
+				blockedmobile__c,
+				x_printed_card__c,
+				x_printed_card__c,
+				preferredcontactchannel__c,
+				preferredcontactchannel__c,
+				maritalstatus__pc,
+				maritalstatus__pc,
+				calloptyn__pc,
+				calloptyn__pc,
+				directmailoptyn__pc,
+				directmailoptyn__pc,
+				emailoptyn__pc,
+				emailoptyn__pc,
+				blockedwhatsapp__c,
+				blockedwhatsapp__c,
+				'BR-' || 'A' || '-' || concat(substring(date_part('year', legacy_created)::text, 3, 4)  , lpad( date_part('month', legacy_created)::text, 2, '0'::text), lpad( date_part('day', legacy_created)::text, 2, '0'::text)) || '-' || lpad(nextval('replica.seq_account_no'::regclass)::text, 8, '0'::text),
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Account' and developername = 'HMB_Person_Account')				
+			from process.account_person_check ;
+--			where type in ('c_Customer', 'c_Ex-Customer', 'c_Prospect', 'c_', 'c_Invalid') ;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_person_con();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_person_con()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.account(
+				external_id__c, 
+				account__external_id__c,
+				mailingstreet, 
+				mailingcity, 
+				mailingstate, 
+				mailingpostalcode, 
+				mailinglatitude, 
+				mailinglongitude, 
+				type, 
+				firstname, 
+				lastname, 
+				email, 
+				homephone, 
+				mobilephone, 
+				occupation__c, 
+				gender__c, 
+				cpf__c, 
+				receiveproductnewsflag__c, 
+				receiveretailoffersflag__c, 
+				receiveserviceoffersflag__c, 
+				receivenewsletterflag__c, 
+				receiveeventsflag__c, 
+				receiveresearchflag__c, 
+				blockedmobile__c, 
+				blockedvideocall__c, 
+				preferredcontactchannel__c, 
+				maritalstatus__c, 
+				blockedcalls__c, 
+				blockedletters__c, 
+				blockedemails__c, 
+				blockedwhatsapp__c, 
+				department,
+				subsidiarycode__c,
+				recordtypeid
+			)
+			select 
+				row_id, 
+				account_row_id,
+				mailingstreet, 
+				mailingcountry, 
+				mailingstate, 
+				mailingpostalcode, 
+				mailinglatitude, 
+				mailinglongitude, 
+				con_cd__c, 
+				firstname, 
+				lastname, 
+				email, 
+				homephone,  
+				mobilephone, 
+				title, 
+				gender__c, 
+				cpf__c, 
+				receiveproductnewsflag__c, 
+				receiveretailoffersflag__c, 
+				receiveserviceoffersflag__c, 
+				receivenewsletterflag__c, 
+				receiveeventsflag__c, 
+				receiveresearchflag__c, 
+				blockedmobile__c, 
+				x_printed_card__c, 
+				preferredcontactchannel__c, 
+				maritalstatus__c, 
+				calloptyn__c, 
+				directmailoptyn__c, 
+				emailoptyn__c, 
+				blockedwhatsapp__c, 
+				department,
+				'HMB',
+				(select sfid from "replica".recordtype where sobjecttype = 'Contact' and developername = 'HMB_Customer')				
+			from process.contact 
+			where 
+				con_cd__c in ('Customer', 'Ex-Customer', 'Prospect')
+			and
+				account_row_id in (select a.external_id__c  from "replica".account a)
+			limit 10000;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_product2();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_product2()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO "replica".product2(
+			external_id__c, 
+			name, 
+			source_system__c, 
+			product_type__c,
+			part__c, 
+			description, 
+			model_year__c, 
+			body_style__c, 
+			engine__c, 
+			suggested_price__c, 
+			advanced_desc__c, 
+			chassi_model__c, 
+			hmb_cylinder_capacity__c,
+			engine_desc__c, 
+			version_desc__c, 
+			transmission_desc__c, 
+			transmission__c, 
+			fuel__c, 
+			doors_amount__c, 
+			recordtypeid		
+			)
+			select 
+				row_id, 
+				name, 
+				case when source_system__c isnull then 'SAP' else source_system__c end as source_system__c, 
+				product_type__c,
+				part__c , 
+				description, 
+				model_year__c, 
+				body_style__c, 
+				engine__c, 
+				suggested_price__c, 
+				advanced_desc__c, 
+				chassi_model__c, 
+				sap_cylinder_capacity__c,
+				engine_desc__c, 
+				version_desc__c, 
+				transmission_desc__c, 
+				transmission__c, 
+				fuel__c, 
+				doors_amount__c, 
+				(select sfid from "replica".recordtype where sobjecttype = 'Product2' and developername = 'HMB_Product')
+			from process.product
+			--where product_type__c = 'Vehicle'
+			;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_qoute_his();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_qoute_his()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+	    INSERT INTO replica.quotehistory_bulk (
+			externalid__c, 
+			protocolid__c, 
+			dealercode__c, 
+			dealeraccount__r__external_id__c, 
+			account__r__external_id__c, 
+			contact__r__external_id__c, 
+			reason__c, 
+			level1__c, 
+			level2__c, 
+			level3__c, 
+			level4__c, 
+			origin__c, 
+--			method__c, 
+--			description__c, 
+			quotestatus__c, 
+			prioridade__c, 
+			relatedmodel__c, 
+			description__c, 
+			enginetransmission__c, 
+			version__c, 
+			carversionprice__c, 
+			color__c, 
+			colorprice__c, 
+			endprice__c, 
+--			quotereplaceintention__c, 
+			sourcetag__c, 
+			mediumtag__c, 
+			contenttag__c, 
+			campaigntag__c, 
+			financing__c, 
+			loantype__c, 
+			usedcarpayment__c, 
+			methodofpayment__c, 
+			paymentstatus__c, 
+			paymentdate__c, 
+			reservationamount__c, 
+			form__c, 
+			usedbrand__c, 
+			usedmodel__c, 
+			usedchassi__c, 
+			usedversion__c, 
+			usedplate__c, 
+			usedyear__c, 
+			usedcolor__c, 
+			usedkm__c, 
+			usedmaxprice__c, 
+			usedmedprice__c, 
+			usedminprice__c, 
+--			quoteowner__c, 
+			pcd__c, 
+			dateopened__c,   
+		    subsidiarycode__c,
+		    recordtypeid	    			
+	    )
+	    select 
+			row_id, 
+			protocol__c, 
+			dealercode__c, 
+			dealer_account_row_id__c,
+			account_row_id__c, 			 
+			contact_row_id__c, 
+			reason__c, 
+			voctype__c, 
+			voc_class, 
+			voc_level_2__c, 
+			voc_level_3__c, 
+			origin, 
+--			method, 
+--			description, 
+			status, 
+			priority, 
+			relatedmodel__c, 
+			quote_description__c, 
+			quotetransmission__c, 
+			version__c, 
+			quote_version_price__c, 
+			quote_color__c, 
+			quote_color_price__c, 
+			quote_price__c, 
+--			quote_replace_intention__c, 
+			source_tag__c, 
+			medium_tag__c, 
+			content_tag__c, 
+			campaign_tag__c, 
+			wants_loan__c, 
+			loan_type__c, 
+			usedcar_as_down_payment__c, 
+			payment_method__c, 
+			payment_status__c, 
+			payment_date__c, 
+			reserve_amount__c, 
+			form__c, 
+			usedcar_brand__c, 
+			usedcar_model__c, 
+			usedcar_chassi__c, 
+			usedcar_version__c, 
+			usedcar_plate__c, 
+			usedcar_year__c, 
+			usedcar_color__c, 
+			usedcar_km__c, 
+			usedcar_max_price__c, 
+			usedcar_mid_price__c, 
+			usedcar_min_price__c, 
+			pne_flag__c,
+			legacycreateddate__c, 
+		    'HMB',
+		    (select sfid from "replica".recordtype where sobjecttype = 'QuoteHistory__c' and developername = 'HMB_Quote_History')			      
+	    from process.quotehistory;
+--	    where type = 'Request a quote'
+--	    order by row_id limit 100;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_rsa();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_rsa()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.roadsideassistance__c (
+			externalid__c, 
+			case__r__external_id__c,
+			account__r__external_id__c,
+			legacycreated__c, 
+			legacycreatedby__c, 
+			legacylastupd__c, 
+			legacylastupdby__c, 
+			legacymodificationnum__c, 
+			integrationid__c, 
+			reqfirstname__c, 
+			reqlastname__c, 
+			reqdocument__c, 
+			reqvehiclerel__c, 
+			claimdate__c, 
+			claimreason__c, 
+			legacydblastupd__c, 
+			legacydblastupdsrc__c, 
+			brkdwndesc__c, 
+			brkdwn_cd__c, 
+			brkdwn_nature__c, 
+			statuscd__c, 
+			effstartdate__c, 
+			effenddate__c, 
+			exchangedate__c, 
+			mileage__c
+		)
+		select 
+			row_id, 
+			case_id,
+			account_id,
+			created, 
+			created_by, 
+			last_upd, 
+			last_upd_by, 
+			modification_num, 
+			integration_id, 
+			req_first_name, 
+			req_last_name, 
+			req_document, 
+			req_vehicle_rel, 
+			claim_date, 
+			claim_reason, 
+			db_last_upd, 
+			db_last_upd_src, 
+			brkdwn_desc, 
+			brkdwn_cd, 
+			brkdwn_nature, 
+			status_cd, 
+			eff_start_date, 
+			eff_end_date, 
+			exchange_date, 
+			mileage
+		from process.road_side_assistant ;
+--		limit 1;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_rsa_service();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_rsa_service()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.roadsideassistanceservice__c(
+				externalid__c, 
+				roadsideassistanceid__r__externalid__c, 
+				legacycreated__c, 
+				legacycreatedby__c, 
+				legacylastupd__c, 
+				legacylastupdby__c, 
+				legacydblastupd__c, 
+				legacydblastupdsrc__c, 
+				name, 
+				provider__c, 
+				addresscomplement__c, 
+				addressnumber__c, 
+				zipcode__c, 
+				expense__c, 
+				tmcpredicted__c, 
+				latitude__c, 
+				longitude__c, 
+				createdate__c, 
+				servicecode__c, 
+				specialty__c, 
+				vehicleproblem__c, 
+				requeststatus__c, 
+				actuationstatus__c, 
+				state__c, 
+				county__c, 
+				city__c, 
+				dealername__c, 
+				addressname__c, 
+				reference__c, 
+				dealernickname__c, 
+				problemdescription__c, 
+				important__c				
+			)
+			select row_id, 
+				rsa_row_id, 
+				created, 
+				created_by, 
+				last_upd, 
+				last_upd_by, 
+				db_last_upd, 
+				db_last_upd_src, 
+				"name", 
+				provider__c, 
+				addresscomplement__c, 
+				addressnumber__c, 
+				zipcode__c, 
+				expense__c, 
+				tmcpredicted__c, 
+				latitude__c, 
+				longitude__c, 
+				createdate__c, 
+				servicecode__c, 
+				specialty__c, 
+				vehicleproblem__c, 
+				requeststatus__c, 
+				actuationstatus__c, 
+				state__c, 
+				county__c, 
+				city__c, 
+				dealername__c, 
+				addressname__c, 
+				reference__c, 
+				dealernickname__c, 
+				problemdescription__c, 
+				important__c
+			from 
+				process.road_side_assistant_service ;
+
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_sales_consult_his();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_sales_consult_his()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.salesconsulthistory_bulk (
+			account__r__external_id__c,
+			contact__r__external_id__c,
+			external_id__c,
+			descriptioninteraction__c,
+			contact_flag__c,
+			interactiondate__c,
+			temperaturenumber__c,
+			interactionnumber__c,
+			predictivetemp__c,
+			protocolid__c,
+			result__c,
+			integrationid__c,
+			salesstatus__c,
+			salescpf__c,
+			status__c,
+			firstinteractiondate__c,
+			lostreason__c,
+			enddate__c,
+			dealerreceiveddate__c,
+			dealerresponsetime__c,
+			pcd__c,
+			scheduledvisitdate__c,
+			visitdate__c,
+			visitstatus__c,
+			subsidiarycode__c,
+			recordtypeid	    
+		)
+		select 
+			account_row_id__c,
+			contact_row_id__c,
+			row_id,
+			description_interaction__c,
+			contact_flag__c,
+			first_interaction_date__c,
+			temperaturenumber__c,
+			interactionnumber__c,
+			predictivetemp__c,
+			protocol__c,
+			result__c,
+			integrationid__c,
+			statussales__c,
+			salespersoncode__c,
+			status__c,
+			interactionstartdate__c,
+			reason__c,
+			dmsenddate__c,
+			dmsreceivedate__c,
+			dealerrespondetime__c,
+			pne_flag__c,
+			visitscheduled__c,
+			visitdate__c,
+			visitstatus__c,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'SalesConsultHistory__c' and developername = 'HMB_Sales_Consult_History')				
+		from process.sales_consult_history ;
+--		order by row_id limit 100;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_synergy_action_audit();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_synergy_action_audit()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.synergy_action_audit_bulk (
+			externalid__c, 
+			name, 
+			type__c, 
+			question__c, 
+			answer__c, 
+			taskintegrationid__c, 
+			case__r__external_id__c, 
+			srrowid__c, 
+			protocolid__c
+		)
+		select 
+			row_id, 
+			name, 
+			type__c, 
+			question__c, 			
+			answer__c, 
+			task_row_id, 
+			case_id, 
+			sr_row_id, 
+			protocol__c
+		from 
+			process.synergy_action_audit ;
+--			order by case_id limit 100;
+--		where 
+--			c.row_id = saa.case_id
+--			order by saa.case_id limit 100;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_task();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_task()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.task (
+			external_id__c,
+			protocol_id__c,
+			type,
+			subject,
+			priority,
+			status,
+			description,
+			activitydate,
+			completeddatetime,
+			calldisposition,
+			subsidiarycode__c,
+			recordtypeid
+		)
+		select 
+			row_id,
+			protocol__c,
+			type,
+			subject,
+			priority,
+			status,
+			description,
+			activitydate,
+			completeddatetime,
+			result__c,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'Task' and developername = 'HMB_Task')				
+		from process.task
+--		where type!='Request a quote' and testdrivetype__c !='Test drive - update' and testdrivetype__c !='Test drive - add'
+		order by row_id limit 100;
+	END;
+$procedure$
+;
+
+-- DROP PROCEDURE "replica".repli_proc_testdrive_history();
+
+CREATE OR REPLACE PROCEDURE replica.repli_proc_testdrive_history()
+ LANGUAGE plpgsql
+AS $procedure$
+	BEGIN
+		INSERT INTO replica.testdrivehistory_bulk (
+			externalid__c, 
+			protocolid__c, 
+			testdrivetype__c,
+			testdrivestarttime__c, 			 
+			status__c,			 
+			requestdescription__c,
+			dealeraccount__r__external_id__c,
+			account__r__external_id__c,
+			dealercode__c, 
+			serialnumber__c, 
+			testdriveendtime__c, 
+			salespersoncode__c, 
+			reason__c,
+			testdriverequestdate__c,
+			testdriverequesttime__c,
+			testdriverequestvehiclemodel__c,
+			origin__c,
+			subsidiarycode__c,
+			recordtypeid,
+			ownerid
+		)
+		select 
+			row_id, 
+			protocolid__c, 
+			testdrivetype__c,
+			testdrivestarttime__c,  
+			status__c, 			 
+			requestdescription__c,
+			account_id__c,
+			contact_id__c,
+			dealercode__c, 
+			serialnumber__c, 
+			testdriveendtime__c, 
+			salespersoncode__c, 
+			resoninteraction__c,
+			testdriverequestdate__c,
+			testdriverequesttime__c,
+			relatedmodel__c,
+			origin,
+			'HMB',
+			(select sfid from "replica".recordtype where sobjecttype = 'TestDriveHistory__c' and developername = 'HMB_Test_Drive_History'),
+			'005Hs00000DuNhPIAV' -- HMB lead Manager
+		from process.testdrivehistory;
+	END;
+$procedure$
+;

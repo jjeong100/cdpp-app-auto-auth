@@ -1,0 +1,543 @@
+-- process.account_benefit_map_row_id_seq definition
+
+-- DROP SEQUENCE process.account_benefit_map_row_id_seq;
+
+CREATE SEQUENCE process.account_benefit_map_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.account_benefit_map_row_id_seq1 definition
+
+-- DROP SEQUENCE process.account_benefit_map_row_id_seq1;
+
+CREATE SEQUENCE process.account_benefit_map_row_id_seq1
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.if_info_logs_backup_seq_no_seq definition
+
+-- DROP SEQUENCE process.if_info_logs_backup_seq_no_seq;
+
+CREATE SEQUENCE process.if_info_logs_backup_seq_no_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.if_info_logs_seq_no_seq definition
+
+-- DROP SEQUENCE process.if_info_logs_seq_no_seq;
+
+CREATE SEQUENCE process.if_info_logs_seq_no_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.maintenanceable_availability_row_id_seq definition
+
+-- DROP SEQUENCE process.maintenanceable_availability_row_id_seq;
+
+CREATE SEQUENCE process.maintenanceable_availability_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.proc_table_info_id_seq definition
+
+-- DROP SEQUENCE process.proc_table_info_id_seq;
+
+CREATE SEQUENCE process.proc_table_info_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.proc_table_info_id_seq1 definition
+
+-- DROP SEQUENCE process.proc_table_info_id_seq1;
+
+CREATE SEQUENCE process.proc_table_info_id_seq1
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_4digit_cycle definition
+
+-- DROP SEQUENCE process.seq_4digit_cycle;
+
+CREATE SEQUENCE process.seq_4digit_cycle
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9999
+	START 1
+	CACHE 1
+	CYCLE;
+
+
+-- process.seq_5digit_cycle definition
+
+-- DROP SEQUENCE process.seq_5digit_cycle;
+
+CREATE SEQUENCE process.seq_5digit_cycle
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 99999
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_account definition
+
+-- DROP SEQUENCE process.seq_account;
+
+CREATE SEQUENCE process.seq_account
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_account_benefit_history definition
+
+-- DROP SEQUENCE process.seq_account_benefit_history;
+
+CREATE SEQUENCE process.seq_account_benefit_history
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_aprovou_levou definition
+
+-- DROP SEQUENCE process.seq_aprovou_levou;
+
+CREATE SEQUENCE process.seq_aprovou_levou
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_asset definition
+
+-- DROP SEQUENCE process.seq_asset;
+
+CREATE SEQUENCE process.seq_asset
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_asset_accnt definition
+
+-- DROP SEQUENCE process.seq_asset_accnt;
+
+CREATE SEQUENCE process.seq_asset_accnt
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_asset_con definition
+
+-- DROP SEQUENCE process.seq_asset_con;
+
+CREATE SEQUENCE process.seq_asset_con
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_bounce_perfrom definition
+
+-- DROP SEQUENCE process.seq_bounce_perfrom;
+
+CREATE SEQUENCE process.seq_bounce_perfrom
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_campaign_rpt definition
+
+-- DROP SEQUENCE process.seq_campaign_rpt;
+
+CREATE SEQUENCE process.seq_campaign_rpt
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_case definition
+
+-- DROP SEQUENCE process.seq_case;
+
+CREATE SEQUENCE process.seq_case
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_click_perform definition
+
+-- DROP SEQUENCE process.seq_click_perform;
+
+CREATE SEQUENCE process.seq_click_perform
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_contact definition
+
+-- DROP SEQUENCE process.seq_contact;
+
+CREATE SEQUENCE process.seq_contact
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_cx_chat definition
+
+-- DROP SEQUENCE process.seq_cx_chat;
+
+CREATE SEQUENCE process.seq_cx_chat
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_cx_chat_message definition
+
+-- DROP SEQUENCE process.seq_cx_chat_message;
+
+CREATE SEQUENCE process.seq_cx_chat_message
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_cx_sr_mntsrvc_x definition
+
+-- DROP SEQUENCE process.seq_cx_sr_mntsrvc_x;
+
+CREATE SEQUENCE process.seq_cx_sr_mntsrvc_x
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_dealer_holiday definition
+
+-- DROP SEQUENCE process.seq_dealer_holiday;
+
+CREATE SEQUENCE process.seq_dealer_holiday
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_dealer_service definition
+
+-- DROP SEQUENCE process.seq_dealer_service;
+
+CREATE SEQUENCE process.seq_dealer_service
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_file_attachment definition
+
+-- DROP SEQUENCE process.seq_file_attachment;
+
+CREATE SEQUENCE process.seq_file_attachment
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_financing_installment definition
+
+-- DROP SEQUENCE process.seq_financing_installment;
+
+CREATE SEQUENCE process.seq_financing_installment
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_lead definition
+
+-- DROP SEQUENCE process.seq_lead;
+
+CREATE SEQUENCE process.seq_lead
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_loyalty_retention definition
+
+-- DROP SEQUENCE process.seq_loyalty_retention;
+
+CREATE SEQUENCE process.seq_loyalty_retention
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_massive definition
+
+-- DROP SEQUENCE process.seq_massive;
+
+CREATE SEQUENCE process.seq_massive
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_massive_public definition
+
+-- DROP SEQUENCE process.seq_massive_public;
+
+CREATE SEQUENCE process.seq_massive_public
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_novo_de_novo definition
+
+-- DROP SEQUENCE process.seq_novo_de_novo;
+
+CREATE SEQUENCE process.seq_novo_de_novo
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_proc_common definition
+
+-- DROP SEQUENCE process.seq_proc_common;
+
+CREATE SEQUENCE process.seq_proc_common
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 9223372036854775807
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_product definition
+
+-- DROP SEQUENCE process.seq_product;
+
+CREATE SEQUENCE process.seq_product
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 99999999999
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_quotehistory__c definition
+
+-- DROP SEQUENCE process.seq_quotehistory__c;
+
+CREATE SEQUENCE process.seq_quotehistory__c
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_s_srv_req_xm definition
+
+-- DROP SEQUENCE process.seq_s_srv_req_xm;
+
+CREATE SEQUENCE process.seq_s_srv_req_xm
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_sales_consult_history definition
+
+-- DROP SEQUENCE process.seq_sales_consult_history;
+
+CREATE SEQUENCE process.seq_sales_consult_history
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_service_request definition
+
+-- DROP SEQUENCE process.seq_service_request;
+
+CREATE SEQUENCE process.seq_service_request
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 9223372036854775807
+	CACHE 1
+	CYCLE;
+
+
+-- process.seq_srv_req_all definition
+
+-- DROP SEQUENCE process.seq_srv_req_all;
+
+CREATE SEQUENCE process.seq_srv_req_all
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.seq_testdrivehistory__c definition
+
+-- DROP SEQUENCE process.seq_testdrivehistory__c;
+
+CREATE SEQUENCE process.seq_testdrivehistory__c
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.task_row_id_seq definition
+
+-- DROP SEQUENCE process.task_row_id_seq;
+
+CREATE SEQUENCE process.task_row_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+
+-- process.task_row_id_seq1 definition
+
+-- DROP SEQUENCE process.task_row_id_seq1;
+
+CREATE SEQUENCE process.task_row_id_seq1
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;

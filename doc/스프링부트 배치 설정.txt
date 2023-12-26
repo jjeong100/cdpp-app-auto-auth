@@ -1,0 +1,95 @@
+1.@EnableBatchProcessing
+=> app에
+
+
+'org.springframework.batch.core.configuration.annotation.JobBuilderFactory' that could not be found.
+
+batch => SchedulerService
+
+=> 
+
+package com.hyundaimotors.hmb.cdppapp.service;
+
+//import org.springframework.scheduling.annotation.Scheduled;
+
+public interface SchedulerService {
+	
+	public void run();
+	
+//	@Scheduled(fixedDelay = 1000) // 1초마다 실행????
+//	public void run() {
+//		System.out.println("Hello CoCo World!");
+//	}
+}
+
+
+
+package com.hyundaimotors.hmb.cdppapp.service.impl;
+
+//import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hyundaimotors.hmb.cdppapp.service.SchedulerService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class SchedulerServiceImpl implements SchedulerService{
+	public void run() {};
+	
+//	@Scheduled(fixedDelay = 1000) // 1초마다 실행????
+//	public void run() {
+//		System.out.println("Hello CoCo World!");
+//	}
+	
+//	(Ex)
+	// 매일 오후 18시에 실행
+//	@Scheduled(cron = "0 0 18 * * *")
+//	public void run() {
+//		??System.out.println("Hello CoCo World!");
+//	} 
+//	
+//	// 매달 10일,20일 14시에 실행
+//	@Scheduled(cron = "0 0 14 10,20 * ?") 
+//	public void run() {
+//		??System.out.println("Hello CoCo World!");
+//	} // 매달 마지막날 22시에 실행
+//	
+//	@Scheduled(cron = "0 0 22 L * ?") 
+//	public void run() {
+//		???System.out.println("Hello CoCo World!");
+//	} 
+//	// 1시간 마다 실행 ex) 01:00, 02:00, 03:00 ...
+//	@Scheduled(cron = "0 0 0/1 * * *") 
+//	public void run() {?
+//		???System.out.println("Hello CoCo World!");
+//	} 
+//	// 매일 9시00분-9시55분, 18시00분-18시55분 사이에 5분 간격으로 실행
+//	@Scheduled(cron = "0 0/5 9,18 * * *") 
+//	public void run() {
+//		????System.out.println("Hello CoCo World!");
+//	} // 매일 9시00분-18시55분 사이에 5분 간격으로 실행
+//	@Scheduled(cron = "0 0/5 9-18 * * *") 
+//	public void run() {??
+//		??System.out.println("Hello CoCo World!");
+//	} 
+//	// 매달 1일 10시30분에 실행
+//	@Scheduled(cron = "0 30 10 1 * *") 
+//	public void run() {??
+//		??System.out.println("Hello CoCo World!");
+//	} 
+//	// 매년 3월내 월-금 10시30분에 실행
+//	@Scheduled(cron = "0 30 10 ? 3 1-5")
+//	public void run() {?
+//		???System.out.println("Hello CoCo World!");
+//	} 
+//	// 매달 마지막 토요일 10시30분에 실행
+//	@Scheduled(cron = "0 30 10 ? * 6L") 
+//	public void run() {??
+//		??System.out.println("Hello CoCo World!");
+//	}
+	
+}

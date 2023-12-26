@@ -1,0 +1,27 @@
+-- "replica"."_trigger_log" definition
+
+-- Drop table
+
+-- DROP TABLE "replica"."_trigger_log";
+
+CREATE TABLE "replica"."_trigger_log" (
+	id serial4 NOT NULL,
+	txid int8 NULL,
+	created_at timestamptz NULL DEFAULT now(),
+	updated_at timestamptz NULL DEFAULT now(),
+	processed_at timestamptz NULL,
+	processed_tx int8 NULL,
+	state varchar(8) NULL,
+	"action" varchar(7) NULL,
+	table_name varchar(128) NULL,
+	record_id int4 NULL,
+	sfid varchar(18) NULL,
+	"old" text NULL,
+	"values" text NULL,
+	sf_result int4 NULL,
+	sf_message text NULL,
+	CONSTRAINT "_trigger_log_pkey" PRIMARY KEY (id)
+);
+CREATE INDEX _trigger_log_idx_created_at ON replica._trigger_log USING btree (created_at);
+CREATE INDEX _trigger_log_idx_state_id ON replica._trigger_log USING btree (state, id);
+CREATE INDEX _trigger_log_idx_state_table_name ON replica._trigger_log USING btree (state, table_name) WHERE (((state)::text = 'NEW'::text) OR ((state)::text = 'PENDING'::text));

@@ -1,0 +1,431 @@
+-- CREATE UNIQUE INDEX if_service_request_attachment_pkey ON landing.if_service_request_attachment USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_attachment ON landing.if_service_request_attachment USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX cx_ap_escl_log_conflict_id_idx ON landing."CX_AP_ESCL_LOG" USING btree (conflict_id, par_row_id, name, type);
+-- 
+-- CREATE INDEX cx_ap_escl_log_par_row_id_idx ON landing."CX_AP_ESCL_LOG" USING btree (par_row_id, sla_expired_flg, sla_expiration);
+-- 
+-- CREATE UNIQUE INDEX cx_ap_escl_log_pk ON landing."CX_AP_ESCL_LOG" USING btree (row_id);
+-- 
+-- CREATE INDEX cx_ap_escl_log_type_idx ON landing."CX_AP_ESCL_LOG" USING btree (type, name);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_dlr_svc_pkey ON landing.if_mntsrvc_manage_dlr_svc USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_dlr_svc ON landing.if_mntsrvc_manage_dlr_svc USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_srv_req ON landing.s_srv_req USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_sr_rsa_x ON landing.cx_sr_rsa_x USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_con_asset_id_idx ON landing.s_asset_con USING btree (asset_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset_con ON landing.s_asset_con USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_register_loyalty_bnf_used_ws_pkey ON landing.if_register_loyalty_bnf_used_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_register_loyalty_bnf_used_ws ON landing.if_register_loyalty_bnf_used_ws USING btree (row_id);
+-- 
+-- CREATE INDEX s_contact_con_cd_idx ON landing.s_contact USING btree (con_cd);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact ON landing.s_contact USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_hobby_pkey ON landing.if_in_contact_inf_wf_hobby USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf_hobby ON landing.if_in_contact_inf_wf_hobby USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_order_service_dealercode_idx ON landing.if_in_repair_order_service USING btree (dealercode);
+-- 
+-- CREATE INDEX if_in_repair_order_service_par_row_id_idx ON landing.if_in_repair_order_service USING btree (par_row_id);
+-- 
+-- CREATE INDEX if_in_repair_order_service_row_id_idx ON landing.if_in_repair_order_service USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_order_service_soid_idx ON landing.if_in_repair_order_service USING btree (soid);
+-- 
+-- CREATE INDEX if_in_repair_order_service_vincode_idx ON landing.if_in_repair_order_service USING btree (vincode);
+-- 
+-- CREATE UNIQUE INDEX if_in_color_ws_pkey ON landing.if_in_color_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_color_ws ON landing.if_in_color_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_product_list_in_wf_pkey ON landing.if_product_list_in_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_product_list_in_wf ON landing.if_product_list_in_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_camp_con_pk ON landing.s_camp_con USING btree (row_id);
+-- 
+-- CREATE INDEX unique_s_camp_con ON landing.s_camp_con USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_action_in_ws_wf_note_pkey ON landing.if_action_in_ws_wf_note USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_action_in_ws_wf_note ON landing.if_action_in_ws_wf_note USING btree (row_id);
+-- 
+-- CREATE INDEX if_auto_vehicle_bluelink_ws_chassi_idx ON landing.if_auto_vehicle_bluelink_ws USING btree (chassi);
+-- 
+-- CREATE INDEX if_auto_vehicle_bluelink_ws_type_idx ON landing.if_auto_vehicle_bluelink_ws USING btree (type);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_bluelink_ws_bl ON landing.if_auto_vehicle_bluelink_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_mktg_offr ON landing.s_mktg_offr USING btree (row_id);
+-- 
+-- CREATE INDEX s_src_name_idx ON landing.s_src USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX unique_s_src ON landing.s_src USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_atx_par_row_id_idx ON landing.s_asset_atx USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset_atx ON landing.s_asset_atx USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_cnt_bnf_xm ON landing.cx_cnt_bnf_xm USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_evt_act ON landing.s_evt_act USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_org_prtnr ON landing.s_org_prtnr USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_sr_att ON landing.s_sr_att USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_channel_partner_inf_wf_businessaddress_pkey ON landing.if_in_channel_partner_inf_wf_businessaddress USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_channel_partner_inf_wf_businessaddress ON landing.if_in_channel_partner_inf_wf_businessaddress USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_message_par_row_id_idx ON landing.if_service_request_chat_ws_message USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_chat_ws_message_pkey ON landing.if_service_request_chat_ws_message USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_chat_ws_message ON landing.if_service_request_chat_ws_message USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_schedule_maintenance_pkey ON landing.if_mntsrvc_schedule_maintenance USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_schedule_maintenance ON landing.if_mntsrvc_schedule_maintenance USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_contact_in_wf_socialmedia_pkey ON landing.if_update_contact_in_wf_socialmedia USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_contact_in_wf_socialmedia ON landing.if_update_contact_in_wf_socialmedia USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_emp_avail_pkey ON landing.if_mntsrvc_manage_emp_avail USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_emp_avail ON landing.if_mntsrvc_manage_emp_avail USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_auto_vehicle_ws_wf_contact_pkey ON landing.if_auto_vehicle_ws_wf_contact USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_ws_wf_contact ON landing.if_auto_vehicle_ws_wf_contact USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_channel_partner_inf_wf_integrationid_idx ON landing.if_in_channel_partner_inf_wf USING btree (integrationid);
+-- 
+-- CREATE UNIQUE INDEX if_in_channel_partner_inf_wf_pkey ON landing.if_in_channel_partner_inf_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_channel_partner_inf_wf ON landing.if_in_channel_partner_inf_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_soccerteam_pkey ON landing.if_in_contact_inf_wf_soccerteam USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf_soccerteam ON landing.if_in_contact_inf_wf_soccerteam USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_auto_vehicle_ws_wf_account_pkey ON landing.if_auto_vehicle_ws_wf_account USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_ws_wf_account ON landing.if_auto_vehicle_ws_wf_account USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_lead_ws_temperature_pkey ON landing.if_update_lead_ws_temperature USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_lead_ws_temperature ON landing.if_update_lead_ws_temperature USING btree (row_id);
+-- 
+-- CREATE INDEX if_amaro_csi_survey_ws_integrationid_idx ON landing.if_amaro_csi_survey_ws USING btree (integrationid);
+-- 
+-- CREATE UNIQUE INDEX if_amaro_csi_survey_ws_pkey ON landing.if_amaro_csi_survey_ws USING btree (row_id);
+-- 
+-- CREATE INDEX if_amaro_csi_survey_ws_source_idx ON landing.if_amaro_csi_survey_ws USING btree (source);
+-- 
+-- CREATE INDEX if_amaro_csi_survey_ws_srprotocol_idx ON landing.if_amaro_csi_survey_ws USING btree (srprotocol);
+-- 
+-- CREATE UNIQUE INDEX s_addr_per_pk ON landing.s_addr_per USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_addr_per ON landing.s_addr_per USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX massive_campaign_pk ON landing.massive_campaign USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_org_ext_pk ON landing.s_org_ext USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_org_ext ON landing.s_org_ext USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_x_par_row_id_idx ON landing.s_asset_x USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset_x ON landing.s_asset_x USING btree (row_id);
+-- 
+-- CREATE INDEX s_dmnd_crtn_prg_media_type_cd_idx ON landing.s_dmnd_crtn_prg USING btree (media_type_cd);
+-- 
+-- CREATE UNIQUE INDEX unique_s_dmnd_crtn_prg ON landing.s_dmnd_crtn_prg USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_user_pk ON landing.s_user USING btree (row_id);
+-- 
+-- CREATE INDEX s_user_status_cd_idx ON landing.s_user USING btree (status_cd);
+-- 
+-- CREATE UNIQUE INDEX unique_s_user ON landing.s_user USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_action_in_ws_wf_products_pkey ON landing.if_action_in_ws_wf_products USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_action_in_ws_wf_products ON landing.if_action_in_ws_wf_products USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_action_in_ws_wf_synergyactionaudit_pkey ON landing.if_action_in_ws_wf_synergyactionaudit USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_action_in_ws_wf_synergyactionaudit ON landing.if_action_in_ws_wf_synergyactionaudit USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_socialmedia_pkey ON landing.if_in_contact_inf_wf_socialmedia USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf_socialmedia ON landing.if_in_contact_inf_wf_socialmedia USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_srv_req_x ON landing.s_srv_req_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_color_ws_color_pkey ON landing.if_in_color_ws_color USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_color_ws_color ON landing.if_in_color_ws_color USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_org_ext_x_pk ON landing.s_org_ext_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_org_ext_x ON landing.s_org_ext_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_auto_vehicle_ws_wf_pkey ON landing.if_auto_vehicle_ws_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_ws_wf ON landing.if_auto_vehicle_ws_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_evt_act_x ON landing.cx_evt_act_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_contact_in_wf_vehicle_pkey ON landing.if_update_contact_in_wf_vehicle USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_contact_in_wf_vehicle ON landing.if_update_contact_in_wf_vehicle USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_contact_complete_pk ON landing.s_contact_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_complete ON landing.s_contact_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX z_dr_att_data_pk ON landing."Z_DR_ATT_DATA" USING btree (dr_row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_lead_ws_pkey ON landing.if_update_lead_ws USING btree (row_id);
+-- 
+-- CREATE INDEX if_update_lead_ws_protocol_idx ON landing.if_update_lead_ws USING btree (protocol);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_lead_ws ON landing.if_update_lead_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_dlr_holiday_pkey ON landing.if_mntsrvc_manage_dlr_holiday USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_dlr_holiday ON landing.if_mntsrvc_manage_dlr_holiday USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_app_pkey ON landing.if_in_contact_inf_wf_app USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf_app ON landing.if_in_contact_inf_wf_app USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_pkey ON landing.if_in_contact_inf_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf ON landing.if_in_contact_inf_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_auto_vehicle_rsa_claim_ws_rsaservice_pkey ON landing.if_auto_vehicle_rsa_claim_ws_rsaservice USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_rsa_claim_ws_rsaservice ON landing.if_auto_vehicle_rsa_claim_ws_rsaservice USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_lst_of_val_complete_pk ON landing.s_lst_of_val_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_lst_of_val_complete ON landing.s_lst_of_val_complete USING btree (row_id);
+-- 
+-- CREATE INDEX cx_amaro_integration_id_idx ON landing.cx_amaro USING btree (integration_id);
+-- 
+-- CREATE INDEX cx_amaro_research_date_idx ON landing.cx_amaro USING btree (research_date);
+-- 
+-- CREATE INDEX s_prod_int_name_idx ON landing.s_prod_int USING btree (name);
+-- 
+-- CREATE UNIQUE INDEX unique_s_prod_int ON landing.s_prod_int USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_contact_in_wf_pkey ON landing.if_update_contact_in_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_contact_in_wf ON landing.if_update_contact_in_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_prod_int_x ON landing.s_prod_int_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_emp_avail_day_pkey ON landing.if_mntsrvc_manage_emp_avail_day USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_emp_avail_day ON landing.if_mntsrvc_manage_emp_avail_day USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_ws_wf_accessory_pkey ON landing.if_service_request_ws_wf_accessory USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_ws_wf_accessory ON landing.if_service_request_ws_wf_accessory USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_channel_partner_inf_wf_type_pkey ON landing.if_in_channel_partner_inf_wf_type USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_channel_partner_inf_wf_type ON landing.if_in_channel_partner_inf_wf_type USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_contact_inf_wf_car_pkey ON landing.if_in_contact_inf_wf_car USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_contact_inf_wf_car ON landing.if_in_contact_inf_wf_car USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_call_lst_pk ON landing.s_call_lst USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_call_lst ON landing.s_call_lst USING btree (row_id);
+-- 
+-- CREATE INDEX s_party_per_party_id_idx ON landing."S_PARTY_PER" USING btree (party_id);
+-- 
+-- CREATE UNIQUE INDEX s_party_per_person_id_idx ON landing."S_PARTY_PER" USING btree (person_id, party_id, conflict_id);
+-- 
+-- CREATE INDEX s_party_per_person_id_idx2 ON landing."S_PARTY_PER" USING btree (person_id, party_id);
+-- 
+-- CREATE UNIQUE INDEX s_party_per_pk ON landing."S_PARTY_PER" USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_org_ext_complete_pk ON landing.s_org_ext_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_org_ext_complete ON landing.s_org_ext_complete USING btree (row_id);
+-- 
+-- CREATE INDEX if_asset_contact_upsert_ws_assetid_idx ON landing.if_asset_contact_upsert_ws USING btree (assetid);
+-- 
+-- CREATE UNIQUE INDEX if_asset_contact_upsert_ws_pkey ON landing.if_asset_contact_upsert_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_asset_contact_upsert_ws ON landing.if_asset_contact_upsert_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_asset_complete_pk ON landing.s_asset_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset_complete ON landing.s_asset_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX s_prod_int_complete_pk ON landing.s_prod_int_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_prod_int_complete ON landing.s_prod_int_complete USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_product_list_in_wf_product_pkey ON landing.if_product_list_in_wf_product USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_product_list_in_wf_product ON landing.if_product_list_in_wf_product USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_lst_of_val ON landing.s_lst_of_val USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_ws_wf_part_pkey ON landing.if_service_request_ws_wf_part USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_ws_wf_part ON landing.if_service_request_ws_wf_part USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_channel_partner_inf_wf_dlrcontact_pkey ON landing.if_in_channel_partner_inf_wf_dlrcontact USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_channel_partner_inf_wf_dlrcontact ON landing.if_in_channel_partner_inf_wf_dlrcontact USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_emp_avail_excp_pkey ON landing.if_mntsrvc_manage_emp_avail_excp USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_emp_avail_excp ON landing.if_mntsrvc_manage_emp_avail_excp USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_accnt_asset_id_idx ON landing.s_asset_accnt USING btree (asset_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset_accnt ON landing.s_asset_accnt USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_product_in_wf_pkey ON landing.if_product_in_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_product_in_wf ON landing.if_product_in_wf USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_ws_wf_level1_idx ON landing.if_service_request_ws_wf USING btree (level1);
+-- 
+-- CREATE INDEX if_service_request_ws_wf_level2_idx ON landing.if_service_request_ws_wf USING btree (level2);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_ws_wf_pkey ON landing.if_service_request_ws_wf USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_ws_wf_protocol_idx ON landing.if_service_request_ws_wf USING btree (protocol);
+-- 
+-- CREATE INDEX if_service_request_ws_wf_reason_idx ON landing.if_service_request_ws_wf USING btree (reason);
+-- 
+-- CREATE INDEX if_service_request_ws_wf_row_id_idx ON landing.if_service_request_ws_wf USING btree (row_id, protocol);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_ws_wf ON landing.if_service_request_ws_wf USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_order_dealercode_idx ON landing.if_in_repair_order USING btree (dealercode);
+-- 
+-- CREATE INDEX if_in_repair_order_row_id_idx ON landing.if_in_repair_order USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_order_soid_idx ON landing.if_in_repair_order USING btree (soid);
+-- 
+-- CREATE INDEX if_in_repair_order_vincode_idx ON landing.if_in_repair_order USING btree (vincode);
+-- 
+-- CREATE UNIQUE INDEX if_auto_vehicle_rsa_claim_ws_pkey ON landing.if_auto_vehicle_rsa_claim_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_auto_vehicle_rsa_claim_ws ON landing.if_auto_vehicle_rsa_claim_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_contact_in_wf_hobby_pkey ON landing.if_update_contact_in_wf_hobby USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_contact_in_wf_hobby ON landing.if_update_contact_in_wf_hobby USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_parts_dealercode_idx ON landing.if_in_repair_parts USING btree (dealercode);
+-- 
+-- CREATE INDEX if_in_repair_parts_par_row_id_idx ON landing.if_in_repair_parts USING btree (par_row_id);
+-- 
+-- CREATE INDEX if_in_repair_parts_row_id_idx ON landing.if_in_repair_parts USING btree (row_id);
+-- 
+-- CREATE INDEX if_in_repair_parts_soid_idx ON landing.if_in_repair_parts USING btree (soid);
+-- 
+-- CREATE INDEX if_in_repair_parts_vincode_idx ON landing.if_in_repair_parts USING btree (vincode);
+-- 
+-- CREATE UNIQUE INDEX if_mntsrvc_manage_dlr_svc_service_pkey ON landing.if_mntsrvc_manage_dlr_svc_service USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_mntsrvc_manage_dlr_svc_service ON landing.if_mntsrvc_manage_dlr_svc_service USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_register_in_app_ws_pkey ON landing.if_register_in_app_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_register_in_app_ws ON landing.if_register_in_app_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_ou_prtnr_type ON landing.s_ou_prtnr_type USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_evt_act_xm ON landing.cx_evt_act_xm USING btree (row_id);
+-- 
+-- CREATE INDEX if_amaro_csi_survey_answer_ws_par_row_id_idx ON landing.if_amaro_csi_survey_answer_ws USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX if_amaro_csi_survey_answer_ws_pkey ON landing.if_amaro_csi_survey_answer_ws USING btree (row_id);
+-- 
+-- CREATE INDEX if_amaro_csi_survey_answer_ws_questionid_idx ON landing.if_amaro_csi_survey_answer_ws USING btree (questionid);
+-- 
+-- CREATE UNIQUE INDEX unique_s_srv_req_xm ON landing.s_srv_req_xm USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_evt_act_x ON landing.s_evt_act_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_fnx ON landing.s_contact_fnx USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_cx_sr_mntsrvc_x ON landing.cx_sr_mntsrvc_x USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_chat_par_row_id_idx ON landing.if_service_request_chat_ws_chat USING btree (par_row_id);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_chat_ws_chat_pkey ON landing.if_service_request_chat_ws_chat USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_chat_ws_chat ON landing.if_service_request_chat_ws_chat USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_xm ON landing.s_contact_xm USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_level1_idx ON landing.if_service_request_chat_ws USING btree (level1);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_level2_idx ON landing.if_service_request_chat_ws USING btree (level2);
+-- 
+-- CREATE UNIQUE INDEX if_service_request_chat_ws_pkey ON landing.if_service_request_chat_ws USING btree (row_id);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_protocol_idx ON landing.if_service_request_chat_ws USING btree (protocol);
+-- 
+-- CREATE INDEX if_service_request_chat_ws_reason_idx ON landing.if_service_request_chat_ws USING btree (reason);
+-- 
+-- CREATE UNIQUE INDEX unique_if_service_request_chat_ws ON landing.if_service_request_chat_ws USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_account_ws_wf_pkey ON landing.if_account_ws_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_account_ws_wf ON landing.if_account_ws_wf USING btree (row_id);
+-- 
+-- CREATE INDEX s_asset_serial_num_idx ON landing.s_asset USING btree (serial_num);
+-- 
+-- CREATE UNIQUE INDEX unique_s_asset ON landing.s_asset USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_in_channel_partner_inf_wf_position_pkey ON landing.if_in_channel_partner_inf_wf_position USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_in_channel_partner_inf_wf_position ON landing.if_in_channel_partner_inf_wf_position USING btree (row_id);
+-- 
+-- CREATE INDEX if_update_lead_ws_interation_interactionnum_idx ON landing.if_update_lead_ws_interation USING btree (interactionnum);
+-- 
+-- CREATE UNIQUE INDEX if_update_lead_ws_interation_pkey ON landing.if_update_lead_ws_interation USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_lead_ws_interation ON landing.if_update_lead_ws_interation USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_org_ext_xm ON landing.s_org_ext_xm USING btree (row_id);
+-- 
+-- CREATE INDEX if_action_in_ws_wf_integrationid_idx ON landing.if_action_in_ws_wf USING btree (integrationid);
+-- 
+-- CREATE UNIQUE INDEX if_action_in_ws_wf_pkey ON landing.if_action_in_ws_wf USING btree (row_id);
+-- 
+-- CREATE INDEX if_action_in_ws_wf_srprotocol_idx ON landing.if_action_in_ws_wf USING btree (srprotocol);
+-- 
+-- CREATE UNIQUE INDEX unique_if_action_in_ws_wf ON landing.if_action_in_ws_wf USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_s_contact_x ON landing.s_contact_x USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX if_update_contact_in_wf_soccerteam_pkey ON landing.if_update_contact_in_wf_soccerteam USING btree (row_id);
+-- 
+-- CREATE UNIQUE INDEX unique_if_update_contact_in_wf_soccerteam ON landing.if_update_contact_in_wf_soccerteam USING btree (row_id);

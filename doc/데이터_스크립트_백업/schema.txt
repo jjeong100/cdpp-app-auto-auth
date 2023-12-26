@@ -1,0 +1,4 @@
+CREATE SCHEMA heroku_ext;
+CREATE SCHEMA landing;
+CREATE SCHEMA process;
+CREATE SCHEMA replica;

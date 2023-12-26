@@ -1,0 +1,279 @@
+-- DROP FUNCTION process.get_proc_id();
+
+CREATE OR REPLACE FUNCTION process.get_proc_id()
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE new_id varchar(25);
+	DECLARE table_cnt int := 0;
+	begin
+		select count(*) into table_cnt
+		from process.proc_table_info
+		where
+			"name" = table_name;
+		
+		if table_cnt > 0 then		
+			select 
+				'B-' || upper(to_hex(pti.id)) || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id
+			from process.proc_table_info pti 
+			where 
+				pti."name" = table_name;
+		else
+			select 
+				'B-' || 'Z' || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id;
+		end if;
+
+		return new_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.get_proc_id(varchar);
+
+CREATE OR REPLACE FUNCTION process.get_proc_id(table_name character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE new_id varchar(25);
+	DECLARE table_cnt int := 0;
+	begin
+		select count(*) into table_cnt
+		from process.proc_table_info
+		where
+			"name" = table_name;
+		
+		if table_cnt > 0 then		
+			select 
+				'B-' || upper(to_hex(pti.id)) || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id
+			from process.proc_table_info pti 
+			where 
+				pti."name" = table_name;
+		else
+			select 
+				'B-' || 'Z' || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id;
+		end if;
+
+		return new_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.get_proc_id_campaign_rpt();
+
+CREATE OR REPLACE FUNCTION process.get_proc_id_campaign_rpt()
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE new_id varchar(25);
+	DECLARE table_cnt int := 0;
+	begin
+		select count(*) into table_cnt
+		from process.proc_table_info
+		where
+			"name" = table_name;
+		
+		if table_cnt > 0 then		
+			select 
+				'B-' || upper(to_hex(pti.id)) || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id
+			from process.proc_table_info pti 
+			where 
+				pti."name" = table_name;
+		else
+			select 
+				'B-' || 'Z' || '-' || upper(to_hex(nextval('process.seq_proc_common'))) into new_id;
+		end if;
+
+		return new_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.get_protocol_id();
+
+CREATE OR REPLACE FUNCTION process.get_protocol_id()
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE new_id character varying;
+	BEGIN
+	
+		select 'HMB'||to_char(now(), 'YYYYMMDD')||'Z'||nextval('process.seq_5digit_cycle'::regclass)::character varying into new_id;
+
+		return new_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.get_protocol_id(varchar);
+
+CREATE OR REPLACE FUNCTION process.get_protocol_id(opt_flag character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE new_id character varying;
+	BEGIN
+		if (OPT_FLAG isnull or OPT_FLAG = '') then 
+			OPT_FLAG := 'Z';
+		end if;
+	
+		select 'HMB'||to_char(now(), 'YYYYMMDD')||OPT_FLAG||nextval('process.seq_5digit_cycle'::regclass)::character varying into new_id;
+
+		return new_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.get_random_string(int4);
+
+CREATE OR REPLACE FUNCTION process.get_random_string(length integer)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	DECLARE 
+		chars varchar[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
+		random_result varchar := 'C-';
+		i integer := 0;
+    BEGIN	  
+		FOR i IN 1..length
+		LOOP
+			random_result := random_result || chars[round(1+random() * array_length(chars, 1)-1)];
+		END LOOP;
+		RETURN UPPER(random_result);
+    END;
+$function$
+;
+
+-- DROP FUNCTION process.if_in_cl_dl_ws(varchar, varchar);
+
+CREATE OR REPLACE FUNCTION process.if_in_cl_dl_ws(param_id character varying, saleorservice character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	declare dealerdistance varchar;
+	declare dealer_id varchar;
+	BEGIN
+		SELECT 
+		    ST_DISTANCE(
+		        ST_TRANSFORM(
+		            ('SRID=4326;POINT(' || pzc.longitude || ' ' || pzc.latitude || ')')::geometry,
+		            3857
+		        ),
+		        'SRID=3857;POINT(14128453 4506986)'::geometry
+		    ) into dealerdistance
+		FROM 
+		    process.zipcode pzc
+		where 
+			zipcode = param_id;
+		
+	   if saleorservice = 'service' then 	   
+		   SELECT 
+			    row_id,
+				(ST_DISTANCE(
+			        ST_TRANSFORM(
+			            ('SRID=4326;POINT(' || pac.billinglatitude || ' ' || pac.billinglongitude || ')')::geometry,
+			            3857
+			        ),
+			        'SRID=3857;POINT(14128453 4506986)'::geometry
+			    )::float - dealerdistance::float) as distance 
+			    , pac.row_id into dealer_id
+			FROM 
+			    process.account pac
+			where 
+				pac.serviceflag__c = true
+			ORDER BY
+			    distance
+			limit 1;
+		else 
+			select
+				row_id,
+				(ST_DISTANCE(
+			        ST_TRANSFORM(
+			            ('SRID=4326;POINT(' || pac.billinglatitude || ' ' || pac.billinglongitude || ')')::geometry,
+			            3857
+			        ),
+			        'SRID=3857;POINT(14128453 4506986)'::geometry
+			    )::float - dealerdistance::float) as distance 
+			    , pac.row_id into dealer_id
+			FROM 
+			    process.account pac
+			where 
+				pac.salesflag__c = true
+			and
+				pac.billinglatitude notnull
+			and
+				pac.billinglongitude notnull
+			ORDER BY
+			    distance asc
+			limit 1;
+		end if;
+		    
+		return dealer_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.if_in_cl_dl_ws(varchar);
+
+CREATE OR REPLACE FUNCTION process.if_in_cl_dl_ws(param_id character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
+	declare dealer_id varchar;
+	declare dealerdistance varchar;
+	BEGIN
+		SELECT 
+		    ST_DISTANCE(
+		        ST_TRANSFORM(
+		            ('SRID=4326;POINT(' || pzc.longitude || ' ' || pzc.latitude || ')')::geometry,
+		            3857
+		        ),
+		        'SRID=3857;POINT(14128453 4506986)'::geometry
+		    ) into dealerdistance
+		FROM 
+		    process.zipcode pzc
+		where 
+			zipcode = param_id;
+		   
+	   SELECT 
+		    (ST_DISTANCE(
+		        ST_TRANSFORM(
+		            ('SRID=4326;POINT(' || pac.billinglatitude || ' ' || pac.billinglongitude || ')')::geometry,
+		            3857
+		        ),
+		        'SRID=3857;POINT(14128453 4506986)'::geometry
+		    )::float - dealerdistance::float) as distance
+		    , row_id into dealer_id
+		FROM 
+		    process.account pac
+		ORDER BY
+		    distance
+		limit 1;
+		    
+		return dealer_id;
+	END;
+$function$
+;
+
+-- DROP FUNCTION process.if_info_logs_update_perf();
+
+CREATE OR REPLACE FUNCTION process.if_info_logs_update_perf()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+    BEGIN	  
+		IF NEW.if_step1_at IS NOT NULL THEN
+			NEW.step1_perf = cast(extract(epoch from (new.if_step1_at - new.if_request_at)) as numeric(9,3));
+		END if;
+		IF NEW.if_step2_at IS NOT NULL THEN
+			NEW.step2_perf = cast(extract(epoch from (new.if_step2_at - new.if_request_at)) as numeric(9,3));
+		END if;
+		IF NEW.if_step3_at IS NOT NULL THEN
+			NEW.step3_perf = cast(extract(epoch from (new.if_step3_at - new.if_request_at)) as numeric(9,3));
+		END if;
+		IF NEW.if_response_at IS NOT NULL THEN
+			NEW.resp_perf = cast(extract(epoch from (new.if_response_at - new.if_request_at)) as numeric(9,3));
+		END if;
+		RETURN NEW;
+    END;
+$function$
+;
